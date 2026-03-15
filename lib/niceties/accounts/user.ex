@@ -8,6 +8,7 @@ defmodule Niceties.Accounts.User do
     has_many :memberships, Niceties.Groups.Membership
     has_many :niceties_from, Niceties.Notes.Nicety, foreign_key: :user_from_id
     has_many :niceties_to, Niceties.Notes.Nicety, foreign_key: :user_to_id
+    field :authenticated_at, :utc_datetime, virtual: true
 
     timestamps(type: :utc_datetime)
   end
@@ -18,5 +19,49 @@ defmodule Niceties.Accounts.User do
     |> cast(attrs, [:email, :name])
     |> validate_required([:email, :name])
     |> unique_constraint(:email)
+  end
+
+  @doc """
+  A user changeset for registering or changing the email.
+
+  It requires the email to change otherwise an error is added.
+
+  ## Options
+
+    * `:validate_unique` - Set to false if you don't want to validate the
+      uniqueness of the email, useful when displaying live validations.
+      Defaults to `true`.
+  """
+  def email_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email])
+    |> validate_email(opts)
+  end
+
+  defp validate_email(changeset, opts) do
+    changeset =
+      changeset
+      |> validate_required([:email])
+      |> validate_format(:email, ~r/^[^@,;\s]+@[^@,;\s]+$/,
+        message: "must have the @ sign and no spaces"
+      )
+      |> validate_length(:email, max: 160)
+
+    if Keyword.get(opts, :validate_unique, true) do
+      changeset
+      |> unsafe_validate_unique(:email, Niceties.Repo)
+      |> unique_constraint(:email)
+      |> validate_email_changed()
+    else
+      changeset
+    end
+  end
+
+  defp validate_email_changed(changeset) do
+    if get_field(changeset, :email) && get_change(changeset, :email) == nil do
+      add_error(changeset, :email, "did not change")
+    else
+      changeset
+    end
   end
 end

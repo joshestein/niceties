@@ -18,4 +18,18 @@ defmodule Niceties.GroupsFixtures do
 
     group
   end
+
+  @doc """
+  Generate a membership.
+  """
+  def membership_fixture(attrs \\ %{}) do
+    {:ok, membership} =
+      attrs
+      |> Enum.into(%{
+        role: "some role"
+      })
+      |> Niceties.Groups.create_membership()
+
+    membership
+  end
 end

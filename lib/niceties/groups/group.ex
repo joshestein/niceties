@@ -5,6 +5,7 @@ defmodule Niceties.Groups.Group do
   schema "groups" do
     field :name, :string
     field :releases_at, :utc_datetime
+    has_many :memberships, Niceties.Groups.Membership
 
     timestamps(type: :utc_datetime)
   end

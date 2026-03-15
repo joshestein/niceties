@@ -5,6 +5,7 @@ defmodule Niceties.Accounts.User do
   schema "users" do
     field :email, :string
     field :name, :string
+    has_many :memberships, Niceties.Groups.Membership
 
     timestamps(type: :utc_datetime)
   end

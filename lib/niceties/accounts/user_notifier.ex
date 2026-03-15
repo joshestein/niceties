@@ -46,7 +46,7 @@ defmodule Niceties.Accounts.UserNotifier do
   """
   def deliver_login_instructions(user, url) do
     case user do
-      %User{confirmed_at: nil} -> deliver_confirmation_instructions(user, url)
+      %User{confirmed_at: nil} -> deliver_invitation_instructions(user, url)
       _ -> deliver_magic_link_instructions(user, url)
     end
   end
@@ -68,8 +68,8 @@ defmodule Niceties.Accounts.UserNotifier do
     """)
   end
 
-  defp deliver_confirmation_instructions(user, url) do
-    deliver(user.email, "Confirmation instructions", """
+  defp deliver_invitation_instructions(user, url) do
+    deliver(user.email, "You've been invited to join Niceties!", """
 
     ==============================
 

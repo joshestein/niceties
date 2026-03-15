@@ -6,6 +6,7 @@ defmodule Niceties.Groups.Group do
     field :name, :string
     field :releases_at, :utc_datetime
     has_many :memberships, Niceties.Groups.Membership
+    has_many :niceties, Niceties.Notes.Nicety
 
     timestamps(type: :utc_datetime)
   end

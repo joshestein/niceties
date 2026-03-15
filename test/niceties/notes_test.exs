@@ -21,11 +21,24 @@ defmodule Niceties.NotesTest do
     end
 
     test "create_nicety/1 with valid data creates a nicety" do
-      valid_attrs = %{body: "some body", anonymous: true}
+      group = Niceties.GroupsFixtures.group_fixture()
+      user_from = Niceties.AccountsFixtures.user_fixture()
+      user_to = Niceties.AccountsFixtures.user_fixture()
+
+      valid_attrs = %{
+        body: "some body",
+        anonymous: true,
+        group_id: group.id,
+        user_from_id: user_from.id,
+        user_to_id: user_to.id
+      }
 
       assert {:ok, %Nicety{} = nicety} = Notes.create_nicety(valid_attrs)
       assert nicety.body == "some body"
       assert nicety.anonymous == true
+      assert nicety.group_id == valid_attrs.group_id
+      assert nicety.user_from_id == valid_attrs.user_from_id
+      assert nicety.user_to_id == valid_attrs.user_to_id
     end
 
     test "create_nicety/1 with invalid data returns error changeset" do

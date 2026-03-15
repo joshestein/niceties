@@ -77,7 +77,11 @@ defmodule Niceties.GroupsTest do
     end
 
     test "create_membership/1 with valid data creates a membership" do
-      valid_attrs = %{role: "admin", group_id: group_fixture().id, user_id: Niceties.AccountsFixtures.user_fixture().id}
+      valid_attrs = %{
+        role: "admin",
+        group_id: group_fixture().id,
+        user_id: Niceties.AccountsFixtures.user_fixture().id
+      }
 
       assert {:ok, %Membership{} = membership} = Groups.create_membership(valid_attrs)
       assert membership.role == "admin"
@@ -93,7 +97,9 @@ defmodule Niceties.GroupsTest do
       membership = membership_fixture()
       update_attrs = %{role: "staff"}
 
-      assert {:ok, %Membership{} = membership} = Groups.update_membership(membership, update_attrs)
+      assert {:ok, %Membership{} = membership} =
+               Groups.update_membership(membership, update_attrs)
+
       assert membership.role == "staff"
     end
 

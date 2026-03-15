@@ -8,6 +8,7 @@ defmodule Niceties.Accounts.User do
     has_many :memberships, Niceties.Groups.Membership
     has_many :niceties_from, Niceties.Notes.Nicety, foreign_key: :user_from_id
     has_many :niceties_to, Niceties.Notes.Nicety, foreign_key: :user_to_id
+    field :confirmed_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
 
     timestamps(type: :utc_datetime)
@@ -55,6 +56,14 @@ defmodule Niceties.Accounts.User do
     else
       changeset
     end
+  end
+
+  @doc """
+  Confirms the user by setting the confirmed_at timestamp.
+  """
+  def confirm_changeset(user) do
+    now = DateTime.utc_now(:second)
+    change(user, confirmed_at: now)
   end
 
   defp validate_email_changed(changeset) do

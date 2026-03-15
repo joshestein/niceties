@@ -1,8 +1,6 @@
 defmodule NicetiesWeb.UserLive.Settings do
   use NicetiesWeb, :live_view
 
-  on_mount {NicetiesWeb.UserAuth, :require_sudo_mode}
-
   alias Niceties.Accounts
 
   @impl true
@@ -73,7 +71,6 @@ defmodule NicetiesWeb.UserLive.Settings do
   def handle_event("update_email", params, socket) do
     %{"user" => user_params} = params
     user = socket.assigns.current_scope.user
-    true = Accounts.sudo_mode?(user)
 
     case Accounts.change_user_email(user, user_params) do
       %{valid?: true} = changeset ->

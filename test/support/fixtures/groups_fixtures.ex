@@ -26,7 +26,9 @@ defmodule Niceties.GroupsFixtures do
     {:ok, membership} =
       attrs
       |> Enum.into(%{
-        role: "some role"
+        role: "admin",
+        group_id: group_fixture().id,
+        user_id: Niceties.AccountsFixtures.user_fixture().id
       })
       |> Niceties.Groups.create_membership()
 

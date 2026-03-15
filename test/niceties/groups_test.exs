@@ -77,10 +77,12 @@ defmodule Niceties.GroupsTest do
     end
 
     test "create_membership/1 with valid data creates a membership" do
-      valid_attrs = %{role: "some role"}
+      valid_attrs = %{role: "admin", group_id: group_fixture().id, user_id: Niceties.AccountsFixtures.user_fixture().id}
 
       assert {:ok, %Membership{} = membership} = Groups.create_membership(valid_attrs)
-      assert membership.role == "some role"
+      assert membership.role == "admin"
+      assert membership.group_id == valid_attrs.group_id
+      assert membership.user_id == valid_attrs.user_id
     end
 
     test "create_membership/1 with invalid data returns error changeset" do
@@ -89,10 +91,10 @@ defmodule Niceties.GroupsTest do
 
     test "update_membership/2 with valid data updates the membership" do
       membership = membership_fixture()
-      update_attrs = %{role: "some updated role"}
+      update_attrs = %{role: "staff"}
 
       assert {:ok, %Membership{} = membership} = Groups.update_membership(membership, update_attrs)
-      assert membership.role == "some updated role"
+      assert membership.role == "staff"
     end
 
     test "update_membership/2 with invalid data returns error changeset" do

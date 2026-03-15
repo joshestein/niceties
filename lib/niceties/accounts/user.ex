@@ -19,6 +19,11 @@ defmodule Niceties.Accounts.User do
     user
     |> cast(attrs, [:email, :name])
     |> validate_required([:email, :name])
+    |> validate_format(:email, ~r/^[^@,;\s]+@[^@,;\s]+$/,
+      message: "must have the @ sign and no spaces"
+    )
+    |> validate_length(:email, max: 160)
+    |> unsafe_validate_unique(:email, Niceties.Repo)
     |> unique_constraint(:email)
   end
 

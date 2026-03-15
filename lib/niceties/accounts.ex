@@ -125,21 +125,14 @@ defmodule Niceties.Accounts do
   ## User registration
 
   @doc """
-  Registers a user.
+  Registers a user via self-enrollment.
 
-  ## Examples
-
-      iex> register_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> register_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
+  Delegates to `create_user/1`. Exists as a distinct function so that
+  registration-specific logic (e.g. invite checks, rate limiting) has
+  a clear home if needed in the future.
   """
   def register_user(attrs) do
-    %User{}
-    |> User.email_changeset(attrs)
-    |> Repo.insert()
+    create_user(attrs)
   end
 
   ## Settings

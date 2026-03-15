@@ -7,6 +7,7 @@ defmodule Niceties.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :email, :citext, null: false
       add :name, :string
+      add :confirmed_at, :utc_datetime
 
       timestamps(type: :utc_datetime)
     end

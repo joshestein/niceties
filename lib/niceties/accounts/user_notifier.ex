@@ -40,6 +40,9 @@ defmodule Niceties.Accounts.UserNotifier do
 
   @doc """
   Deliver instructions to log in with a magic link.
+
+  Sends a confirmation email for users who have not yet confirmed their account,
+  and a standard login email for returning users.
   """
   def deliver_login_instructions(user, url) do
     case user do

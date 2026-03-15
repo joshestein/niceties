@@ -4,33 +4,12 @@ defmodule Niceties.AccountsFixtures do
   entities via the `Niceties.Accounts` context.
   """
 
-  @doc """
-  Generate a unique user email.
-  """
-  def unique_user_email, do: "some email#{System.unique_integer([:positive])}"
-
-  @doc """
-  Generate a user.
-  """
-  def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> Enum.into(%{
-        email: unique_user_email(),
-        name: "some name"
-      })
-      |> Niceties.Accounts.create_user()
-
-    user
-  end
-
   import Ecto.Query
 
   alias Niceties.Accounts
   alias Niceties.Accounts.Scope
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
@@ -68,13 +47,6 @@ defmodule Niceties.AccountsFixtures do
 
   def user_scope_fixture(user) do
     Scope.for_user(user)
-  end
-
-  def set_password(user) do
-    {:ok, {user, _expired_tokens}} =
-      Accounts.update_user_password(user, %{password: valid_user_password()})
-
-    user
   end
 
   def extract_user_token(fun) do

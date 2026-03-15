@@ -13,7 +13,8 @@ defmodule Niceties.AccountsFixtures do
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
-      email: unique_user_email()
+      email: unique_user_email(),
+      name: "some name"
     })
   end
 
@@ -21,7 +22,7 @@ defmodule Niceties.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> Accounts.register_user()
+      |> Accounts.create_user()
 
     user
   end

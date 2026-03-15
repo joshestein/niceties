@@ -26,7 +26,7 @@ defmodule Niceties.Accounts.UserNotifier do
 
     ==============================
 
-    Hi #{user.email},
+    Hi #{user.name},
 
     You can change your email by visiting the URL below:
 
@@ -56,7 +56,7 @@ defmodule Niceties.Accounts.UserNotifier do
 
     ==============================
 
-    Hi #{user.email},
+    Hi #{user.name},
 
     You can log into your account by visiting the URL below:
 
@@ -73,7 +73,7 @@ defmodule Niceties.Accounts.UserNotifier do
 
     ==============================
 
-    Hi #{user.email},
+    Hi #{user.name},
 
     You can confirm your account by visiting the URL below:
 

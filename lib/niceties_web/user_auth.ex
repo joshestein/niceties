@@ -4,6 +4,7 @@ defmodule NicetiesWeb.UserAuth do
   import Plug.Conn
   import Phoenix.Controller
 
+  alias Niceties.Groups
   alias Niceties.Accounts
   alias Niceties.Accounts.Scope
 
@@ -243,8 +244,13 @@ defmodule NicetiesWeb.UserAuth do
 
   @doc "Returns the path to redirect to after log in."
   # the user was already logged in, redirect to settings
-  def signed_in_path(%Plug.Conn{assigns: %{current_scope: %Scope{user: %Accounts.User{}}}}) do
-    ~p"/users/settings"
+  def signed_in_path(%Plug.Conn{assigns: %{current_scope: %Scope{user: %Accounts.User{}}}} = conn) do
+    memberships = Groups.list_memberships(conn.assigns.current_scope.user)
+    case memberships do
+      [] -> ~p"/"
+      [membership] -> ~p"/groups/#{membership.group_id}"
+      _ -> ~p"/groups"
+    end
   end
 
   def signed_in_path(_), do: ~p"/"

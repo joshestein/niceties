@@ -191,7 +191,9 @@ defmodule Niceties.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)
+    {user, token} = Repo.one(query)
+    user = Repo.preload(user, :memberships)
+    {user, token}
   end
 
   @doc """

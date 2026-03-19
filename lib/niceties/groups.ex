@@ -118,6 +118,14 @@ defmodule Niceties.Groups do
   end
 
   @doc """
+  Returns memberships for a user.
+  """
+  def list_memberships(user) do
+    Repo.all(Ecto.assoc(user, :memberships))
+  end
+
+
+  @doc """
   Gets a single membership.
 
   Raises `Ecto.NoResultsError` if the Membership does not exist.

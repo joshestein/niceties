@@ -1,22 +1,22 @@
 defmodule NicetiesWeb.AdminController do
   use NicetiesWeb, :controller
 
-  def groups(conn) do
+  def groups(conn, _params) do
   end
 
-  def create_group(conn) do
-
-  end
-
-  def group(conn) do
+  def create_group(conn, _params) do
 
   end
 
-  def release(conn) do
+  def group(conn, _params) do
 
   end
 
-  def add_member(conn) do
+  def release(conn, _params) do
+
+  end
+
+  def add_member(conn, _params) do
 
   end
 end

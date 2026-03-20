@@ -1,15 +1,12 @@
 defmodule NicetiesWeb.GroupController do
   use NicetiesWeb, :controller
 
-  def home(conn) do
-
+  def home(conn, _params) do
   end
 
-  def group(conn) do
-
+  def group(conn, _params) do
   end
 
-  def nicety(conn) do
-
+  def nicety(conn, _params) do
   end
 end

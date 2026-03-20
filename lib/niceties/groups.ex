@@ -124,7 +124,6 @@ defmodule Niceties.Groups do
     Repo.all(Ecto.assoc(user, :memberships))
   end
 
-
   @doc """
   Gets a single membership.
 

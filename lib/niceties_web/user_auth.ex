@@ -246,6 +246,7 @@ defmodule NicetiesWeb.UserAuth do
   # the user was already logged in, redirect to settings
   def signed_in_path(%Plug.Conn{assigns: %{current_scope: %Scope{user: %Accounts.User{}}}} = conn) do
     memberships = Groups.list_memberships(conn.assigns.current_scope.user)
+
     case memberships do
       [] -> ~p"/"
       [membership] -> ~p"/group/#{membership.group_id}"

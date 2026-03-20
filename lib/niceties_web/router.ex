@@ -55,6 +55,16 @@ defmodule NicetiesWeb.Router do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
+  ## Admin routes
+
+  scope "/admin", NicetiesWeb do
+    pipe_through [:browser, :require_authenticated_user, :require_admin_user]
+
+    get "/groups", AdminController, :groups
+    post "/groups", AdminController, :create_group
+    get "/groups/:id", AdminController, :group
+    post "/groups/:id/release", AdminController, :release
+    post "/groups/:id/members", AdminController, :add_member
   end
 
   scope "/", NicetiesWeb do

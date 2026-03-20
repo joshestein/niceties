@@ -55,6 +55,10 @@ defmodule NicetiesWeb.Router do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
+
+    get "/groups", GroupController, :home
+    get "/groups/:id", GroupController, :group
+    post "/groups/:id/niceties", GroupController, :nicety
   ## Admin routes
 
   scope "/admin", NicetiesWeb do

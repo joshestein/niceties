@@ -2,6 +2,7 @@ defmodule NicetiesWeb.GroupController do
   use NicetiesWeb, :controller
 
   def home(conn, _params) do
+    render(conn, :home)
   end
 
   def group(conn, _params) do

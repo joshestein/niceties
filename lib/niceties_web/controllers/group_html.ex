@@ -14,4 +14,10 @@ defmodule NicetiesWeb.GroupHTML do
     hello!
     """
   end
+
+  def group(assigns) do
+    ~H"""
+    group {@id}
+    """
+  end
 end

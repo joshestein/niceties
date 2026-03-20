@@ -5,7 +5,8 @@ defmodule NicetiesWeb.GroupController do
     render(conn, :home)
   end
 
-  def group(conn, _params) do
+  def group(conn, %{"id" => id}) do
+    render(conn, :group, id: id)
   end
 
   def nicety(conn, _params) do

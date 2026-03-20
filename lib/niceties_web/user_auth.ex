@@ -248,7 +248,7 @@ defmodule NicetiesWeb.UserAuth do
     memberships = Groups.list_memberships(conn.assigns.current_scope.user)
     case memberships do
       [] -> ~p"/"
-      [membership] -> ~p"/groups/#{membership.group_id}"
+      [membership] -> ~p"/group/#{membership.group_id}"
       _ -> ~p"/groups"
     end
   end

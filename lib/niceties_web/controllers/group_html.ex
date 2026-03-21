@@ -20,7 +20,13 @@ defmodule NicetiesWeb.GroupHTML do
 
   def group(assigns) do
     ~H"""
-    group {@id}
+    <Layouts.app flash={@flash}>
+      <li :for={user <- @users} id={"user-#{user.id}"}>
+        {user.name}
+        <br/>
+        Your message: {Map.get(@given_map, user.id).body}
+      </li>
+    </Layouts.app>
     """
   end
 end

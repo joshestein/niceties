@@ -8,7 +8,7 @@ defmodule NicetiesWeb.GroupHTML do
 
   # embed_templates "group_html/*"
 
-  def home(assigns) do
+  def index(assigns) do
     ~H"""
     hello!
     """

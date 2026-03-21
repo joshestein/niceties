@@ -56,7 +56,7 @@ defmodule NicetiesWeb.Router do
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
 
-    get "/groups", GroupController, :home
+    get "/groups", GroupController, :index
     get "/groups/:id", GroupController, :group
     post "/groups/:id/niceties", GroupController, :nicety
   end

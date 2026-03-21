@@ -57,7 +57,7 @@ defmodule NicetiesWeb.Router do
     end
 
     get "/groups", GroupController, :home
-    get "/group/:id", GroupController, :group
+    get "/groups/:id", GroupController, :group
     post "/groups/:id/niceties", GroupController, :nicety
 
     get "/received", ReceivedController, :received

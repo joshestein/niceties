@@ -249,7 +249,7 @@ defmodule NicetiesWeb.UserAuth do
 
     case memberships do
       [] -> ~p"/"
-      [membership] -> ~p"/group/#{membership.group_id}"
+      [membership] -> ~p"/groups/#{membership.group_id}"
       _ -> ~p"/groups"
     end
   end

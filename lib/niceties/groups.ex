@@ -47,6 +47,13 @@ defmodule Niceties.Groups do
     Enum.map(memberships, fn membership -> membership.user end)
   end
 
+  def list_groups_for_user(%Scope{} = scope) do
+    memberships = Ecto.assoc(scope.user, :memberships)
+     |> Repo.all()
+     |> Repo.preload(:group)
+    Enum.map(memberships, fn membership -> membership.group end)
+  end
+
   def member_of_group?(user_id, group_id) do
     Repo.exists?(from m in Membership, where: m.user_id == ^user_id and m.group_id == ^group_id)
   end
@@ -136,7 +143,6 @@ defmodule Niceties.Groups do
   """
   def list_memberships(%Scope{} = scope) do
     Repo.all(Ecto.assoc(scope.user, :memberships))
-  end
   end
 
   @doc """

@@ -24,3 +24,6 @@ Niceties.Groups.create_membership(%{role: "admin", group_id: group.id, user_id: 
 
 Niceties.Groups.create_membership(%{role: "participant", group_id: group.id, user_id: fellow.id})
 Niceties.Groups.create_membership(%{role: "participant", group_id: group.id, user_id: fellow_2.id})
+
+Niceties.Notes.create_nicety(%{body: "you are so nice", group_id: group.id, user_from_id: user.id, user_to_id: fellow.id})
+Niceties.Notes.create_nicety(%{body: "awesome sauce", group_id: group.id, user_from_id: user.id, user_to_id: fellow_2.id})

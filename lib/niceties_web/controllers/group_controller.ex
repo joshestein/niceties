@@ -5,7 +5,8 @@ defmodule NicetiesWeb.GroupController do
   alias Niceties.Notes
 
   def index(conn, _params) do
-    render(conn, :index)
+    groups = Groups.list_groups_for_user(conn.assigns.current_scope)
+    render(conn, :index, groups: groups)
   end
 
   def group(conn, %{"id" => id}) do

@@ -15,8 +15,11 @@ Niceties.Repo.delete_all(Niceties.Groups.Membership)
 Niceties.Repo.delete_all(Niceties.Groups.Group)
 Niceties.Repo.delete_all(Niceties.Accounts.User)
 
-{:ok, user} = Niceties.Accounts.create_user(%{email: "mycoolemail@gmail.com", name: "John Doe"})
-{:ok, group} = Niceties.Groups.create_group(%{name: "my_group", releases_at: ~U[2026-06-01 18:00:00Z]})
+{:ok, user} = Niceties.Accounts.create_user(%{email: "mail@gmail.com", name: "John Doe"})
+
+{:ok, group} =
+  Niceties.Groups.create_group(%{name: "my_group", releases_at: ~U[2026-06-01 18:00:00Z]})
+
 Niceties.Groups.create_membership(%{role: "admin", group_id: group.id, user_id: user.id})
 
 {:ok, fellow} = Niceties.Accounts.create_user(%{email: "fellow@gmail.com", name: "Fellow 1"})

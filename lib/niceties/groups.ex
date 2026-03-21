@@ -38,6 +38,15 @@ defmodule Niceties.Groups do
   def get_group!(id), do: Repo.get!(Group, id)
 
   @doc """
+  Returns all members of a group.
+  """
+  def get_all_members(id) do
+    group = get_group!(id)
+    memberships = Repo.all(Ecto.assoc(group, :memberships)) |> Repo.preload(:user)
+    Enum.map(memberships, fn membership -> membership.user end)
+  end
+
+  @doc """
   Creates a group.
 
   ## Examples

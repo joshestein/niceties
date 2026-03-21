@@ -9,6 +9,12 @@ defmodule NicetiesWeb.GroupController do
   end
 
   def group(conn, %{"id" => id}) do
+    unless Groups.member_of_group?(conn.assigns.current_scope.user.id, id) do
+      conn
+      |> redirect(to: ~p"/groups")
+      |> halt()
+    end
+
     # TODO: check user belongs to group. If not, redirect to /groups
     received = Notes.get_received(conn.assigns.current_scope, id)
     received_map = Map.new(received, fn nicety -> {nicety.user_from_id, nicety} end)

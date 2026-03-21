@@ -4,9 +4,21 @@ defmodule Niceties.Notes do
   """
 
   import Ecto.Query, warn: false
+  alias Niceties.Accounts.Scope
+  alias Niceties.Notes.Nicety
   alias Niceties.Repo
 
-  alias Niceties.Notes.Nicety
+  def get_received(%Scope{} = scope, group_id) do
+    Ecto.assoc(scope.user, :niceties_to)
+      |> where([nicety], nicety.group_id == ^group_id)
+      |> Repo.all()
+  end
+
+  def get_given(%Scope{} = scope, group_id) do
+    Ecto.assoc(scope.user, :niceties_from)
+      |> where([nicety], nicety.group_id == ^group_id)
+      |> Repo.all()
+  end
 
   @doc """
   Returns the list of niceties.

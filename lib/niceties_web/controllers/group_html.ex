@@ -15,7 +15,6 @@ defmodule NicetiesWeb.GroupHTML do
         {group.name} - {group.id}
       </li>
     </Layouts.app>
-    hello!
     """
   end
 

@@ -4,10 +4,10 @@ defmodule Niceties.Groups do
   """
 
   import Ecto.Query, warn: false
+  alias Niceties.Accounts.Scope
+  alias Niceties.Groups.Group
   alias Niceties.Groups.Membership
   alias Niceties.Repo
-
-  alias Niceties.Groups.Group
 
   @doc """
   Returns the list of groups.
@@ -134,8 +134,9 @@ defmodule Niceties.Groups do
   @doc """
   Returns memberships for a user.
   """
-  def list_memberships(user) do
-    Repo.all(Ecto.assoc(user, :memberships))
+  def list_memberships(%Scope{} = scope) do
+    Repo.all(Ecto.assoc(scope.user, :memberships))
+  end
   end
 
   @doc """

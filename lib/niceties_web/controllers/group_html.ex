@@ -10,6 +10,11 @@ defmodule NicetiesWeb.GroupHTML do
 
   def index(assigns) do
     ~H"""
+    <Layouts.app flash={@flash}>
+      <li :for={group <- @groups} id={"group-#{group.id}"}>
+        {group.name} - {group.id}
+      </li>
+    </Layouts.app>
     hello!
     """
   end

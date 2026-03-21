@@ -1,4 +1,3 @@
-
 defmodule NicetiesWeb.GroupHTML do
   @moduledoc """
   This module contains pages rendered by GroupController.

@@ -10,14 +10,14 @@ defmodule Niceties.Notes do
 
   def get_received(%Scope{} = scope, group_id) do
     Ecto.assoc(scope.user, :niceties_to)
-      |> where([nicety], nicety.group_id == ^group_id)
-      |> Repo.all()
+    |> where([nicety], nicety.group_id == ^group_id)
+    |> Repo.all()
   end
 
   def get_given(%Scope{} = scope, group_id) do
     Ecto.assoc(scope.user, :niceties_from)
-      |> where([nicety], nicety.group_id == ^group_id)
-      |> Repo.all()
+    |> where([nicety], nicety.group_id == ^group_id)
+    |> Repo.all()
   end
 
   @doc """

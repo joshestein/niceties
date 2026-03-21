@@ -4,6 +4,7 @@ defmodule Niceties.Groups do
   """
 
   import Ecto.Query, warn: false
+  alias Niceties.Groups.Membership
   alias Niceties.Repo
 
   alias Niceties.Groups.Group
@@ -44,6 +45,10 @@ defmodule Niceties.Groups do
     group = get_group!(id)
     memberships = Repo.all(Ecto.assoc(group, :memberships)) |> Repo.preload(:user)
     Enum.map(memberships, fn membership -> membership.user end)
+  end
+
+  def member_of_group?(user_id, group_id) do
+    Repo.exists?(from m in Membership, where: m.user_id == ^user_id and m.group_id == ^group_id)
   end
 
   @doc """

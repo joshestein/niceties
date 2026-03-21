@@ -4,8 +4,8 @@ defmodule NicetiesWeb.GroupController do
   alias Niceties.Groups
   alias Niceties.Notes
 
-  def home(conn, _params) do
-    render(conn, :home)
+  def index(conn, _params) do
+    render(conn, :index)
   end
 
   def group(conn, %{"id" => id}) do

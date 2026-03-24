@@ -70,7 +70,7 @@ defmodule NicetiesWeb.Router do
     post "/groups", AdminController, :create_group
     get "/groups/:id", AdminController, :group
     post "/groups/:id/release", AdminController, :release
-    post "/groups/:id/members", AdminController, :add_member
+    post "/groups/:id/members", AdminController, :create_member
   end
 
   scope "/", NicetiesWeb do

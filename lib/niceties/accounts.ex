@@ -122,19 +122,6 @@ defmodule Niceties.Accounts do
     Repo.get_by(User, email: email)
   end
 
-  ## User registration
-
-  @doc """
-  Registers a user via self-enrollment.
-
-  Delegates to `create_user/1`. Exists as a distinct function so that
-  registration-specific logic (e.g. invite checks, rate limiting) has
-  a clear home if needed in the future.
-  """
-  def register_user(attrs) do
-    create_user(attrs)
-  end
-
   ## Settings
 
   @doc """

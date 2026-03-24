@@ -63,7 +63,7 @@ defmodule NicetiesWeb.UserLive.Registration do
 
   @impl true
   def handle_event("save", %{"user" => user_params}, socket) do
-    case Accounts.register_user(user_params) do
+    case Accounts.create_user(user_params) do
       {:ok, user} ->
         {:ok, _} =
           Accounts.deliver_login_instructions(

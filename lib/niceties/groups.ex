@@ -39,13 +39,8 @@ defmodule Niceties.Groups do
   def get_group!(id), do: Repo.get!(Group, id)
 
   @doc """
-  Returns all users of a group.
+  Returns all memberships of a group.
   """
-  def get_all_users(id) do
-    memberships = get_all_memberships(id)
-    Enum.map(memberships, fn membership -> membership.user end)
-  end
-
   def get_all_memberships(id) do
     group = get_group!(id)
     Repo.all(Ecto.assoc(group, :memberships)) |> Repo.preload(:user)

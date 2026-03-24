@@ -20,10 +20,10 @@ defmodule NicetiesWeb.GroupController do
     received_map = Map.new(received, fn nicety -> {nicety.user_from_id, nicety} end)
     given = Notes.get_given(conn.assigns.current_scope, id)
     given_map = Map.new(given, fn nicety -> {nicety.user_to_id, nicety} end)
-    members = Groups.get_all_members(id)
+    users = Groups.get_all_users(id)
 
     other_users =
-      Enum.filter(members, fn member -> member.id != conn.assigns.current_scope.user.id end)
+      Enum.filter(users, fn user -> user.id != conn.assigns.current_scope.user.id end)
 
     render(conn, :group,
       id: id,

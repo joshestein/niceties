@@ -37,14 +37,16 @@ defmodule NicetiesWeb.GroupHTML do
             label="Nicety"
             value={Map.get(@given_map, user.id, %{body: ""}).body}
           />
-          <.input
-            type="checkbox"
-            field={f[:anonymous]}
-            label="Give anonymously?"
-            value={Map.get(@given_map, user.id, %{anonymous: false}).anonymous}
-          />
+          <div class="flex flex-row justify-between">
+            <.input
+              type="checkbox"
+              field={f[:anonymous]}
+              label="Give anonymously?"
+              value={Map.get(@given_map, user.id, %{anonymous: false}).anonymous}
+            />
 
-          <.button type="submit">Save</.button>
+            <.button type="submit">Save</.button>
+          </div>
         </.form>
       </li>
     </Layouts.app>

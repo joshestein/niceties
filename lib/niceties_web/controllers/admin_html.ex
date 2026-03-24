@@ -4,11 +4,13 @@ defmodule NicetiesWeb.AdminHTML do
   def groups(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
-      <li :for={group <- @groups} id={"group-#{group.id}"}>
-        <.link href={~p"/admin/groups/#{group.id}"} class="hover:underline">
-          {group.name} - {group.id}
-        </.link>
-      </li>
+      <ul>
+        <li :for={group <- @groups} id={"group-#{group.id}"}>
+          <.link href={~p"/admin/groups/#{group.id}"} class="hover:underline">
+            {group.name} - {group.id}
+          </.link>
+        </li>
+      </ul>
     </Layouts.app>
     """
   end

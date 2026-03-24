@@ -23,6 +23,7 @@ defmodule NicetiesWeb.GroupHTML do
   def group(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
+      <.link href={~p"/groups/"}>← Back to all groups</.link>
       <li :for={user <- @users} id={"user-#{user.id}"}>
         {user.name}
         <.form :let={f} for={%{}} action={~p"/groups/#{@id}/niceties"}>

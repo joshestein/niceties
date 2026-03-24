@@ -24,6 +24,7 @@ Niceties.Groups.create_membership(%{role: "admin", group_id: group.id, user_id: 
 
 {:ok, fellow} = Niceties.Accounts.create_user(%{email: "fellow@gmail.com", name: "Fellow 1"})
 {:ok, fellow_2} = Niceties.Accounts.create_user(%{email: "fellow2@gmail.com", name: "Fellow 2"})
+{:ok, fellow_3} = Niceties.Accounts.create_user(%{email: "fellow3@gmail.com", name: "Fellow 3"})
 
 Niceties.Groups.create_membership(%{role: "participant", group_id: group.id, user_id: fellow.id})
 
@@ -52,4 +53,3 @@ Niceties.Notes.create_nicety(%{
   user_from_id: user.id,
   user_to_id: fellow_2.id
 })
-

@@ -12,7 +12,9 @@ defmodule NicetiesWeb.GroupHTML do
     ~H"""
     <Layouts.app flash={@flash}>
       <li :for={group <- @groups} id={"group-#{group.id}"}>
-        {group.name} - {group.id}
+        <.link href={~p"/groups/#{group.id}"} class="hover:underline">
+          {group.name} - {group.id}
+        </.link>
       </li>
     </Layouts.app>
     """

@@ -16,7 +16,7 @@ defmodule NicetiesWeb.AdminHTML do
   def group(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
-      <.link href={~p"/admin/groups"} class="hover:underline">← Back to all groups</.link>
+      <.link href={~p"/admin/groups"} class="hover:underline">← Back to groups</.link>
 
       <h1>Group: {@group.name}</h1>
 

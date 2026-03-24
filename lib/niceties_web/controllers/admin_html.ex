@@ -20,9 +20,10 @@ defmodule NicetiesWeb.AdminHTML do
 
       <h1>Group: {@group.name}</h1>
 
-      <.table id="users" rows={@users}>
-        <:col :let={user} label="Name">{user.name}</:col>
-        <:col :let={user} label="Email">{user.email}</:col>
+      <.table id="members" rows={@members}>
+        <:col :let={member} label="Name">{member.user.name}</:col>
+        <:col :let={member} label="Email">{member.user.email}</:col>
+        <:col :let={member} label="Role">{member.role}</:col>
       </.table>
     </Layouts.app>
     """

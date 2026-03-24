@@ -4,6 +4,14 @@ defmodule NicetiesWeb.AdminHTML do
   def groups(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
+      <.form :let={f} for={%{}} action={~p"/admin/groups"}>
+        <.input label="Group name" field={f[:name]}/>
+        <.input type="datetime-local" label="Releases at" field={f[:releases_at]}/>
+        <.button>Create new group</.button>
+      </.form>
+
+      <hr/>
+
       <ul>
         <li :for={group <- @groups} id={"group-#{group.id}"}>
           <.link href={~p"/admin/groups/#{group.id}"} class="hover:underline">

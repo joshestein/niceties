@@ -8,8 +8,13 @@ defmodule NicetiesWeb.AdminController do
     render(conn, groups: groups)
   end
 
-  def create_group(conn, _params) do
-
+  def create_group(conn, %{"name" => _name, "releases_at" => _releases_at} = params) do
+    case Groups.create_group(params) do
+      {:ok, group} ->
+        conn |> put_flash(:info, "Successfully created group") |> redirect(to: ~p"/admin/groups/#{group.id}")
+      _ ->
+        conn |> put_flash(:error, "Failed to create group") |> redirect(to: ~p"/admin/groups")
+    end
   end
 
   def group(conn, %{"id" => id}) do

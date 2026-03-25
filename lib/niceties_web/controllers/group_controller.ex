@@ -34,8 +34,13 @@ defmodule NicetiesWeb.GroupController do
       {:ok, _nicety} ->
         redirect(conn, to: ~p"/groups/#{group_id}")
 
-      {:error, _changeset} ->
-        conn |> put_flash(:error, "Failed to create nicety") |> redirect(to: ~p"/groups/#{group_id}")
+      {:error, changeset} ->
+        assigns = group_assigns(conn, group_id)
+        forms = Map.put(assigns.forms, String.to_integer(user_to_id), to_form(changeset))
+
+        conn
+        |> put_flash(:error, "Failed to save nicety")
+        |> render(:group, Map.put(assigns, :forms, forms))
     end
   end
 

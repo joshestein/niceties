@@ -45,8 +45,11 @@ defmodule NicetiesWeb.GroupController do
     }
 
     case Notes.create_nicety(nicety_params) do
-      {:ok, _nicety} -> redirect(conn, to: ~p"/groups/#{id}")
-      {:error, _changeset} -> IO.puts("error")
+      {:ok, _nicety} ->
+        redirect(conn, to: ~p"/groups/#{group_id}")
+
+      {:error, _changeset} ->
+        conn |> put_flash(:error, "Failed to create nicety") |> redirect(to: ~p"/groups/#{group_id}")
     end
   end
 end

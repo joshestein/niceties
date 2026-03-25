@@ -27,12 +27,7 @@ defmodule NicetiesWeb.GroupHTML do
       <ul>
         <li :for={user <- @users} id={"user-#{user.id}"}>
           {user.name}
-          <.form :let={f} for={%{}} action={~p"/groups/#{@id}/niceties"}>
-            <.input
-              hidden
-              field={f[:user_to_id]}
-              value={Map.get(@given_map, user.id, %{user_to_id: user.id}).user_to_id}
-            />
+          <.form :let={f} for={%{}} action={~p"/groups/#{@id}/niceties/#{@user.id}"}>
             <.input
               field={f[:body]}
               label="Nicety"

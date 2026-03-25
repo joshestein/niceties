@@ -27,20 +27,14 @@ defmodule NicetiesWeb.GroupHTML do
       <ul>
         <li :for={user <- @users} id={"user-#{user.id}"}>
           {user.name}
-          <.form :let={f} for={%{}} action={~p"/groups/#{@id}/niceties/#{@user.id}"}>
-            <.input
-              field={f[:body]}
-              label="Nicety"
-              value={Map.get(@given_map, user.id, %{body: ""}).body}
-            />
+          <.form for={@forms[user.id]} action={~p"/groups/#{@id}/niceties/#{user.id}"}>
+            <.input field={@forms[user.id][:body]} label="Nicety" />
             <div class="flex flex-row justify-between">
               <.input
                 type="checkbox"
-                field={f[:anonymous]}
+                field={@forms[user.id][:anonymous]}
                 label="Give anonymously?"
-                value={Map.get(@given_map, user.id, %{anonymous: false}).anonymous}
               />
-
               <.button type="submit">Save</.button>
             </div>
           </.form>

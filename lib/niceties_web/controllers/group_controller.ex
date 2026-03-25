@@ -35,9 +35,14 @@ defmodule NicetiesWeb.GroupController do
     end
   end
 
-  def create_nicety(conn, %{"id" => id} = params) do
-    nicety_params =
-      Map.merge(params, %{"user_from_id" => conn.assigns.current_scope.user.id, "group_id" => id})
+  def create_nicety(conn, %{"id" => group_id, "user_id" => user_to_id} = params) do
+    nicety_params = %{
+      "body" => params["body"],
+      "anonymous" => params["anonymous"],
+      "user_from_id" => conn.assigns.current_scope.user.id,
+      "user_to_id" => user_to_id,
+      "group_id" => group_id
+    }
 
     case Notes.create_nicety(nicety_params) do
       {:ok, _nicety} -> redirect(conn, to: ~p"/groups/#{id}")

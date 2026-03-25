@@ -58,7 +58,7 @@ defmodule NicetiesWeb.Router do
 
     get "/groups", GroupController, :index
     get "/groups/:id", GroupController, :group
-    post "/groups/:id/niceties/:user_id", GroupController, :create_nicety
+    put "/groups/:id/niceties/:user_id", GroupController, :create_nicety
   end
 
   ## Admin routes

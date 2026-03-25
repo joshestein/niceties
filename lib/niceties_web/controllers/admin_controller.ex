@@ -1,19 +1,26 @@
 defmodule NicetiesWeb.AdminController do
   use NicetiesWeb, :controller
+  import Phoenix.Component, only: [to_form: 1]
 
   alias Niceties.Groups
+  alias Niceties.Groups.Group
 
   def groups(conn, _params) do
     groups = Groups.list_groups()
-    render(conn, groups: groups)
+    render(conn, groups: groups, form: to_form(Groups.change_group(%Group{})))
   end
 
-  def create_group(conn, %{"name" => _name, "releases_at" => _releases_at} = params) do
-    case Groups.create_group(params) do
+  def create_group(conn, %{"group" => %{"name" => name, "releases_at" => releases_at}}) do
+    group_params = %{"name" => name, "releases_at" => releases_at}
+    case Groups.create_group(group_params) do
       {:ok, group} ->
-        conn |> put_flash(:info, "Successfully created group") |> redirect(to: ~p"/admin/groups/#{group.id}")
-      _ ->
-        conn |> put_flash(:error, "Failed to create group") |> redirect(to: ~p"/admin/groups")
+        conn
+        |> put_flash(:info, "Successfully created group")
+        |> redirect(to: ~p"/admin/groups/#{group.id}")
+
+      {:error, changeset} ->
+        groups = Groups.list_groups()
+        conn |> put_flash(:error, "Failed to create group") |> render(:groups, groups: groups, form: to_form(changeset))
     end
   end
 

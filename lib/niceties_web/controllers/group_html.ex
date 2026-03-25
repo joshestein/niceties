@@ -24,31 +24,33 @@ defmodule NicetiesWeb.GroupHTML do
     ~H"""
     <Layouts.app flash={@flash}>
       <.link href={~p"/groups/"}>← Back to groups</.link>
-      <li :for={user <- @users} id={"user-#{user.id}"}>
-        {user.name}
-        <.form :let={f} for={%{}} action={~p"/groups/#{@id}/niceties"}>
-          <.input
-            hidden
-            field={f[:user_to_id]}
-            value={Map.get(@given_map, user.id, %{user_to_id: user.id}).user_to_id}
-          />
-          <.input
-            field={f[:body]}
-            label="Nicety"
-            value={Map.get(@given_map, user.id, %{body: ""}).body}
-          />
-          <div class="flex flex-row justify-between">
+      <ul>
+        <li :for={user <- @users} id={"user-#{user.id}"}>
+          {user.name}
+          <.form :let={f} for={%{}} action={~p"/groups/#{@id}/niceties"}>
             <.input
-              type="checkbox"
-              field={f[:anonymous]}
-              label="Give anonymously?"
-              value={Map.get(@given_map, user.id, %{anonymous: false}).anonymous}
+              hidden
+              field={f[:user_to_id]}
+              value={Map.get(@given_map, user.id, %{user_to_id: user.id}).user_to_id}
             />
+            <.input
+              field={f[:body]}
+              label="Nicety"
+              value={Map.get(@given_map, user.id, %{body: ""}).body}
+            />
+            <div class="flex flex-row justify-between">
+              <.input
+                type="checkbox"
+                field={f[:anonymous]}
+                label="Give anonymously?"
+                value={Map.get(@given_map, user.id, %{anonymous: false}).anonymous}
+              />
 
-            <.button type="submit">Save</.button>
-          </div>
-        </.form>
-      </li>
+              <.button type="submit">Save</.button>
+            </div>
+          </.form>
+        </li>
+      </ul>
     </Layouts.app>
     """
   end

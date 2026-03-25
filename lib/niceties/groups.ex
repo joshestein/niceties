@@ -4,7 +4,9 @@ defmodule Niceties.Groups do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Multi
   alias Niceties.Accounts.Scope
+  alias Niceties.Accounts.User
   alias Niceties.Groups.Group
   alias Niceties.Groups.Membership
   alias Niceties.Repo
@@ -178,6 +180,19 @@ defmodule Niceties.Groups do
     %Membership{}
     |> Membership.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_member(attrs) do
+    Multi.new()
+    |> Multi.insert(:user, User.changeset(%User{}, attrs))
+    |> Multi.insert(:membership, fn %{user: user} ->
+      Membership.changeset(%Membership{}, %{
+        role: attrs["role"],
+        group_id: attrs["group_id"],
+        user_id: user.id
+      })
+    end)
+    |> Repo.transact()
   end
 
   @doc """

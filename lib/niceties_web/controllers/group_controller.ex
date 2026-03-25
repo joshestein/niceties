@@ -10,28 +10,29 @@ defmodule NicetiesWeb.GroupController do
   end
 
   def group(conn, %{"id" => id}) do
-    unless Groups.member_of_group?(conn.assigns.current_scope.user.id, id) do
+    if Groups.member_of_group?(conn.assigns.current_scope.user.id, id) do
+      received = Notes.get_received(conn.assigns.current_scope, id)
+      received_map = Map.new(received, fn nicety -> {nicety.user_from_id, nicety} end)
+      given = Notes.get_given(conn.assigns.current_scope, id)
+      given_map = Map.new(given, fn nicety -> {nicety.user_to_id, nicety} end)
+      members = Groups.get_all_memberships(id)
+
+      users = Enum.map(members, fn member -> member.user end)
+
+      other_users =
+        Enum.filter(users, fn user -> user.id != conn.assigns.current_scope.user.id end)
+
+      render(conn, :group,
+        id: id,
+        received_map: received_map,
+        given_map: given_map,
+        users: other_users
+      )
+    else
       conn
       |> redirect(to: ~p"/groups")
       |> halt()
     end
-
-    received = Notes.get_received(conn.assigns.current_scope, id)
-    received_map = Map.new(received, fn nicety -> {nicety.user_from_id, nicety} end)
-    given = Notes.get_given(conn.assigns.current_scope, id)
-    given_map = Map.new(given, fn nicety -> {nicety.user_to_id, nicety} end)
-    members = Groups.get_all_memberships(id)
-
-    users = Enum.map(members, fn member -> member.user end)
-    other_users =
-      Enum.filter(users, fn user -> user.id != conn.assigns.current_scope.user.id end)
-
-    render(conn, :group,
-      id: id,
-      received_map: received_map,
-      given_map: given_map,
-      users: other_users
-    )
   end
 
   def create_nicety(conn, %{"id" => id} = params) do

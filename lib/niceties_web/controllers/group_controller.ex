@@ -21,14 +21,12 @@ defmodule NicetiesWeb.GroupController do
     end
   end
 
-  def create_nicety(conn, %{"id" => group_id, "user_id" => user_to_id} = params) do
-    nicety_params = %{
-      "body" => params["body"],
-      "anonymous" => params["anonymous"],
+  def create_nicety(conn, %{"id" => group_id, "user_id" => user_to_id, "nicety" => nicety_params}) do
+    nicety_params = Map.merge(nicety_params, %{
       "user_from_id" => conn.assigns.current_scope.user.id,
       "user_to_id" => user_to_id,
       "group_id" => group_id
-    }
+    })
 
     case Notes.upsert_nicety(nicety_params) do
       {:ok, _nicety} ->

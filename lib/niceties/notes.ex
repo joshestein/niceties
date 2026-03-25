@@ -67,6 +67,15 @@ defmodule Niceties.Notes do
     |> Repo.insert()
   end
 
+  def upsert_nicety(attrs) do
+    %Nicety{}
+    |> Nicety.changeset(attrs)
+    |> Repo.insert(
+      on_conflict: {:replace, [:body, :anonymous, :updated_at]},
+      conflict_target: [:user_from_id, :user_to_id, :group_id]
+    )
+  end
+
   @doc """
   Updates a nicety.
 

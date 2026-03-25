@@ -44,7 +44,7 @@ defmodule NicetiesWeb.GroupController do
       "group_id" => group_id
     }
 
-    case Notes.create_nicety(nicety_params) do
+    case Notes.upsert_nicety(nicety_params) do
       {:ok, _nicety} ->
         redirect(conn, to: ~p"/groups/#{group_id}")
 

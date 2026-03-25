@@ -30,6 +30,18 @@ defmodule NicetiesWeb.AdminHTML do
 
       <h1>Group: {@group.name}</h1>
 
+      <.form for={@form} action={~p"/admin/groups/#{@group.id}/members"}>
+        <.input label="Name" field={@form[:name]} />
+        <.input label="Email" field={@form[:email]} />
+        <.input
+          label="Role"
+          type="select"
+          options={[Participant: "participant", Staff: "staff"]}
+          field={@form[:role]}
+        />
+        <.button variant="primary">Invite user</.button>
+      </.form>
+
       <.table id="members" rows={@members}>
         <:col :let={member} label="Name">{member.user.name}</:col>
         <:col :let={member} label="Email">{member.user.email}</:col>

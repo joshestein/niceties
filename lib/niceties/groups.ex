@@ -187,8 +187,8 @@ defmodule Niceties.Groups do
     |> Multi.insert(:user, User.changeset(%User{}, attrs))
     |> Multi.insert(:membership, fn %{user: user} ->
       Membership.changeset(%Membership{}, %{
-        role: attrs["role"],
-        group_id: attrs["group_id"],
+        role: attrs[:role],
+        group_id: attrs[:group_id],
         user_id: user.id
       })
     end)

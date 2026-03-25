@@ -12,6 +12,7 @@ defmodule NicetiesWeb.AdminController do
 
   def create_group(conn, %{"group" => %{"name" => name, "releases_at" => releases_at}}) do
     group_params = %{"name" => name, "releases_at" => releases_at}
+
     case Groups.create_group(group_params) do
       {:ok, group} ->
         conn
@@ -20,7 +21,10 @@ defmodule NicetiesWeb.AdminController do
 
       {:error, changeset} ->
         groups = Groups.list_groups()
-        conn |> put_flash(:error, "Failed to create group") |> render(:groups, groups: groups, form: to_form(changeset))
+
+        conn
+        |> put_flash(:error, "Failed to create group")
+        |> render(:groups, groups: groups, form: to_form(changeset))
     end
   end
 

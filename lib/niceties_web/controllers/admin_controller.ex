@@ -48,19 +48,22 @@ defmodule NicetiesWeb.AdminController do
         "id" => id,
         "membership" => %{"name" => name, "email" => email, "role" => role}
       }) do
-
     case Groups.create_member(%{name: name, email: email, role: role, group_id: id}) do
-      {:ok, _membership} ->
-        # TODO: trigger registration flow
+      {:ok, %{user: user, membership: _membership}} ->
+        Accounts.deliver_login_instructions(
+          user,
+          &url(~p"/users/log-in/#{&1}")
+        )
+
         conn |> redirect(to: ~p"/admin/groups/#{id}")
 
       {:error, _step, changeset, _changes} ->
         group = Groups.get_group!(id)
         members = Groups.get_all_memberships(id)
+
         conn
         |> put_flash(:error, "Failed to create member")
         |> render(:group, id: id, group: group, members: members, form: to_form(changeset))
     end
-
   end
 end

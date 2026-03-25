@@ -2,8 +2,10 @@ defmodule NicetiesWeb.AdminController do
   use NicetiesWeb, :controller
   import Phoenix.Component, only: [to_form: 1]
 
+  alias Niceties.Accounts
   alias Niceties.Groups
   alias Niceties.Groups.Group
+  alias Niceties.Groups.Membership
 
   def groups(conn, _params) do
     groups = Groups.list_groups()
@@ -31,14 +33,34 @@ defmodule NicetiesWeb.AdminController do
   def group(conn, %{"id" => id}) do
     group = Groups.get_group!(id)
     members = Groups.get_all_memberships(id)
-    render(conn, members: members, group: group)
+
+    render(conn,
+      members: members,
+      group: group,
+      form: to_form(Groups.change_membership(%Membership{}))
+    )
   end
 
-  def release(conn, _params) do
-
+  def release(_conn, _params) do
   end
 
-  def add_member(conn, _params) do
+  def create_member(conn, %{
+        "id" => id,
+        "membership" => %{"name" => name, "email" => email, "role" => role}
+      }) do
+
+    case Groups.create_member(%{name: name, email: email, role: role, group_id: id}) do
+      {:ok, _membership} ->
+        # TODO: trigger registration flow
+        conn |> redirect(to: ~p"/admin/groups/#{id}")
+
+      {:error, _step, changeset, _changes} ->
+        group = Groups.get_group!(id)
+        members = Groups.get_all_memberships(id)
+        conn
+        |> put_flash(:error, "Failed to create member")
+        |> render(:group, id: id, group: group, members: members, form: to_form(changeset))
+    end
 
   end
 end

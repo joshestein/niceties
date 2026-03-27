@@ -13,14 +13,22 @@ defmodule NicetiesWeb.AdminHTML do
       <hr />
 
       <ul>
-        <li :for={group <- @groups} id={"group-#{group.id}"}>
-          <.link href={~p"/admin/groups/#{group.id}"} class="hover:underline">
-            {group.name} - {group.id}
+        <li
+          :for={group <- @groups}
+          id={"group-#{group.id}"}
+          class="flex items-center justify-between p-4 border rounded-lg"
+        >
+          <.link href={~p"/admin/groups/#{group.id}"} class="font-medium hover:underline">
+            {group.name}
           </.link>
-          <.form for={%{}} action={~p"/admin/groups/#{group.id}/release"}>
-            <.input hidden name="return_to" value={~p"/admin/groups"} />
-            <.button>Release niceties</.button>
-          </.form>
+          <div class="flex items-center gap-4">
+            <.release_status group={group} />
+            <.release_form
+              :if={not released?(group)}
+              action={~p"/admin/groups/#{group.id}/release"}
+              return_to={~p"/admin/groups"}
+            />
+          </div>
         </li>
       </ul>
     </Layouts.app>
@@ -62,4 +70,40 @@ defmodule NicetiesWeb.AdminHTML do
     </Layouts.app>
     """
   end
+
+  defp release_form(assigns) do
+    ~H"""
+    <.form for={%{}} action={@action}>
+      <input type="hidden" name="return_to" value={@return_to} />
+      <.button>Release now</.button>
+    </.form>
+    """
+  end
+
+  defp release_status(assigns) do
+    ~H"""
+    <%= cond do %>
+      <% released?(@group) -> %>
+        <span class="text-sm text-green-600">
+          Released {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
+        </span>
+      <% scheduled?(@group) -> %>
+        <span class="text-sm text-yellow-600">
+          Scheduled for {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
+        </span>
+      <% true -> %>
+        <span class="text-sm text-gray-400">Not yet released</span>
+    <% end %>
+    """
+  end
+
+  defp released?(%{releases_at: nil}), do: false
+
+  defp released?(%{releases_at: releases_at}),
+    do: DateTime.before?(releases_at, DateTime.utc_now())
+
+  defp scheduled?(%{releases_at: nil}), do: false
+
+  defp scheduled?(%{releases_at: releases_at}),
+    do: DateTime.after?(releases_at, DateTime.utc_now())
 end

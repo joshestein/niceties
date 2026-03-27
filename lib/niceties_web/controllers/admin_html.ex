@@ -17,6 +17,10 @@ defmodule NicetiesWeb.AdminHTML do
           <.link href={~p"/admin/groups/#{group.id}"} class="hover:underline">
             {group.name} - {group.id}
           </.link>
+          <.form for={%{}} action={~p"/admin/groups/#{group.id}/release"}>
+            <.input hidden name="return_to" value={~p"/admin/groups"} />
+            <.button>Release now</.button>
+          </.form>
         </li>
       </ul>
     </Layouts.app>
@@ -29,6 +33,11 @@ defmodule NicetiesWeb.AdminHTML do
       <.link href={~p"/admin/groups"} class="hover:underline">← Back to groups</.link>
 
       <h1>Group: {@group.name}</h1>
+
+      <.form for={%{}} action={~p"/admin/groups/#{@group.id}/release"}>
+        <.input hidden name="return_to" value={~p"/admin/groups/#{@group.id}"} />
+        <.button>Release now</.button>
+      </.form>
 
       <.form for={@form} action={~p"/admin/groups/#{@group.id}/members"}>
         <.input label="Name" field={@form[:name]} />

@@ -19,7 +19,7 @@ defmodule NicetiesWeb.AdminHTML do
           </.link>
           <.form for={%{}} action={~p"/admin/groups/#{group.id}/release"}>
             <.input hidden name="return_to" value={~p"/admin/groups"} />
-            <.button>Release now</.button>
+            <.button>Release niceties</.button>
           </.form>
         </li>
       </ul>
@@ -36,7 +36,7 @@ defmodule NicetiesWeb.AdminHTML do
 
       <.form for={%{}} action={~p"/admin/groups/#{@group.id}/release"}>
         <.input hidden name="return_to" value={~p"/admin/groups/#{@group.id}"} />
-        <.button>Release now</.button>
+        <.button>Release niceties</.button>
       </.form>
 
       <.form for={@form} action={~p"/admin/groups/#{@group.id}/members"}>

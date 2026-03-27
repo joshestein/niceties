@@ -184,8 +184,13 @@ defmodule Niceties.Groups do
 
   def create_member(attrs) do
     Multi.new()
-    |> Multi.insert(:user, User.changeset(%User{}, attrs))
-    |> Multi.insert(:membership, fn %{user: user} ->
+    |> Multi.run(:resolved_user, fn repo, _changes ->
+      case repo.get_by(User, email: attrs[:email]) do
+        nil -> repo.insert(User.changeset(%User{}, attrs))
+        user -> {:ok, user}
+      end
+    end)
+    |> Multi.insert(:membership, fn %{resolved_user: user} ->
       Membership.changeset(%Membership{}, %{
         role: attrs[:role],
         group_id: attrs[:group_id],

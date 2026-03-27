@@ -49,7 +49,7 @@ defmodule NicetiesWeb.AdminController do
         "membership" => %{"name" => name, "email" => email, "role" => role}
       }) do
     case Groups.create_member(%{name: name, email: email, role: role, group_id: id}) do
-      {:ok, %{user: user, membership: _membership}} ->
+      {:ok, %{resolved_user: user, membership: _membership}} ->
         Accounts.deliver_login_instructions(
           user,
           &url(~p"/users/log-in/#{&1}")

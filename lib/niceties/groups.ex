@@ -5,6 +5,7 @@ defmodule Niceties.Groups do
 
   import Ecto.Query, warn: false
   alias Ecto.Multi
+  alias Niceties.Accounts
   alias Niceties.Accounts.Scope
   alias Niceties.Accounts.User
   alias Niceties.Groups.Group
@@ -184,9 +185,9 @@ defmodule Niceties.Groups do
 
   def create_member(attrs) do
     Multi.new()
-    |> Multi.run(:resolved_user, fn repo, _changes ->
-      case repo.get_by(User, email: attrs[:email]) do
-        nil -> repo.insert(User.changeset(%User{}, attrs))
+    |> Multi.run(:resolved_user, fn _repo, _changes ->
+      case Accounts.get_user_by_email(attrs[:email]) do
+        nil -> Accounts.create_user(attrs)
         user -> {:ok, user}
       end
     end)

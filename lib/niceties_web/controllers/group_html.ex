@@ -49,6 +49,11 @@ defmodule NicetiesWeb.GroupHTML do
       <%= if is_list(@received) do %>
         <ul>
           <li :for={nicety <- @received} id="received-#{nicety.id}">
+            <%= if nicety.user_from do %>
+              <span class="font-semibold">{nicety.user_from.name}</span>
+            <% else %>
+              <span class="font-semibold">Anonymous</span>
+            <% end %>
             {nicety.body}
           </li>
         </ul>

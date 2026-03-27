@@ -53,7 +53,7 @@ defmodule NicetiesWeb.GroupController do
         is_nil(group.releases_at) ->
           nil
 
-        DateTime.compare(group.releases_at, DateTime.utc_now()) == :lt ->
+        DateTime.after?(group.releases_at, DateTime.utc_now()) ->
           Notes.get_received(conn.assigns.current_scope, id)
 
         true ->

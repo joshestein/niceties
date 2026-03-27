@@ -40,12 +40,17 @@ defmodule NicetiesWeb.AdminHTML do
     <Layouts.app flash={@flash}>
       <.link href={~p"/admin/groups"} class="hover:underline">← Back to groups</.link>
 
-      <h1>Group: {@group.name}</h1>
-
-      <.form for={%{}} action={~p"/admin/groups/#{@group.id}/release"}>
-        <.input hidden name="return_to" value={~p"/admin/groups/#{@group.id}"} />
-        <.button>Release niceties</.button>
-      </.form>
+      <div class="flex flex-col justify-between mt-4 gap-1">
+        <h1 class="text-xl font-semibold">Group: {@group.name}</h1>
+        <div class="flex items-center gap-4">
+          <.release_status group={@group} />
+          <.release_form
+            :if={not released?(@group)}
+            action={~p"/admin/groups/#{@group.id}/release"}
+            return_to={~p"/admin/groups/#{@group.id}"}
+          />
+        </div>
+      </div>
 
       <.form for={@form} action={~p"/admin/groups/#{@group.id}/members"}>
         <.input label="Name" field={@form[:name]} />

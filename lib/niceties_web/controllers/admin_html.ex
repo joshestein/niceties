@@ -46,6 +46,7 @@ defmodule NicetiesWeb.AdminHTML do
         <:col :let={member} label="Name">{member.user.name}</:col>
         <:col :let={member} label="Email">{member.user.email}</:col>
         <:col :let={member} label="Role">{member.role}</:col>
+        <:col :let={member} label="Status">{if is_nil(member.user.confirmed_at), do: "Invited", else: "Joined"}</:col>
       </.table>
     </Layouts.app>
     """

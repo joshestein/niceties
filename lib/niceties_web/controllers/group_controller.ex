@@ -54,7 +54,7 @@ defmodule NicetiesWeb.GroupController do
       true -> group.releases_at
     end
 
-    members = Groups.get_all_memberships(id)
+    members = Groups.get_all_memberships(group)
 
     users = Enum.map(members, fn member -> member.user end)
 

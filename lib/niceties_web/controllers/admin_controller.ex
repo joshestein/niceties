@@ -32,7 +32,7 @@ defmodule NicetiesWeb.AdminController do
 
   def group(conn, %{"id" => id}) do
     group = Groups.get_group!(id)
-    members = Groups.get_all_memberships(id)
+    members = Groups.get_all_memberships(group)
 
     render(conn,
       members: members,
@@ -59,7 +59,7 @@ defmodule NicetiesWeb.AdminController do
 
       {:error, _step, changeset, _changes} ->
         group = Groups.get_group!(id)
-        members = Groups.get_all_memberships(id)
+        members = Groups.get_all_memberships(group)
 
         conn
         |> put_flash(:error, "Failed to create member")

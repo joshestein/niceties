@@ -12,6 +12,15 @@ defmodule Niceties.Notes do
     Ecto.assoc(scope.user, :niceties_to)
     |> where([nicety], nicety.group_id == ^group_id)
     |> Repo.all()
+    |> Repo.preload(:user_from)
+    |> Enum.map(fn nicety ->
+      if nicety.anonymous do
+        # Remove the provider of the nicety for anonymity
+        %{nicety | user_from: nil}
+      else
+        nicety
+      end
+    end)
   end
 
   def get_given(%Scope{} = scope, group_id) do

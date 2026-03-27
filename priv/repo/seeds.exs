@@ -48,8 +48,23 @@ Niceties.Notes.create_nicety(%{
 })
 
 Niceties.Notes.create_nicety(%{
+  body: "no you are",
+  group_id: group.id,
+  user_from_id: fellow.id,
+  user_to_id: user.id
+})
+
+Niceties.Notes.create_nicety(%{
   body: "awesome sauce",
   group_id: group.id,
   user_from_id: user.id,
   user_to_id: fellow_2.id
+})
+
+Niceties.Notes.create_nicety(%{
+  body: "the sauce is indeed awesome",
+  group_id: group.id,
+  user_from_id: fellow_2.id,
+  user_to_id: user.id,
+  anonymous: true
 })

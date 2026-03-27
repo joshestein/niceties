@@ -27,7 +27,7 @@ defmodule NicetiesWeb.GroupHTML do
     <Layouts.app flash={@flash}>
       <.link href={~p"/groups/"}>← Back to groups</.link>
 
-      <h1 class="text-xl mt-4">Given niceties</h1>
+      <h1 class="mt-4 text-xl">Given niceties</h1>
       <ul>
         <li :for={user <- @users} id={"user-#{user.id}"}>
           {user.name}
@@ -45,7 +45,7 @@ defmodule NicetiesWeb.GroupHTML do
         </li>
       </ul>
 
-      <h1 class="text-xl mt-4">Received niceties</h1>
+      <h1 class="mt-4 text-xl">Received niceties</h1>
       <%= if is_list(@received) do %>
         <ul>
           <li :for={nicety <- @received} id="received-#{nicety.id}">

@@ -16,7 +16,7 @@ defmodule NicetiesWeb.AdminHTML do
         <li
           :for={group <- @groups}
           id={"group-#{group.id}"}
-          class="flex items-center justify-between p-4 border rounded-lg"
+          class="flex items-center justify-between rounded-lg border p-4"
         >
           <.link href={~p"/admin/groups/#{group.id}"} class="font-medium hover:underline">
             {group.name}
@@ -40,7 +40,7 @@ defmodule NicetiesWeb.AdminHTML do
     <Layouts.app flash={@flash}>
       <.link href={~p"/admin/groups"} class="hover:underline">← Back to groups</.link>
 
-      <div class="flex flex-col justify-between mt-4 gap-1">
+      <div class="mt-4 flex flex-col justify-between gap-1">
         <h1 class="text-xl font-semibold">Group: {@group.name}</h1>
         <div class="flex items-center gap-4">
           <.release_status group={@group} />

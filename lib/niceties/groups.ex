@@ -7,7 +7,6 @@ defmodule Niceties.Groups do
   alias Ecto.Multi
   alias Niceties.Accounts
   alias Niceties.Accounts.Scope
-  alias Niceties.Accounts.User
   alias Niceties.Groups.Group
   alias Niceties.Groups.Membership
   alias Niceties.Repo

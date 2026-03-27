@@ -26,6 +26,8 @@ defmodule NicetiesWeb.GroupHTML do
     ~H"""
     <Layouts.app flash={@flash}>
       <.link href={~p"/groups/"}>← Back to groups</.link>
+
+      <h1 class="text-xl mt-4">Given niceties</h1>
       <ul>
         <li :for={user <- @users} id={"user-#{user.id}"}>
           {user.name}
@@ -42,6 +44,20 @@ defmodule NicetiesWeb.GroupHTML do
           </.form>
         </li>
       </ul>
+
+      <h1 class="text-xl mt-4">Received niceties</h1>
+      <%= if is_list(@received) do %>
+        <ul>
+          <li :for={nicety <- @received} id="received-#{nicety.id}">
+            {nicety.body}
+          </li>
+        </ul>
+      <% else %>
+        {if is_nil(@received),
+          do: "Niceties will be released soon",
+          else:
+            "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
+      <% end %>
     </Layouts.app>
     """
   end

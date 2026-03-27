@@ -48,11 +48,17 @@ defmodule NicetiesWeb.GroupController do
     given_map = Map.new(given, fn nicety -> {nicety.user_to_id, nicety} end)
     group = Groups.get_group!(id)
 
-    received = cond do
-      is_nil(group.releases_at) -> nil
-      DateTime.compare(group.releases_at, DateTime.utc_now()) == :lt -> Notes.get_received(conn.assigns.current_scope, id)
-      true -> group.releases_at
-    end
+    received =
+      cond do
+        is_nil(group.releases_at) ->
+          nil
+
+        DateTime.compare(group.releases_at, DateTime.utc_now()) == :lt ->
+          Notes.get_received(conn.assigns.current_scope, id)
+
+        true ->
+          group.releases_at
+      end
 
     members = Groups.get_all_memberships(group)
 

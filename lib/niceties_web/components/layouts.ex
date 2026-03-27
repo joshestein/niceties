@@ -45,12 +45,6 @@ defmodule NicetiesWeb.Layouts do
       <div class="flex-none">
         <ul class="flex-column flex items-center space-x-4 px-1">
           <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
             <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
               Get Started <span aria-hidden="true">&rarr;</span>
             </a>

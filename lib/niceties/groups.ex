@@ -126,8 +126,6 @@ defmodule Niceties.Groups do
     Group.changeset(group, attrs)
   end
 
-  alias Niceties.Groups.Membership
-
   @doc """
   Returns the list of memberships.
 

@@ -41,7 +41,18 @@ defmodule NicetiesWeb.AdminController do
     )
   end
 
-  def release(_conn, _params) do
+  def release(conn, %{"id" => id, "return_to" => return_to}) do
+    group = Groups.get_group!(id)
+
+    case Groups.update_group(group, %{releases_at: DateTime.utc_now()}) do
+      {:ok, _group} ->
+        conn |> put_flash(:info, "Niceties released!") |> redirect(to: safe_return_to(return_to))
+
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, "Failed to release niceties")
+        |> redirect(to: safe_return_to(return_to))
+    end
   end
 
   def create_member(conn, %{
@@ -66,4 +77,12 @@ defmodule NicetiesWeb.AdminController do
         |> render(:group, id: id, group: group, members: members, form: to_form(changeset))
     end
   end
+
+  defp safe_return_to(path)
+       when is_binary(path) and
+              binary_part(path, 0, 1) ==
+                "/",
+       do: path
+
+  defp safe_return_to(_), do: ~p"/admin/groups"
 end

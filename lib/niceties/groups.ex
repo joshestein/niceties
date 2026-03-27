@@ -43,6 +43,10 @@ defmodule Niceties.Groups do
   @doc """
   Returns all memberships of a group.
   """
+  def get_all_memberships(%Group{} = group) do
+    Repo.all(Ecto.assoc(group, :memberships)) |> Repo.preload(:user)
+  end
+
   def get_all_memberships(id) do
     group = get_group!(id)
     Repo.all(Ecto.assoc(group, :memberships)) |> Repo.preload(:user)

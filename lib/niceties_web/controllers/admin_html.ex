@@ -89,15 +89,15 @@ defmodule NicetiesWeb.AdminHTML do
     ~H"""
     <%= cond do %>
       <% released?(@group) -> %>
-        <span class="text-sm text-green-600">
+        <span class="text-success text-sm">
           Released {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
         </span>
       <% scheduled?(@group) -> %>
-        <span class="text-sm text-yellow-600">
+        <span class="text-warning text-sm">
           Scheduled for {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
         </span>
       <% true -> %>
-        <span class="text-sm text-gray-400">Not yet released</span>
+        <span class="text-base-content/50 text-sm">Not yet released</span>
     <% end %>
     """
   end

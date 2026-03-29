@@ -4,6 +4,7 @@ defmodule Niceties.Groups.Group do
 
   schema "groups" do
     field :name, :string
+    field :released, :boolean
     field :releases_at, :utc_datetime
     has_many :memberships, Niceties.Groups.Membership
     has_many :niceties, Niceties.Notes.Nicety

@@ -31,6 +31,7 @@ defmodule NicetiesWeb.GroupHTML do
       <ul>
         <li :for={user <- @users} id={"user-#{user.id}"}>
           {user.name}
+          <span :if={user.id == @current_user_id}> ⋅ That's you!</span>
           <.form for={@forms[user.id]} action={~p"/groups/#{@id}/niceties/#{user.id}"}>
             <.input field={@forms[user.id][:body]} label="Nicety" />
             <div class="flex flex-row justify-between">

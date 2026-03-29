@@ -64,20 +64,18 @@ defmodule NicetiesWeb.GroupController do
 
     users = Enum.map(members, fn member -> member.user end)
 
-    other_users =
-      Enum.filter(users, fn user -> user.id != conn.assigns.current_scope.user.id end)
-
     forms =
-      Map.new(other_users, fn user ->
+      Map.new(users, fn user ->
         nicety = Map.get(given_map, user.id, %Nicety{})
         {user.id, to_form(Notes.change_nicety(nicety))}
       end)
 
     %{
       id: id,
-      users: other_users,
+      users: users,
       forms: forms,
-      received: received
+      received: received,
+      current_user_id: conn.assigns.current_scope.user.id
     }
   end
 end

@@ -26,6 +26,9 @@ config :niceties, NicetiesWeb.Endpoint,
 # In test we don't send emails
 config :niceties, Niceties.Mailer, adapter: Swoosh.Adapters.Test
 
+# Prevent Oban from running jobs and plugins
+config :niceties, Oban, testing: :manual
+
 # Disable swoosh api client as it is only required for production adapters
 config :swoosh, :api_client, false
 

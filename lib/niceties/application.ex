@@ -10,6 +10,7 @@ defmodule Niceties.Application do
     children = [
       NicetiesWeb.Telemetry,
       Niceties.Repo,
+      {Oban, Application.fetch_env!(:niceties, Oban)},
       {DNSCluster, query: Application.get_env(:niceties, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Niceties.PubSub},
       # Start a worker by calling: Niceties.Worker.start_link(arg)

@@ -48,13 +48,14 @@ defmodule Niceties.NotesTest do
     test "upsert_nicety/2 with valid data updates the nicety" do
       nicety = nicety_fixture()
 
-      assert {:ok, %Nicety{} = updated} = Notes.upsert_nicety(%{
-        body: "some updated body",
-        anonymous: false,
-        group_id: nicety.group_id,
-        user_from_id: nicety.user_from_id,
-        user_to_id: nicety.user_to_id,
-      })
+      assert {:ok, %Nicety{} = updated} =
+               Notes.upsert_nicety(%{
+                 body: "some updated body",
+                 anonymous: false,
+                 group_id: nicety.group_id,
+                 user_from_id: nicety.user_from_id,
+                 user_to_id: nicety.user_to_id
+               })
 
       assert updated.id == nicety.id
       assert updated.body == "some updated body"

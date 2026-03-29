@@ -45,19 +45,20 @@ defmodule Niceties.NotesTest do
       assert {:error, %Ecto.Changeset{}} = Notes.upsert_nicety(@invalid_attrs)
     end
 
-    test "update_nicety/2 with valid data updates the nicety" do
+    test "upsert_nicety/2 with valid data updates the nicety" do
       nicety = nicety_fixture()
-      update_attrs = %{body: "some updated body", anonymous: false}
 
-      assert {:ok, %Nicety{} = nicety} = Notes.update_nicety(nicety, update_attrs)
-      assert nicety.body == "some updated body"
-      assert nicety.anonymous == false
-    end
+      assert {:ok, %Nicety{} = updated} = Notes.upsert_nicety(%{
+        body: "some updated body",
+        anonymous: false,
+        group_id: nicety.group_id,
+        user_from_id: nicety.user_from_id,
+        user_to_id: nicety.user_to_id,
+      })
 
-    test "update_nicety/2 with invalid data returns error changeset" do
-      nicety = nicety_fixture()
-      assert {:error, %Ecto.Changeset{}} = Notes.update_nicety(nicety, @invalid_attrs)
-      assert nicety == Notes.get_nicety!(nicety.id)
+      assert updated.id == nicety.id
+      assert updated.body == "some updated body"
+      assert updated.anonymous == false
     end
 
     test "delete_nicety/1 deletes the nicety" do

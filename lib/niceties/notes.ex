@@ -68,24 +68,6 @@ defmodule Niceties.Notes do
   end
 
   @doc """
-  Updates a nicety.
-
-  ## Examples
-
-      iex> update_nicety(nicety, %{field: new_value})
-      {:ok, %Nicety{}}
-
-      iex> update_nicety(nicety, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_nicety(%Nicety{} = nicety, attrs) do
-    nicety
-    |> Nicety.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a nicety.
 
   ## Examples

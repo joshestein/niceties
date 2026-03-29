@@ -61,6 +61,23 @@ defmodule Niceties.Groups do
     Enum.map(memberships, fn membership -> membership.group end)
   end
 
+  def list_admin_groups_for_user(%Scope{} = scope) do
+    memberships =
+      Ecto.assoc(scope.user, :memberships)
+      |> where([m], m.role == "admin")
+      |> Repo.all()
+      |> Repo.preload(:group)
+
+    Enum.map(memberships, fn membership -> membership.group end)
+  end
+
+  def is_admin_of_group?(user_id, group_id) do
+    Repo.exists?(
+      from m in Membership,
+        where: m.user_id == ^user_id and m.group_id == ^group_id and m.role == "admin"
+    )
+  end
+
   def member_of_group?(user_id, group_id) do
     Repo.exists?(from m in Membership, where: m.user_id == ^user_id and m.group_id == ^group_id)
   end

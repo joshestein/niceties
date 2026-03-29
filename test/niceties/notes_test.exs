@@ -20,7 +20,7 @@ defmodule Niceties.NotesTest do
       assert Notes.get_nicety!(nicety.id) == nicety
     end
 
-    test "create_nicety/1 with valid data creates a nicety" do
+    test "upsert_nicety/1 with valid data creates a nicety" do
       group = Niceties.GroupsFixtures.group_fixture()
       user_from = Niceties.AccountsFixtures.user_fixture()
       user_to = Niceties.AccountsFixtures.user_fixture()
@@ -33,7 +33,7 @@ defmodule Niceties.NotesTest do
         user_to_id: user_to.id
       }
 
-      assert {:ok, %Nicety{} = nicety} = Notes.create_nicety(valid_attrs)
+      assert {:ok, %Nicety{} = nicety} = Notes.upsert_nicety(valid_attrs)
       assert nicety.body == "some body"
       assert nicety.anonymous == true
       assert nicety.group_id == valid_attrs.group_id
@@ -41,8 +41,8 @@ defmodule Niceties.NotesTest do
       assert nicety.user_to_id == valid_attrs.user_to_id
     end
 
-    test "create_nicety/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Notes.create_nicety(@invalid_attrs)
+    test "upsert_nicety/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Notes.upsert_nicety(@invalid_attrs)
     end
 
     test "update_nicety/2 with valid data updates the nicety" do

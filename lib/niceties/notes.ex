@@ -58,24 +58,6 @@ defmodule Niceties.Notes do
   """
   def get_nicety!(id), do: Repo.get!(Nicety, id)
 
-  @doc """
-  Creates a nicety.
-
-  ## Examples
-
-      iex> create_nicety(%{field: value})
-      {:ok, %Nicety{}}
-
-      iex> create_nicety(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_nicety(attrs) do
-    %Nicety{}
-    |> Nicety.changeset(attrs)
-    |> Repo.insert()
-  end
-
   def upsert_nicety(attrs) do
     %Nicety{}
     |> Nicety.changeset(attrs)

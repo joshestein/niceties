@@ -21,7 +21,7 @@ defmodule Niceties.NotesFixtures do
         user_from_id: user_from.id,
         user_to_id: user_to.id
       })
-      |> Niceties.Notes.create_nicety()
+      |> Niceties.Notes.upsert_nicety()
 
     nicety
   end

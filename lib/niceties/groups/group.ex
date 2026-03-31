@@ -15,7 +15,7 @@ defmodule Niceties.Groups.Group do
   @doc false
   def changeset(group, attrs) do
     group
-    |> cast(attrs, [:name, :releases_at])
+    |> cast(attrs, [:name, :releases_at, :released])
     |> validate_required([:name, :releases_at])
   end
 end

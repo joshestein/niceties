@@ -87,14 +87,20 @@ defmodule NicetiesWeb.AdminHTML do
 
   defp release_status(assigns) do
     ~H"""
-    <%= if @group.released do %>
-      <span class="text-success text-sm">
-        Released {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
-      </span>
-    <% else %>
-      <span class="text-warning text-sm">
-        Scheduled for {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
-      </span>
+    <%= cond do %>
+      <% @group.released -> %>
+        <span class="text-success text-sm">
+          Released
+          <%= if @group.releases_at do %>
+            {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
+          <% end %>
+        </span>
+      <% @group.releases_at -> %>
+        <span class="text-warning text-sm">
+          Scheduled for {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
+        </span>
+      <% true -> %>
+        <span class="text-base-content/50 text-sm">Not yet scheduled</span>
     <% end %>
     """
   end

@@ -44,7 +44,7 @@ defmodule NicetiesWeb.AdminController do
   def release(conn, %{"id" => id, "return_to" => return_to}) do
     group = Groups.get_group!(id)
 
-    case Groups.update_group(group, %{releases_at: DateTime.utc_now()}) do
+    case Groups.update_group(group, %{released: true}) do
       {:ok, _group} ->
         conn |> put_flash(:info, "Niceties released!") |> redirect(to: safe_return_to(return_to))
 

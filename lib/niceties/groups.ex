@@ -72,6 +72,13 @@ defmodule Niceties.Groups do
     Enum.map(memberships, fn membership -> membership.group end)
   end
 
+  def list_unreleased_groups() do
+    from(g in Group,
+      where: g.released == false and g.releases_at < ^DateTime.utc_now()
+    )
+    |> Repo.all()
+  end
+
   def list_admin_groups_for_user(%Scope{} = scope) do
     memberships =
       Ecto.assoc(scope.user, :memberships)

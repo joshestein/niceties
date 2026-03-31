@@ -84,4 +84,21 @@ defmodule Niceties.Accounts.UserNotifier do
     ==============================
     """)
   end
+
+  def deliver_release_notification(user, url) do
+    deliver(user.email, "Your group's niceties have been released!", """
+
+    ==============================
+
+    Hi #{user.name},
+
+    We wanted to let you know that your niceties have been released. You can view them at:
+
+    #{url}
+
+    Enjoy 😊
+
+    ==============================
+    """)
+  end
 end

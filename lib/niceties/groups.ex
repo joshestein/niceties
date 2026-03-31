@@ -7,6 +7,7 @@ defmodule Niceties.Groups do
   alias Ecto.Multi
   alias Niceties.Accounts
   alias Niceties.Accounts.Scope
+  alias Niceties.Accounts.User
   alias Niceties.Groups.Group
   alias Niceties.Groups.Membership
   alias Niceties.Repo
@@ -43,13 +44,23 @@ defmodule Niceties.Groups do
   @doc """
   Returns all memberships of a group.
   """
-  def get_all_memberships(%Group{} = group) do
-    Repo.all(Ecto.assoc(group, :memberships)) |> Repo.preload(:user)
+  def get_all_memberships(group_or_id, confirmed_only \\ false)
+
+  def get_all_memberships(%Group{} = group, confirmed_only) do
+    query = Ecto.assoc(group, :memberships)
+
+    query =
+      if confirmed_only do
+        from m in query, join: u in User, on: m.user_id == u.id, where: not is_nil(u.confirmed_at)
+      else
+        query
+      end
+
+    Repo.all(query) |> Repo.preload(:user)
   end
 
-  def get_all_memberships(id) do
-    group = get_group!(id)
-    Repo.all(Ecto.assoc(group, :memberships)) |> Repo.preload(:user)
+  def get_all_memberships(id, confirmed_only) do
+    get_group!(id) |> get_all_memberships(confirmed_only)
   end
 
   def list_groups_for_user(%Scope{} = scope) do

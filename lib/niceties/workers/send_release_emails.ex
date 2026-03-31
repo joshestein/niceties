@@ -6,7 +6,6 @@ defmodule Niceties.Workers.SendReleaseEmails do
 
   @impl true
   def perform(%Oban.Job{args: %{"group_id" => group_id}}) do
-    group_id = String.to_integer(group_id)
     memberships = Groups.get_all_memberships(group_id, true)
 
     Enum.reduce_while(memberships, :ok, fn membership, _acc ->

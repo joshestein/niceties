@@ -24,7 +24,7 @@ defmodule NicetiesWeb.AdminHTML do
           <div class="flex items-center gap-4">
             <.release_status group={group} />
             <.release_form
-              :if={not released?(group)}
+              :if={!group.released}
               action={~p"/admin/groups/#{group.id}/release"}
               return_to={~p"/admin/groups"}
             />
@@ -45,7 +45,7 @@ defmodule NicetiesWeb.AdminHTML do
         <div class="flex items-center gap-4">
           <.release_status group={@group} />
           <.release_form
-            :if={not released?(@group)}
+            :if={!@group.released}
             action={~p"/admin/groups/#{@group.id}/release"}
             return_to={~p"/admin/groups/#{@group.id}"}
           />
@@ -87,28 +87,15 @@ defmodule NicetiesWeb.AdminHTML do
 
   defp release_status(assigns) do
     ~H"""
-    <%= cond do %>
-      <% released?(@group) -> %>
-        <span class="text-success text-sm">
-          Released {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
-        </span>
-      <% scheduled?(@group) -> %>
-        <span class="text-warning text-sm">
-          Scheduled for {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
-        </span>
-      <% true -> %>
-        <span class="text-base-content/50 text-sm">Not yet released</span>
+    <%= if @group.released do %>
+      <span class="text-success text-sm">
+        Released {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
+      </span>
+    <% else %>
+      <span class="text-warning text-sm">
+        Scheduled for {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
+      </span>
     <% end %>
     """
   end
-
-  defp released?(%{releases_at: nil}), do: false
-
-  defp released?(%{releases_at: releases_at}),
-    do: DateTime.before?(releases_at, DateTime.utc_now())
-
-  defp scheduled?(%{releases_at: nil}), do: false
-
-  defp scheduled?(%{releases_at: releases_at}),
-    do: DateTime.after?(releases_at, DateTime.utc_now())
 end

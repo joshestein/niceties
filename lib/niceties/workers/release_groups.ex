@@ -12,8 +12,12 @@ defmodule Niceties.Workers.ReleaseGroups do
           case %{group_id: group.id}
                |> Niceties.Workers.SendReleaseEmails.new()
                |> Oban.insert() do
-            {:ok, _job} -> {:cont, :ok}
-            {:error, reason} -> {:halt, {:error, "Failed to enqueue email job for group #{group.id}: #{inspect(reason)}"}}
+            {:ok, _job} ->
+              {:cont, :ok}
+
+            {:error, reason} ->
+              {:halt,
+               {:error, "Failed to enqueue email job for group #{group.id}: #{inspect(reason)}"}}
           end
 
         {:error, _changeset} ->

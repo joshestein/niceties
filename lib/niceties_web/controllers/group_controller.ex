@@ -49,15 +49,10 @@ defmodule NicetiesWeb.GroupController do
     group = Groups.get_group!(id)
 
     received =
-      cond do
-        is_nil(group.releases_at) ->
-          nil
-
-        DateTime.before?(group.releases_at, DateTime.utc_now()) ->
-          Notes.get_received(conn.assigns.current_scope, id)
-
-        true ->
-          group.releases_at
+      if group.released do
+        Notes.get_received(conn.assigns.current_scope, id)
+      else
+        group.releases_at
       end
 
     members = Groups.get_all_memberships(group)

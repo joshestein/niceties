@@ -12,8 +12,13 @@ defmodule NicetiesWeb.GroupControllerTest do
     user = user_fixture()
     other_user = user_fixture()
     group = group_fixture()
-    {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
-    {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group.id, user_id: other_user.id})
+
+    {:ok, _} =
+      Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
+
+    {:ok, _} =
+      Groups.create_membership(%{role: "participant", group_id: group.id, user_id: other_user.id})
+
     conn = log_in_user(conn, user)
     %{conn: conn, user: user, other_user: other_user, group: group}
   end
@@ -47,8 +52,12 @@ defmodule NicetiesWeb.GroupControllerTest do
       user = user_fixture()
       group_a = group_fixture(%{name: "Group A"})
       group_b = group_fixture(%{name: "Group B"})
-      {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group_a.id, user_id: user.id})
-      {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group_b.id, user_id: user.id})
+
+      {:ok, _} =
+        Groups.create_membership(%{role: "participant", group_id: group_a.id, user_id: user.id})
+
+      {:ok, _} =
+        Groups.create_membership(%{role: "participant", group_id: group_b.id, user_id: user.id})
 
       conn = conn |> log_in_user(user) |> get(~p"/groups")
       html = html_response(conn, 200)
@@ -80,7 +89,9 @@ defmodule NicetiesWeb.GroupControllerTest do
     test "shows locked message when group is not released and has no release date", %{conn: conn} do
       user = user_fixture()
       group = group_fixture(%{releases_at: nil})
-      {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
+
+      {:ok, _} =
+        Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
 
       conn = conn |> log_in_user(user) |> get(~p"/groups/#{group.id}")
       assert html_response(conn, 200) =~ "released soon"
@@ -90,7 +101,9 @@ defmodule NicetiesWeb.GroupControllerTest do
       user = user_fixture()
       future = DateTime.add(DateTime.utc_now(), 30, :day)
       group = group_fixture(%{releases_at: future})
-      {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
+
+      {:ok, _} =
+        Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
 
       conn = conn |> log_in_user(user) |> get(~p"/groups/#{group.id}")
       html = html_response(conn, 200)
@@ -120,8 +133,17 @@ defmodule NicetiesWeb.GroupControllerTest do
       user = user_fixture(%{name: "Recipient Person"})
       other_user = user_fixture(%{name: "Secret Sender"})
       group = group_fixture()
-      {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
-      {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group.id, user_id: other_user.id})
+
+      {:ok, _} =
+        Groups.create_membership(%{role: "participant", group_id: group.id, user_id: user.id})
+
+      {:ok, _} =
+        Groups.create_membership(%{
+          role: "participant",
+          group_id: group.id,
+          user_id: other_user.id
+        })
+
       conn = log_in_user(conn, user)
 
       {:ok, _} =
@@ -158,7 +180,13 @@ defmodule NicetiesWeb.GroupControllerTest do
         })
 
       assert redirected_to(conn) == ~p"/groups/#{group.id}"
-      assert [nicety] = Notes.get_given(Niceties.Accounts.Scope.for_user(conn.assigns.current_scope.user), group.id)
+
+      assert [nicety] =
+               Notes.get_given(
+                 Niceties.Accounts.Scope.for_user(conn.assigns.current_scope.user),
+                 group.id
+               )
+
       assert nicety.body == "great collaborator"
     end
 

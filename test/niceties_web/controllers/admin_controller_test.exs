@@ -73,7 +73,9 @@ defmodule NicetiesWeb.AdminControllerTest do
     test "shows group detail with member list", %{conn: conn} do
       %{conn: conn, group: group} = admin_with_group(conn)
       member = user_fixture()
-      {:ok, _} = Groups.create_membership(%{role: "participant", group_id: group.id, user_id: member.id})
+
+      {:ok, _} =
+        Groups.create_membership(%{role: "participant", group_id: group.id, user_id: member.id})
 
       conn = get(conn, ~p"/admin/groups/#{group.id}")
       html = html_response(conn, 200)
@@ -88,7 +90,9 @@ defmodule NicetiesWeb.AdminControllerTest do
       user = user_fixture()
       other_group = group_fixture()
       # user is admin of other_group but not this one
-      {:ok, _} = Groups.create_membership(%{role: "admin", group_id: other_group.id, user_id: user.id})
+      {:ok, _} =
+        Groups.create_membership(%{role: "admin", group_id: other_group.id, user_id: user.id})
+
       target_group = group_fixture()
 
       conn = conn |> log_in_user(user) |> get(~p"/admin/groups/#{target_group.id}")

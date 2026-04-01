@@ -36,21 +36,26 @@ defmodule NicetiesWeb.Layouts do
   def app(assigns) do
     ~H"""
     <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex w-fit flex-1 items-center gap-2">
-          <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
-        </a>
-      </div>
-      <div class="flex-none">
-        <ul class="flex-column flex items-center space-x-4 px-1">
+      <ul class="menu menu-horizontal relative z-10 flex w-full items-center justify-end gap-4 px-4 sm:px-6 lg:px-8">
+        <%= if @current_scope do %>
           <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
+            {@current_scope.user.email}
           </li>
-        </ul>
-      </div>
+          <li>
+            <.link href={~p"/groups"}>Groups</.link>
+          </li>
+          <li>
+            <.link href={~p"/users/settings"}>Settings</.link>
+          </li>
+          <li>
+            <.link href={~p"/users/log-out"} method="delete">Log out</.link>
+          </li>
+        <% else %>
+          <li>
+            <.link href={~p"/users/log-in"}>Log in</.link>
+          </li>
+        <% end %>
+      </ul>
     </header>
 
     <main class="px-4 py-20 sm:px-6 lg:px-8">

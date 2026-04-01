@@ -3,7 +3,7 @@ defmodule NicetiesWeb.AdminHTML do
 
   def groups(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.form for={@form} action={~p"/admin/groups"}>
         <.input label="Group name" field={@form[:name]} />
         <.input type="datetime-local" label="Releases at" field={@form[:releases_at]} />
@@ -37,7 +37,7 @@ defmodule NicetiesWeb.AdminHTML do
 
   def group(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.link href={~p"/admin/groups"} class="hover:underline">← Back to groups</.link>
 
       <div class="mt-4 flex flex-col justify-between gap-1">

@@ -10,7 +10,7 @@ defmodule NicetiesWeb.GroupHTML do
 
   def index(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
       <ul>
         <li :for={group <- @groups} id={"group-#{group.id}"}>
           <.link href={~p"/groups/#{group.id}"} class="hover:underline">
@@ -24,7 +24,7 @@ defmodule NicetiesWeb.GroupHTML do
 
   def group(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.link href={~p"/groups/"}>← Back to groups</.link>
 
       <h1 class="mt-4 text-xl">Given niceties</h1>

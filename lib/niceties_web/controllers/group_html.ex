@@ -27,8 +27,13 @@ defmodule NicetiesWeb.GroupHTML do
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.link href={~p"/groups/"}>← Back to groups</.link>
 
-      <h1 class="mt-4 text-xl">Given niceties</h1>
-      <ul>
+      <div class="mt-4">
+        <a href="#given" class="text-xl">Given niceties</a>
+        <span class="text-xl"> | </span>
+        <a href="#received" class="text-xl">Received niceties</a>
+      </div>
+
+      <ul id="given">
         <li :for={user <- @users} id={"user-#{user.id}"}>
           {user.name}
           <span :if={user.id == @current_user_id}> ⋅ That's you!</span>
@@ -46,24 +51,25 @@ defmodule NicetiesWeb.GroupHTML do
         </li>
       </ul>
 
-      <h1 class="mt-4 text-xl">Received niceties</h1>
-      <%= if is_list(@received) do %>
-        <ul>
-          <li :for={nicety <- @received} id={"received-#{nicety.id}"}>
-            <%= if nicety.user_from do %>
-              <span class="font-semibold">{nicety.user_from.name}</span>
-            <% else %>
-              <span class="font-semibold">Anonymous</span>
-            <% end %>
-            {nicety.body}
-          </li>
-        </ul>
-      <% else %>
-        {if is_nil(@received),
-          do: "Niceties will be released soon",
-          else:
-            "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
-      <% end %>
+      <div id="received">
+        <%= if is_list(@received) do %>
+          <ul>
+            <li :for={nicety <- @received} id={"received-#{nicety.id}"}>
+              <%= if nicety.user_from do %>
+                <span class="font-semibold">{nicety.user_from.name}</span>
+              <% else %>
+                <span class="font-semibold">Anonymous</span>
+              <% end %>
+              {nicety.body}
+            </li>
+          </ul>
+        <% else %>
+          {if is_nil(@received),
+            do: "Niceties will be released soon",
+            else:
+              "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
+        <% end %>
+      </div>
     </Layouts.app>
     """
   end

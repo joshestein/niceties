@@ -65,3 +65,9 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
+
+#given { display: block }
+#received { display: block }
+
+body:has(#given:target) #received { display: none }
+body:has(#received:target) #given { display: none }

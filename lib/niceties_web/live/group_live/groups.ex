@@ -20,8 +20,13 @@ defmodule NicetiesWeb.GroupLive.Groups do
         <li :for={user <- @users} id={"user-#{user.id}"} class="mt-4">
           {user.name}
           <span :if={user.id == @current_user_id}> ⋅ That's you!</span>
-          <.form for={@forms[user.id]} id={"form-user-#{user.id}"} phx-change="save_nicety" phx-value-user_to_id={user.id}>
-            <.input field={@forms[user.id][:body]} label="Nicety" phx-debounce="blur"/>
+          <.form
+            for={@forms[user.id]}
+            id={"form-user-#{user.id}"}
+            phx-change="save_nicety"
+            phx-value-user_to_id={user.id}
+          >
+            <.input field={@forms[user.id][:body]} label="Nicety" phx-debounce="blur" />
             <div class="flex flex-row justify-between">
               <.input
                 type="checkbox"
@@ -59,6 +64,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     user = socket.assigns.current_scope.user
+
     if Groups.member_of_group?(user.id, id) do
       socket = assign(socket, group_assigns(socket.assigns.current_scope, id))
       {:ok, socket}
@@ -73,7 +79,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
       Map.merge(params, %{
         "user_from_id" => socket.assigns.current_scope.user.id,
         "user_to_id" => user_to_id,
-        "group_id" => socket.assigns.id,
+        "group_id" => socket.assigns.id
       })
 
     case Notes.upsert_nicety(nicety_params) do

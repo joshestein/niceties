@@ -7,6 +7,7 @@ defmodule NicetiesWeb.UserAuthTest do
   alias NicetiesWeb.UserAuth
 
   import Niceties.AccountsFixtures
+  import Niceties.GroupsFixtures
 
   @remember_me_cookie "_niceties_web_user_remember_me"
   @remember_me_cookie_max_age 60 * 60 * 24 * 14
@@ -62,6 +63,22 @@ defmodule NicetiesWeb.UserAuthTest do
     test "redirects to the configured path", %{conn: conn, user: user} do
       conn = conn |> put_session(:user_return_to, "/hello") |> UserAuth.log_in_user(user)
       assert redirected_to(conn) == "/hello"
+    end
+
+    test "redirects to individual group page when user part of single group", %{
+      conn: conn,
+      user: user
+    } do
+      membership = membership_fixture(%{user_id: user.id})
+      conn = UserAuth.log_in_user(conn, user)
+      assert redirected_to(conn) == ~p"/groups/#{membership.group_id}"
+    end
+
+    test "redirects to groups page when user part of multiple groups", %{conn: conn, user: user} do
+      membership_fixture(%{user_id: user.id})
+      membership_fixture(%{user_id: user.id})
+      conn = UserAuth.log_in_user(conn, user)
+      assert redirected_to(conn) == ~p"/groups"
     end
 
     test "writes a cookie if remember_me is configured", %{conn: conn, user: user} do

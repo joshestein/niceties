@@ -52,12 +52,11 @@ defmodule NicetiesWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{NicetiesWeb.UserAuth, :require_authenticated}] do
-      live "/groups/:id", GroupLive.Groups
+      live "/groups", GroupLive.Groups, :index
+      live "/groups/:id", GroupLive.Groups, :show
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
-
-    get "/groups", GroupController, :index
   end
 
   ## Admin routes

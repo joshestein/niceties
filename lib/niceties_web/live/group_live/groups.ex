@@ -8,7 +8,30 @@ defmodule NicetiesWeb.GroupLive.Groups do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <.link href={~p"/groups/"}>← Back to groups</.link>
+      <%= if @live_action == :index do %>
+        <.groups_index {assigns} />
+      <% else %>
+        <.group_niceties {assigns} />
+      <% end %>
+    </Layouts.app>
+    """
+  end
+
+  defp groups_index(assigns) do
+    ~H"""
+    <ul id="groups">
+      <li :for={group <- @groups} id={"group-#{group.id}"}>
+        <.link navigate={~p"/groups/#{group.id}"} class="hover:underline">
+          {group.name} - {group.id}
+        </.link>
+      </li>
+    </ul>
+    """
+  end
+
+  defp group_niceties(assigns) do
+    ~H"""
+      <.link navigate={~p"/groups/"}>← Back to groups</.link>
 
       <div class="mt-4">
         <a href="#given" class="text-xl">Given niceties</a>
@@ -57,19 +80,31 @@ defmodule NicetiesWeb.GroupLive.Groups do
               "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
         <% end %>
       </div>
-    </Layouts.app>
     """
   end
 
   @impl true
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(_params, _session, socket) do
+    {:ok, socket}
+  end
+
+  @impl true
+  def handle_params(params, _uri, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :index, _params) do
+    groups = Groups.list_groups_for_user(socket.assigns.current_scope)
+    assign(socket, :groups, groups)
+  end
+
+  defp apply_action(socket, :show, %{"id" => id}) do
     user = socket.assigns.current_scope.user
 
     if Groups.member_of_group?(user.id, id) do
-      socket = assign(socket, group_assigns(socket.assigns.current_scope, id))
-      {:ok, socket}
+      assign(socket, group_assigns(socket.assigns.current_scope, id))
     else
-      {:ok, redirect(socket, to: ~p"/groups")}
+      redirect(socket, to: ~p"/groups")
     end
   end
 

@@ -91,3 +91,11 @@ body:has(#received:target) a[href="#received"] {
 body:not(:has(:target)) a[href="#given"] {
   text-decoration: underline;
 }
+
+.checkbox {
+  transition: none;
+}
+
+.checkbox::before {
+  transition: none;
+}

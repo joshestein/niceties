@@ -38,7 +38,7 @@ defmodule NicetiesWeb.UserAuth do
 
     conn
     |> create_or_extend_session(user, params)
-    |> redirect(to: user_return_to || signed_in_path(conn))
+    |> redirect(to: user_return_to || signed_in_path(Scope.for_user(user)))
   end
 
   @doc """
@@ -244,8 +244,8 @@ defmodule NicetiesWeb.UserAuth do
 
   @doc "Returns the path to redirect to after log in."
   # the user was already logged in, redirect to settings
-  def signed_in_path(%Plug.Conn{assigns: %{current_scope: %Scope{user: %Accounts.User{}}}} = conn) do
-    memberships = Groups.list_memberships(conn.assigns.current_scope)
+  def signed_in_path(%Scope{user: %Accounts.User{}} = scope) do
+    memberships = Groups.list_memberships(scope)
 
     case memberships do
       [] -> ~p"/"

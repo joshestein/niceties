@@ -31,55 +31,55 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
   defp group_niceties(assigns) do
     ~H"""
-      <.link navigate={~p"/groups/"}>← Back to groups</.link>
+    <.link navigate={~p"/groups/"}>← Back to groups</.link>
 
-      <div class="mt-4">
-        <a href="#given" class="text-xl">Given niceties</a>
-        <span class="text-xl"> | </span>
-        <a href="#received" class="text-xl">Received niceties</a>
-      </div>
+    <div class="mt-4">
+      <a href="#given" class="text-xl">Given niceties</a>
+      <span class="text-xl"> | </span>
+      <a href="#received" class="text-xl">Received niceties</a>
+    </div>
 
-      <ul id="given">
-        <li :for={user <- @users} id={"user-#{user.id}"} class="mt-4">
-          {user.name}
-          <span :if={user.id == @current_user_id}> ⋅ That's you!</span>
-          <.form
-            for={@forms[user.id]}
-            id={"form-user-#{user.id}"}
-            phx-change="save_nicety"
-            phx-value-user_to_id={user.id}
-          >
-            <.input field={@forms[user.id][:body]} label="Nicety" phx-debounce="blur" />
-            <div class="flex flex-row justify-between">
-              <.input
-                type="checkbox"
-                field={@forms[user.id][:anonymous]}
-                label="Give anonymously?"
-              />
-            </div>
-          </.form>
-        </li>
-      </ul>
+    <ul id="given">
+      <li :for={user <- @users} id={"user-#{user.id}"} class="mt-4">
+        {user.name}
+        <span :if={user.id == @current_user_id}> ⋅ That's you!</span>
+        <.form
+          for={@forms[user.id]}
+          id={"form-user-#{user.id}"}
+          phx-change="save_nicety"
+          phx-value-user_to_id={user.id}
+        >
+          <.input field={@forms[user.id][:body]} label="Nicety" phx-debounce="blur" />
+          <div class="flex flex-row justify-between">
+            <.input
+              type="checkbox"
+              field={@forms[user.id][:anonymous]}
+              label="Give anonymously?"
+            />
+          </div>
+        </.form>
+      </li>
+    </ul>
 
-      <div id="received">
-        <%= if is_list(@received) do %>
-          <ul>
-            <li :for={nicety <- @received} id={"received-#{nicety.id}"}>
-              <%= if nicety.user_from do %>
-                <span class="font-semibold">{nicety.user_from.name}</span>
-              <% else %>
-                <span class="font-semibold">Anonymous</span>
-              <% end %>
-              {nicety.body}
-            </li>
-          </ul>
-        <% else %>
-          {if is_nil(@received),
-            do: "Niceties will be released soon",
-            else:
-              "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
-        <% end %>
-      </div>
+    <div id="received">
+      <%= if is_list(@received) do %>
+        <ul>
+          <li :for={nicety <- @received} id={"received-#{nicety.id}"}>
+            <%= if nicety.user_from do %>
+              <span class="font-semibold">{nicety.user_from.name}</span>
+            <% else %>
+              <span class="font-semibold">Anonymous</span>
+            <% end %>
+            {nicety.body}
+          </li>
+        </ul>
+      <% else %>
+        {if is_nil(@received),
+          do: "Niceties will be released soon",
+          else:
+            "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
+      <% end %>
+    </div>
     """
   end
 
@@ -119,7 +119,13 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
     case Notes.upsert_nicety(nicety_params) do
       {:ok, nicety} ->
-        forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), to_form(Notes.change_nicety(nicety)))
+        forms =
+          Map.put(
+            socket.assigns.forms,
+            String.to_integer(user_to_id),
+            to_form(Notes.change_nicety(nicety))
+          )
+
         {:noreply, assign(socket, :forms, forms)}
 
       {:error, changeset} ->

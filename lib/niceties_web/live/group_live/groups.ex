@@ -83,10 +83,9 @@ defmodule NicetiesWeb.GroupLive.Groups do
         {:noreply, assign(socket, :forms, forms)}
 
       {:error, changeset} ->
-        assigns = group_assigns(socket.assigns.current_scope, socket.assigns.id)
-        forms = Map.put(assigns.forms, String.to_integer(user_to_id), to_form(changeset))
+        forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), to_form(changeset))
 
-        {:noreply, assign(socket, Map.put(assigns, :forms, forms))}
+        {:noreply, assign(socket, :forms, forms)}
     end
   end
 

@@ -17,7 +17,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
       </div>
 
       <ul id="given">
-        <li :for={user <- @users} id={"user-#{user.id}"} class="mt-2">
+        <li :for={user <- @users} id={"user-#{user.id}"} class="mt-4">
           {user.name}
           <span :if={user.id == @current_user_id}> ⋅ That's you!</span>
           <.form for={@forms[user.id]} id={"form-user-#{user.id}"} phx-change="save_nicety" phx-value-user_to_id={user.id}>

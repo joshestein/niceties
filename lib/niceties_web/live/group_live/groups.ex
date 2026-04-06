@@ -84,8 +84,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
     case Notes.upsert_nicety(nicety_params) do
       {:ok, nicety} ->
-        new_form = to_form(Notes.change_nicety(nicety))
-        forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), new_form)
+        forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), to_form(Notes.change_nicety(nicety)))
         {:noreply, assign(socket, :forms, forms)}
 
       {:error, changeset} ->

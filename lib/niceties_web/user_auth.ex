@@ -312,7 +312,7 @@ defmodule NicetiesWeb.UserAuth do
 
   defp deny_admin_access(conn, :unauthenticated) do
     conn
-    |> put_flash(:error, "You must be logged in to view this page.")
+    |> put_flash(:error, "You must log in to access this page.")
     |> maybe_store_return_to()
     |> redirect(to: ~p"/users/log-in")
     |> halt()

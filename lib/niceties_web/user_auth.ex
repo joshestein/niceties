@@ -273,27 +273,16 @@ defmodule NicetiesWeb.UserAuth do
 
   @doc """
   Plug for routes that require the user to be an administrator.
+  Must be used after :require_authenticated_user in the pipeline.
   """
   def require_admin_user(conn, _opts) do
-    if conn.assigns.current_scope && conn.assigns.current_scope.user do
+    authorized? =
       case conn.params["id"] do
-        nil ->
-          if Enum.empty?(Groups.list_admin_groups_for_user(conn.assigns.current_scope)) do
-            deny_admin_access(conn, :unauthorized)
-          else
-            conn
-          end
-
-        id ->
-          if Groups.is_admin_of_group?(conn.assigns.current_scope.user.id, id) do
-            conn
-          else
-            deny_admin_access(conn, :unauthorized)
-          end
+        nil -> not Enum.empty?(Groups.list_admin_groups_for_user(conn.assigns.current_scope))
+        id -> Groups.is_admin_of_group?(conn.assigns.current_scope.user.id, id)
       end
-    else
-      deny_admin_access(conn, :unauthenticated)
-    end
+
+    if authorized?, do: conn, else: deny_admin_access(conn)
   end
 
   defp maybe_store_return_to(%{method: "GET"} = conn) do
@@ -302,19 +291,11 @@ defmodule NicetiesWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp deny_admin_access(conn, :unauthorized) do
+  defp deny_admin_access(conn) do
     conn
     |> put_flash(:error, "You must be an administrator to access this page.")
     |> maybe_store_return_to()
     |> redirect(to: ~p"/groups")
-    |> halt()
-  end
-
-  defp deny_admin_access(conn, :unauthenticated) do
-    conn
-    |> put_flash(:error, "You must log in to access this page.")
-    |> maybe_store_return_to()
-    |> redirect(to: ~p"/users/log-in")
     |> halt()
   end
 end

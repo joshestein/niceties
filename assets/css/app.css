@@ -92,6 +92,8 @@
 
 /* This file is for your main application CSS */
 
+/* Given/Received panel toggle via CSS :target */
+
 #given {
   display: block;
 }
@@ -106,16 +108,30 @@ body:has(#received:target) #received {
   display: block;
 }
 
-body:has(#given:target) a[href="#given"] {
-  text-decoration: underline;
-}
-body:has(#received:target) a[href="#received"] {
-  text-decoration: underline;
-}
-body:not(:has(:target)) a[href="#given"] {
-  text-decoration: underline;
+/* Tab link active state */
+.nicety-tab-link {
+  color: color-mix(in oklch, var(--color-warm) 40%, transparent);
+  border-bottom: 1.5px solid transparent;
+  margin-bottom: -1.5px;
 }
 
+.nicety-tab-link:hover {
+  color: color-mix(in oklch, var(--color-warm) 75%, transparent);
+}
+
+/* Default: "Given" tab is active */
+body:not(:has(#received:target)) a.nicety-tab-link[href="#given"],
+body:has(#given:target) a.nicety-tab-link[href="#given"] {
+  color: var(--color-warm);
+  border-bottom-color: var(--color-warm);
+}
+
+body:has(#received:target) a.nicety-tab-link[href="#received"] {
+  color: var(--color-warm);
+  border-bottom-color: var(--color-warm);
+}
+
+/* Checkbox tweaks */
 .checkbox {
   transition: none;
 }

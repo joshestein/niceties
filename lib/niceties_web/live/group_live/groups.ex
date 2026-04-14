@@ -98,7 +98,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
   defp user_avatar(assigns) do
     ~H"""
     <div class="shrink-0 w-64 flex items-center gap-3 pr-6">
-      <div class="w-16 h-16 rounded-full bg-warm/10 flex items-center justify-center shrink-0">
+      <div class="size-16 rounded-full bg-warm/10 flex items-center justify-center shrink-0">
         <span class="text-warm/60 text-sm tracking-widest font-light">
           {initials(@user)}
         </span>

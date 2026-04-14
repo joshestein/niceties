@@ -35,27 +35,30 @@ defmodule NicetiesWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <ul class="menu menu-horizontal relative z-10 flex w-full items-center justify-end gap-4 px-4 sm:px-6 lg:px-8">
+    <header class="border-b border-warm/10 px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl flex items-center justify-between h-14">
+        <.link
+          href={~p"/"}
+          class="text-warm/90 text-2xl leading-none hover:text-warm transition-colors duration-150"
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;"
+        >
+          Niceties
+        </.link>
         <%= if @current_scope do %>
-          <li>
-            {@current_scope.user.email}
-          </li>
-          <li>
-            <.link href={~p"/groups"}>Groups</.link>
-          </li>
-          <li>
-            <.link href={~p"/users/settings"}>Settings</.link>
-          </li>
-          <li>
-            <.link href={~p"/users/log-out"} method="delete">Log out</.link>
-          </li>
+          <nav class="flex items-center gap-3 sm:gap-5 text-[0.68rem] tracking-[0.08em] sm:tracking-[0.14em] uppercase">
+            <span class="hidden sm:inline text-warm/40">
+              {@current_scope.user.name || @current_scope.user.email}
+            </span>
+            <.link href={~p"/groups"} class="text-warm/90 hover:text-warm transition-colors duration-150">Groups</.link>
+            <.link href={~p"/users/settings"} class="text-warm/90 hover:text-warm transition-colors duration-150">Settings</.link>
+            <.link href={~p"/users/log-out"} method="delete" class="text-warm/90 hover:text-warm transition-colors duration-150">Log out</.link>
+          </nav>
         <% else %>
-          <li>
-            <.link href={~p"/users/log-in"}>Log in</.link>
-          </li>
+          <nav>
+            <.link href={~p"/users/log-in"} class="text-[0.68rem] tracking-[0.14em] uppercase text-warm/85 hover:text-warm transition-colors duration-150">Log in</.link>
+          </nav>
         <% end %>
-      </ul>
+      </div>
     </header>
 
     <main class="px-4 py-20 sm:px-6 lg:px-8">

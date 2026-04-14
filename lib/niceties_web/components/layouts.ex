@@ -39,8 +39,7 @@ defmodule NicetiesWeb.Layouts do
       <div class="mx-auto max-w-2xl flex items-center justify-between h-14">
         <.link
           href={~p"/"}
-          class="text-warm/90 text-2xl leading-none hover:text-warm transition-colors duration-150"
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;"
+          class="text-warm/90 text-2xl leading-none hover:text-warm transition-colors duration-150 font-serif italic font-light"
         >
           Niceties
         </.link>

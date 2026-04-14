@@ -92,6 +92,28 @@ defmodule NicetiesWeb.GroupLive.Groups do
           else:
             "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
       <% end %>
+  attr :user, :map, required: true
+  attr :current_user_id, :integer, required: true
+
+  defp user_avatar(assigns) do
+    ~H"""
+    <div class="shrink-0 w-64 flex items-center gap-3 pr-6">
+      <div class="w-16 h-16 rounded-full bg-warm/10 flex items-center justify-center shrink-0">
+        <span class="text-warm/60 text-sm tracking-widest font-light">
+          {initials(@user)}
+        </span>
+      </div>
+      <div>
+        <p class="font-serif italic text-warm text-[1.3rem] leading-tight">
+          {@user && @user.name || "Anonymous"}
+        </p>
+        <span
+          :if={@user && @user.id == @current_user_id}
+          class="text-[0.65rem] tracking-widest uppercase text-warm/35"
+        >
+          you
+        </span>
+      </div>
     </div>
     """
   end

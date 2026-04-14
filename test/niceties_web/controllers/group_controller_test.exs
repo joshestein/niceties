@@ -1,6 +1,7 @@
 defmodule NicetiesWeb.GroupControllerTest do
   use NicetiesWeb.ConnCase, async: true
 
+  import Phoenix.LiveViewTest
   import Niceties.AccountsFixtures
   import Niceties.GroupsFixtures
 
@@ -170,23 +171,17 @@ defmodule NicetiesWeb.GroupControllerTest do
     end
   end
 
-  describe "PUT /groups/:id/niceties/:user_id" do
-    test "saves a nicety and redirects back to the group", %{conn: conn} do
-      %{conn: conn, other_user: other_user, group: group} = group_with_members(conn)
+  describe "save_nicety event" do
+    test "saves a nicety", %{conn: conn} do
+      %{conn: conn, user: user, other_user: other_user, group: group} = group_with_members(conn)
 
-      conn =
-        put(conn, ~p"/groups/#{group.id}/niceties/#{other_user.id}", %{
-          "nicety" => %{"body" => "great collaborator", "anonymous" => "false"}
-        })
+      {:ok, lv, _html} = live(conn, ~p"/groups/#{group.id}")
 
-      assert redirected_to(conn) == ~p"/groups/#{group.id}"
+      lv
+      |> form("#form-user-#{other_user.id}", nicety: %{body: "great collaborator", anonymous: false})
+      |> render_change()
 
-      assert [nicety] =
-               Notes.get_given(
-                 Niceties.Accounts.Scope.for_user(conn.assigns.current_scope.user),
-                 group.id
-               )
-
+      assert [nicety] = Notes.get_given(Niceties.Accounts.Scope.for_user(user), group.id)
       assert nicety.body == "great collaborator"
     end
 

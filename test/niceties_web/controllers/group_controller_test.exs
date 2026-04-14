@@ -203,16 +203,17 @@ defmodule NicetiesWeb.GroupControllerTest do
       assert hd(niceties).body == "final version"
     end
 
-    test "shows error flash when body is blank", %{conn: conn} do
+    test "shows validation error when body is blank", %{conn: conn} do
       %{conn: conn, other_user: other_user, group: group} = group_with_members(conn)
 
-      conn =
-        put(conn, ~p"/groups/#{group.id}/niceties/#{other_user.id}", %{
-          "nicety" => %{"body" => "", "anonymous" => "false"}
-        })
+      {:ok, lv, _html} = live(conn, ~p"/groups/#{group.id}")
 
-      assert html_response(conn, 200)
-      assert Phoenix.Flash.get(conn.assigns.flash, :error) =~ "Failed to save"
+      html =
+        lv
+        |> form("#form-user-#{other_user.id}", nicety: %{body: "", anonymous: false})
+        |> render_change()
+
+      assert html =~ "can&#39;t be blank"
     end
   end
 end

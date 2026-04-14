@@ -66,6 +66,20 @@
   display: contents;
 }
 
+/* Fonts */
+
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/jost-latin.woff2') format('woff2');
+}
+
+@theme {
+  --font-sans: 'Jost', sans-serif;
+}
+
 /* This file is for your main application CSS */
 
 #given {

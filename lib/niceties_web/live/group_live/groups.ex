@@ -43,55 +43,94 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
   defp group_niceties(assigns) do
     ~H"""
-    <.link navigate={~p"/groups/"}>← Back to groups</.link>
+    <div class="pt-4 pb-16 font-light">
+      <.link
+        navigate={~p"/groups/"}
+        class="inline-flex items-center gap-2 font-sans text-xs tracking-[0.12em] uppercase text-warm/50 hover:text-warm/90 transition-colors duration-200 no-underline"
+      >
+        <span>←</span>
+        <span>Groups</span>
+      </.link>
 
-    <div class="mt-4">
-      <a href="#given" class="text-xl">Given niceties</a>
-      <span class="text-xl"> | </span>
-      <a href="#received" class="text-xl">Received niceties</a>
-    </div>
+      <h1 class="mt-8 leading-none tracking-[-0.01em] text-warm font-serif italic text-[clamp(2.5rem,7vw,4rem)]">
+        {@group_name}
+      </h1>
 
-    <ul id="given">
-      <li :for={user <- @users} id={"user-#{user.id}"} class="mt-4">
-        {user.name}
-        <span :if={user.id == @current_user_id}> ⋅ That's you!</span>
-        <.form
-          for={@forms[user.id]}
-          id={"form-user-#{user.id}"}
-          phx-change="save_nicety"
-          phx-value-user_to_id={user.id}
+      <%!-- Tab navigation - uses CSS :target trick to toggle panels --%>
+      <div class="mt-10 flex items-end gap-0 border-b border-warm/15">
+        <a
+          href="#given"
+          class="nicety-tab-link font-sans px-1 pb-3 mr-6 text-xs tracking-[0.14em] uppercase transition-colors duration-200"
         >
-          <.input field={@forms[user.id][:body]} label="Nicety" phx-debounce="blur" id={"nicety-body-#{user.id}"} />
-          <div class="flex flex-row justify-between">
+          Given
+        </a>
+        <a
+          href="#received"
+          class="nicety-tab-link font-sans px-1 pb-3 text-xs tracking-[0.14em] uppercase transition-colors duration-200"
+        >
+          Received
+        </a>
+      </div>
+
+      <%!-- Given panel --%>
+      <ul id="given" class="list-none p-0 m-0 mt-8 space-y-4">
+        <li :for={user <- @users} id={"user-#{user.id}"} class="flex gap-6 border-b border-warm/10 pb-4 divide-x divide-warm/15">
+          <.user_avatar user={user} current_user_id={@current_user_id} />
+
+          <.form
+            for={@forms[user.id]}
+            id={"form-user-#{user.id}"}
+            phx-change="save_nicety"
+            phx-value-user_to_id={user.id}
+            class="flex-1"
+          >
+            <.input
+              field={@forms[user.id][:body]}
+              type="textarea"
+              phx-debounce="blur"
+              id={"nicety-body-#{user.id}"}
+            />
             <.input
               type="checkbox"
               field={@forms[user.id][:anonymous]}
               label="Give anonymously?"
               id={"nicety-anonymous-#{user.id}"}
             />
-          </div>
-        </.form>
-      </li>
-    </ul>
+          </.form>
+        </li>
+      </ul>
 
-    <div id="received">
-      <%= if is_list(@received) do %>
-        <ul>
-          <li :for={nicety <- @received} id={"received-#{nicety.id}"}>
-            <%= if nicety.user_from do %>
-              <span class="font-semibold">{nicety.user_from.name}</span>
-            <% else %>
-              <span class="font-semibold">Anonymous</span>
-            <% end %>
-            {nicety.body}
-          </li>
-        </ul>
-      <% else %>
-        {if is_nil(@received),
-          do: "Niceties will be released soon",
-          else:
-            "Niceties will be released on #{Calendar.strftime(@received, "%B %d, %Y at %H:%M UTC")}"}
-      <% end %>
+      <%!-- Received panel --%>
+      <div id="received" class="mt-8">
+        <%= if is_list(@received) do %>
+          <%= if @received == [] do %>
+            <p class="text-warm/40 font-serif italic text-[1.1rem]">
+              Nothing here yet.
+            </p>
+          <% else %>
+            <ul class="list-none p-0 m-0 space-y-8">
+              <li :for={nicety <- @received} id={"received-#{nicety.id}"} class="flex gap-6 border-b border-warm/10 pb-8 divide-x divide-warm/15">
+                <.user_avatar user={nicety.user_from} current_user_id={@current_user_id} />
+                <p class="text-warm/80 leading-relaxed text-base font-light">
+                  {nicety.body}
+                </p>
+              </li>
+            </ul>
+          <% end %>
+        <% else %>
+          <div class="py-8 border-b border-warm/10">
+            <p class="text-warm/40 leading-relaxed font-serif italic text-[1.15rem]">
+              {if is_nil(@received),
+                do: "Niceties will be released soon.",
+                else: "Releasing #{Calendar.strftime(@received, "%B %d, %Y")} at #{Calendar.strftime(@received, "%H:%M")} UTC"}
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    """
+  end
+
   attr :user, :map, required: true
   attr :current_user_id, :integer, required: true
 

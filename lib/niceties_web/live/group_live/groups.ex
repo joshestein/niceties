@@ -20,17 +20,17 @@ defmodule NicetiesWeb.GroupLive.Groups do
   defp groups_index(assigns) do
     ~H"""
     <div class="pt-4 pb-16 font-light">
-      <p class="text-xs tracking-[0.2em] uppercase text-warm/65">
+      <p class="tracking-[0.2em] text-warm/65 text-xs uppercase">
         Your communities
       </p>
 
-      <ul class="list-none p-0 m-0 mt-2">
+      <ul class="m-0 mt-2 list-none p-0">
         <li :for={group <- @groups} id={"group-#{group.id}"}>
           <.link
             navigate={~p"/groups/#{group.id}"}
-            class="group flex items-baseline gap-3 py-4 border-b border-warm/15 no-underline transition-all duration-200 hover:pl-2 hover:text-warm text-warm/90 font-serif italic text-[1.6rem]"
+            class="group border-warm/15 text-warm/90 font-serif text-[1.6rem] flex items-baseline gap-3 border-b py-4 italic no-underline transition-all duration-200 hover:text-warm hover:pl-2"
           >
-            <span class="not-italic font-sans text-xs tracking-[0.05em] text-warm/50 transition-colors duration-200 group-hover:text-warm/90">
+            <span class="font-sans tracking-[0.05em] text-warm/50 text-xs not-italic transition-colors duration-200 group-hover:text-warm/90">
               →
             </span>
             <span class="group-hover:underline">{group.name}</span>
@@ -46,35 +46,39 @@ defmodule NicetiesWeb.GroupLive.Groups do
     <div class="pt-4 pb-16 font-light">
       <.link
         navigate={~p"/groups/"}
-        class="inline-flex items-center gap-2 font-sans text-xs tracking-[0.12em] uppercase text-warm/50 hover:text-warm/90 transition-colors duration-200 no-underline"
+        class="font-sans tracking-[0.12em] text-warm/50 inline-flex items-center gap-2 text-xs uppercase no-underline transition-colors duration-200 hover:text-warm/90"
       >
         <span>←</span>
         <span>Groups</span>
       </.link>
 
-      <h1 class="mt-8 leading-none tracking-[-0.01em] text-warm font-serif italic text-[clamp(2.5rem,7vw,4rem)]">
+      <h1 class="tracking-[-0.01em] text-warm font-serif text-[clamp(2.5rem,7vw,4rem)] mt-8 italic leading-none">
         {@group_name}
       </h1>
 
       <%!-- Tab navigation - uses CSS :target trick to toggle panels --%>
-      <div class="mt-10 flex items-end gap-0 border-b border-warm/15">
+      <div class="border-warm/15 mt-10 flex items-end gap-0 border-b">
         <a
           href="#given"
-          class="nicety-tab-link font-sans px-1 pb-3 mr-6 text-xs tracking-[0.14em] uppercase transition-colors duration-200"
+          class="nicety-tab-link font-sans tracking-[0.14em] mr-6 px-1 pb-3 text-xs uppercase transition-colors duration-200"
         >
           Given
         </a>
         <a
           href="#received"
-          class="nicety-tab-link font-sans px-1 pb-3 text-xs tracking-[0.14em] uppercase transition-colors duration-200"
+          class="nicety-tab-link font-sans tracking-[0.14em] px-1 pb-3 text-xs uppercase transition-colors duration-200"
         >
           Received
         </a>
       </div>
 
       <%!-- Given panel --%>
-      <ul id="given" class="list-none p-0 m-0 mt-8 space-y-4">
-        <li :for={user <- @users} id={"user-#{user.id}"} class="flex gap-6 border-b border-warm/10 pb-4 divide-x divide-warm/15">
+      <ul id="given" class="m-0 mt-8 list-none space-y-4 p-0">
+        <li
+          :for={user <- @users}
+          id={"user-#{user.id}"}
+          class="border-warm/10 divide-warm/15 flex gap-6 divide-x border-b pb-4"
+        >
           <.user_avatar user={user} current_user_id={@current_user_id} />
 
           <.form
@@ -104,25 +108,30 @@ defmodule NicetiesWeb.GroupLive.Groups do
       <div id="received" class="mt-8">
         <%= if is_list(@received) do %>
           <%= if @received == [] do %>
-            <p class="text-warm/40 font-serif italic text-[1.1rem]">
+            <p class="text-warm/40 font-serif text-[1.1rem] italic">
               Nothing here yet.
             </p>
           <% else %>
-            <ul class="list-none p-0 m-0 space-y-8">
-              <li :for={nicety <- @received} id={"received-#{nicety.id}"} class="flex gap-6 border-b border-warm/10 pb-8 divide-x divide-warm/15">
+            <ul class="m-0 list-none space-y-8 p-0">
+              <li
+                :for={nicety <- @received}
+                id={"received-#{nicety.id}"}
+                class="border-warm/10 divide-warm/15 flex gap-6 divide-x border-b pb-8"
+              >
                 <.user_avatar user={nicety.user_from} current_user_id={@current_user_id} />
-                <p class="text-warm/80 leading-relaxed text-base font-light">
+                <p class="text-warm/80 text-base font-light leading-relaxed">
                   {nicety.body}
                 </p>
               </li>
             </ul>
           <% end %>
         <% else %>
-          <div class="py-8 border-b border-warm/10">
-            <p class="text-warm/40 leading-relaxed font-serif italic text-[1.15rem]">
+          <div class="border-warm/10 border-b py-8">
+            <p class="text-warm/40 font-serif text-[1.15rem] italic leading-relaxed">
               {if is_nil(@received),
                 do: "Niceties will be released soon.",
-                else: "Releasing #{Calendar.strftime(@received, "%B %d, %Y")} at #{Calendar.strftime(@received, "%H:%M")} UTC"}
+                else:
+                  "Releasing #{Calendar.strftime(@received, "%B %d, %Y")} at #{Calendar.strftime(@received, "%H:%M")} UTC"}
             </p>
           </div>
         <% end %>
@@ -136,19 +145,19 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
   defp user_avatar(assigns) do
     ~H"""
-    <div class="shrink-0 w-64 flex items-center gap-3 pr-6">
-      <div class="size-16 rounded-full bg-warm/10 flex items-center justify-center shrink-0">
-        <span class="text-warm/60 text-sm tracking-widest font-light">
+    <div class="flex w-64 shrink-0 items-center gap-3 pr-6">
+      <div class="size-16 bg-warm/10 flex shrink-0 items-center justify-center rounded-full">
+        <span class="text-warm/60 text-sm font-light tracking-widest">
           {initials(@user)}
         </span>
       </div>
       <div>
-        <p class="font-serif italic text-warm text-[1.3rem] leading-tight">
-          {@user && @user.name || "Anonymous"}
+        <p class="font-serif text-warm text-[1.3rem] italic leading-tight">
+          {(@user && @user.name) || "Anonymous"}
         </p>
         <span
           :if={@user && @user.id == @current_user_id}
-          class="text-[0.65rem] tracking-widest uppercase text-warm/35"
+          class="text-[0.65rem] text-warm/35 uppercase tracking-widest"
         >
           you
         </span>

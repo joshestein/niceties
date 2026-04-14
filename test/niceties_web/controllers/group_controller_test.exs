@@ -178,7 +178,9 @@ defmodule NicetiesWeb.GroupControllerTest do
       {:ok, lv, _html} = live(conn, ~p"/groups/#{group.id}")
 
       lv
-      |> form("#form-user-#{other_user.id}", nicety: %{body: "great collaborator", anonymous: false})
+      |> form("#form-user-#{other_user.id}",
+        nicety: %{body: "great collaborator", anonymous: false}
+      )
       |> render_change()
 
       assert [nicety] = Notes.get_given(Niceties.Accounts.Scope.for_user(user), group.id)

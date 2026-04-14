@@ -35,26 +35,47 @@ defmodule NicetiesWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="border-b border-warm/10 px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl flex items-center justify-between h-14">
+    <header class="border-warm/10 border-b px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto flex h-14 max-w-2xl items-center justify-between">
         <.link
           href={~p"/"}
-          class="text-warm/90 text-2xl leading-none hover:text-warm transition-colors duration-150 font-serif italic font-light"
+          class="text-warm/90 font-serif text-2xl font-light italic leading-none transition-colors duration-150 hover:text-warm"
         >
           Niceties
         </.link>
         <%= if @current_scope do %>
-          <nav class="flex items-center gap-3 sm:gap-5 text-[0.68rem] tracking-[0.08em] sm:tracking-[0.14em] uppercase">
-            <span class="hidden sm:inline text-warm/40">
+          <nav class="text-[0.68rem] tracking-[0.08em] flex items-center gap-3 uppercase sm:tracking-[0.14em] sm:gap-5">
+            <span class="text-warm/40 hidden sm:inline">
               {@current_scope.user.name || @current_scope.user.email}
             </span>
-            <.link href={~p"/groups"} class="text-warm/90 hover:text-warm transition-colors duration-150">Groups</.link>
-            <.link href={~p"/users/settings"} class="text-warm/90 hover:text-warm transition-colors duration-150">Settings</.link>
-            <.link href={~p"/users/log-out"} method="delete" class="text-warm/90 hover:text-warm transition-colors duration-150">Log out</.link>
+            <.link
+              href={~p"/groups"}
+              class="text-warm/90 transition-colors duration-150 hover:text-warm"
+            >
+              Groups
+            </.link>
+            <.link
+              href={~p"/users/settings"}
+              class="text-warm/90 transition-colors duration-150 hover:text-warm"
+            >
+              Settings
+            </.link>
+            <.link
+              href={~p"/users/log-out"}
+              method="delete"
+              class="text-warm/90 transition-colors duration-150 hover:text-warm"
+            >
+              Log out
+            </.link>
           </nav>
         <% else %>
           <nav>
-            <.link href={~p"/users/log-in"} class="text-[0.68rem] tracking-[0.14em] uppercase text-warm/85 hover:text-warm transition-colors duration-150">Log in</.link>
+            <.link
+              href={~p"/users/log-in"}
+              class="text-[0.68rem] tracking-[0.14em] text-warm/85 uppercase transition-colors duration-150 hover:text-warm"
+            >
+              Log in
+            </.link>
           </nav>
         <% end %>
       </div>

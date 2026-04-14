@@ -358,6 +358,7 @@ defmodule NicetiesWeb.UserAuthTest do
 
     test "redirects to groups if user is not admin", %{conn: conn, user: user} do
       _participant_membership = membership_fixture(%{role: "participant", user_id: user.id})
+
       conn =
         %{conn | path_info: ["admin"], params: %{}}
         |> assign(:current_scope, Scope.for_user(user))
@@ -374,6 +375,7 @@ defmodule NicetiesWeb.UserAuthTest do
 
     test "does not redirect if user is admin", %{conn: conn, user: user} do
       _admin_membership = membership_fixture(%{role: "admin", user_id: user.id})
+
       conn =
         %{conn | path_info: ["admin"], params: %{}}
         |> assign(:current_scope, Scope.for_user(user))
@@ -419,7 +421,13 @@ defmodule NicetiesWeb.UserAuthTest do
 
     test "stores the return-to path on GET when access is denied", %{conn: conn, user: user} do
       conn =
-        %{conn | path_info: ["admin", "groups"], query_string: "page=2", method: "GET", params: %{}}
+        %{
+          conn
+          | path_info: ["admin", "groups"],
+            query_string: "page=2",
+            method: "GET",
+            params: %{}
+        }
         |> assign(:current_scope, Scope.for_user(user))
         |> fetch_flash()
         |> UserAuth.require_admin_user([])

@@ -1,23 +1,23 @@
 <Layouts.app flash={@flash} current_scope={@current_scope}>
   <div class="pt-4 pb-16 font-light">
-    <p class="text-xs tracking-[0.2em] uppercase text-warm/65">
+    <p class="tracking-[0.2em] text-warm/65 text-xs uppercase">
       A place for
     </p>
-    <h1 class="mt-3 leading-none tracking-[-0.01em] text-warm font-serif italic text-[clamp(4rem,10vw,6rem)]">
+    <h1 class="tracking-[-0.01em] text-warm font-serif text-[clamp(4rem,10vw,6rem)] mt-3 italic leading-none">
       Niceties
     </h1>
-    <p class="mt-6 text-base leading-relaxed text-warm/80 max-w-sm">
+    <p class="text-warm/80 mt-6 max-w-sm text-base leading-relaxed">
       Leave kind words for the people around you.
     </p>
 
     <%= if @groups != [] do %>
-      <ul class="list-none p-0 m-0">
+      <ul class="m-0 list-none p-0">
         <li :for={group <- @groups}>
           <.link
             navigate={~p"/groups/#{group.id}"}
-            class="group flex items-baseline gap-3 py-4 border-b border-warm/15 no-underline transition-all duration-200 hover:pl-2 hover:text-warm text-warm/90 font-serif italic text-[1.6rem]"
+            class="group border-warm/15 text-warm/90 font-serif text-[1.6rem] flex items-baseline gap-3 border-b py-4 italic no-underline transition-all duration-200 hover:text-warm hover:pl-2"
           >
-            <span class="not-italic font-sans text-xs tracking-[0.05em] text-warm/50 transition-colors duration-200 group-hover:text-warm/90">
+            <span class="font-sans tracking-[0.05em] text-warm/50 text-xs not-italic transition-colors duration-200 group-hover:text-warm/90">
               →
             </span>
             <span class="group-hover:underline">{group.name}</span>

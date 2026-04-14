@@ -49,12 +49,13 @@ defmodule NicetiesWeb.GroupLive.Groups do
           phx-change="save_nicety"
           phx-value-user_to_id={user.id}
         >
-          <.input field={@forms[user.id][:body]} label="Nicety" phx-debounce="blur" />
+          <.input field={@forms[user.id][:body]} label="Nicety" phx-debounce="blur" id={"nicety-body-#{user.id}"} />
           <div class="flex flex-row justify-between">
             <.input
               type="checkbox"
               field={@forms[user.id][:anonymous]}
               label="Give anonymously?"
+              id={"nicety-anonymous-#{user.id}"}
             />
           </div>
         </.form>

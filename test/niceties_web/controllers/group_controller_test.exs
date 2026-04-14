@@ -188,17 +188,17 @@ defmodule NicetiesWeb.GroupControllerTest do
     test "updating a nicety replaces the previous one (upsert)", %{conn: conn} do
       %{conn: conn, user: user, other_user: other_user, group: group} = group_with_members(conn)
 
-      scope = Niceties.Accounts.Scope.for_user(user)
+      {:ok, lv, _html} = live(conn, ~p"/groups/#{group.id}")
 
-      put(conn, ~p"/groups/#{group.id}/niceties/#{other_user.id}", %{
-        "nicety" => %{"body" => "first draft", "anonymous" => "false"}
-      })
+      lv
+      |> form("#form-user-#{other_user.id}", nicety: %{body: "first draft", anonymous: false})
+      |> render_change()
 
-      put(conn, ~p"/groups/#{group.id}/niceties/#{other_user.id}", %{
-        "nicety" => %{"body" => "final version", "anonymous" => "false"}
-      })
+      lv
+      |> form("#form-user-#{other_user.id}", nicety: %{body: "final version", anonymous: false})
+      |> render_change()
 
-      niceties = Notes.get_given(scope, group.id)
+      niceties = Notes.get_given(Niceties.Accounts.Scope.for_user(user), group.id)
       assert length(niceties) == 1
       assert hd(niceties).body == "final version"
     end

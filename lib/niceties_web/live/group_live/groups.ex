@@ -19,13 +19,25 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
   defp groups_index(assigns) do
     ~H"""
-    <ul id="groups">
-      <li :for={group <- @groups} id={"group-#{group.id}"}>
-        <.link navigate={~p"/groups/#{group.id}"} class="hover:underline">
-          {group.name} - {group.id}
-        </.link>
-      </li>
-    </ul>
+    <div class="pt-4 pb-16 font-light">
+      <p class="text-xs tracking-[0.2em] uppercase text-warm/65">
+        Your communities
+      </p>
+
+      <ul class="list-none p-0 m-0 mt-2">
+        <li :for={group <- @groups} id={"group-#{group.id}"}>
+          <.link
+            navigate={~p"/groups/#{group.id}"}
+            class="group flex items-baseline gap-3 py-4 border-b border-warm/15 no-underline transition-all duration-200 hover:pl-2 hover:text-warm text-warm/90 font-serif italic text-[1.6rem]"
+          >
+            <span class="not-italic font-sans text-xs tracking-[0.05em] text-warm/50 transition-colors duration-200 group-hover:text-warm/90">
+              →
+            </span>
+            <span class="group-hover:underline">{group.name}</span>
+          </.link>
+        </li>
+      </ul>
+    </div>
     """
   end
 

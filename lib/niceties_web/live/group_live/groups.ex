@@ -172,6 +172,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
     %{
       id: id,
+      group_name: group.name,
       users: users,
       forms: forms,
       received: received,

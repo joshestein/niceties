@@ -1,18 +1,33 @@
 <Layouts.app flash={@flash} current_scope={@current_scope}>
-  <div class="mt-8 text-center">
-    <h1 class="text-3xl font-bold tracking-tight">Niceties</h1>
-    <p class="text-base-content/70 mt-4 leading-7">
-      A simple place to give and receive kind words. Send a nicety to someone, or check what others have shared with you.
+  <div class="pt-20 pb-16 font-light">
+    <p class="text-xs tracking-[0.2em] uppercase text-warm/65">
+      A place for
     </p>
-  </div>
+    <h1
+      class="mt-3 leading-none tracking-[-0.01em] text-warm"
+      style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(4rem, 10vw, 6rem);"
+    >
+      Niceties
+    </h1>
+    <p class="mt-6 text-base leading-relaxed text-warm/80 max-w-sm">
+      Leave kind words for the people around you.
+    </p>
 
-  <%= if @groups != [] do %>
-    <ul class="mt-10 space-y-2">
-      <li :for={group <- @groups}>
-        <.link navigate={~p"/groups/#{group.id}"} class="hover:underline font-medium">
-          {group.name}
-        </.link>
-      </li>
-    </ul>
-  <% end %>
+    <%= if @groups != [] do %>
+      <ul class="list-none p-0 m-0">
+        <li :for={group <- @groups}>
+          <.link
+            navigate={~p"/groups/#{group.id}"}
+            class="group flex items-baseline gap-3 py-4 border-b border-warm/15 no-underline transition-all duration-200 hover:pl-2 hover:text-warm text-warm/90"
+            style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: 1.6rem;"
+          >
+            <span class="not-italic text-xs tracking-[0.05em] text-warm/50 transition-colors duration-200 group-hover:text-warm/90" style="font-family: 'Jost', sans-serif;">
+              →
+            </span>
+            <span class="group-hover:underline">{group.name}</span>
+          </.link>
+        </li>
+      </ul>
+    <% end %>
+  </div>
 </Layouts.app>

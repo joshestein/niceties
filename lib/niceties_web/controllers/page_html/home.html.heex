@@ -5,4 +5,14 @@
       A simple place to give and receive kind words. Send a nicety to someone, or check what others have shared with you.
     </p>
   </div>
+
+  <%= if @groups != [] do %>
+    <ul class="mt-10 space-y-2">
+      <li :for={group <- @groups}>
+        <.link navigate={~p"/groups/#{group.id}"} class="hover:underline font-medium">
+          {group.name}
+        </.link>
+      </li>
+    </ul>
+  <% end %>
 </Layouts.app>

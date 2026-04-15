@@ -160,6 +160,12 @@ defmodule Niceties.Accounts do
     end)
   end
 
+  def update_user_avatar(%User{} = user, attrs) do
+    user
+    |> User.avatar_changeset(attrs)
+    |> Repo.update()
+  end
+
   ## Session
 
   @doc """

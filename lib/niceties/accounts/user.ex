@@ -10,6 +10,7 @@ defmodule Niceties.Accounts.User do
     has_many :niceties_to, Niceties.Notes.Nicety, foreign_key: :user_to_id
     field :confirmed_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
+    field :avatar, :binary
 
     timestamps(type: :utc_datetime)
   end
@@ -77,5 +78,11 @@ defmodule Niceties.Accounts.User do
     else
       changeset
     end
+  end
+
+  def avatar_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:avatar])
+    |> validate_required([:avatar])
   end
 end

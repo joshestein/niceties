@@ -165,6 +165,15 @@ defmodule Niceties.Groups do
     Group.changeset(group, attrs)
   end
 
+  def shares_group?(viewer_id, target_id) do
+    Repo.exists?(
+      from m1 in Membership,
+        join: m2 in Membership,
+        on: m1.group_id == m2.group_id,
+        where: m1.user_id == ^viewer_id and m2.user_id == ^target_id
+    )
+  end
+
   @doc """
   Returns the list of memberships.
 

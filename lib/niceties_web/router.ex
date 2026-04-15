@@ -50,6 +50,8 @@ defmodule NicetiesWeb.Router do
   scope "/", NicetiesWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    get "/users/:id/avatar", AvatarController, :show
+
     live_session :require_authenticated_user,
       on_mount: [{NicetiesWeb.UserAuth, :require_authenticated}] do
       live "/groups", GroupLive.Groups, :index

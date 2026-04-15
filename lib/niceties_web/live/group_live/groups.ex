@@ -193,28 +193,34 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
   @impl true
   def handle_event("save_nicety", %{"nicety" => params, "user_to_id" => user_to_id}, socket) do
-    nicety_params =
-      Map.merge(params, %{
-        "user_from_id" => socket.assigns.current_scope.user.id,
-        "user_to_id" => user_to_id,
-        "group_id" => socket.assigns.id
-      })
+    member_ids = MapSet.new(socket.assigns.users, & &1.id)
 
-    case Notes.upsert_nicety(nicety_params) do
-      {:ok, nicety} ->
-        forms =
-          Map.put(
-            socket.assigns.forms,
-            String.to_integer(user_to_id),
-            to_form(Notes.change_nicety(nicety))
-          )
+    if not MapSet.member?(member_ids, String.to_integer(user_to_id)) do
+      {:noreply, put_flash(socket, :error, "Invalid recipient.")}
+    else
+      nicety_params =
+        Map.merge(params, %{
+          "user_from_id" => socket.assigns.current_scope.user.id,
+          "user_to_id" => user_to_id,
+          "group_id" => socket.assigns.id
+        })
 
-        {:noreply, assign(socket, :forms, forms)}
+      case Notes.upsert_nicety(nicety_params) do
+        {:ok, nicety} ->
+          forms =
+            Map.put(
+              socket.assigns.forms,
+              String.to_integer(user_to_id),
+              to_form(Notes.change_nicety(nicety))
+            )
 
-      {:error, changeset} ->
-        forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), to_form(changeset))
+          {:noreply, assign(socket, :forms, forms)}
 
-        {:noreply, assign(socket, :forms, forms)}
+        {:error, changeset} ->
+          forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), to_form(changeset))
+
+          {:noreply, assign(socket, :forms, forms)}
+      end
     end
   end
 

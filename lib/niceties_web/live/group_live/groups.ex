@@ -81,26 +81,32 @@ defmodule NicetiesWeb.GroupLive.Groups do
         >
           <.user_avatar user={user} current_user_id={@current_user_id} />
 
-          <.form
-            for={@forms[user.id]}
-            id={"form-user-#{user.id}"}
-            phx-change="save_nicety"
-            phx-value-user_to_id={user.id}
-            class="flex-1"
-          >
-            <.input
-              field={@forms[user.id][:body]}
-              type="textarea"
-              phx-debounce="blur"
-              id={"nicety-body-#{user.id}"}
-            />
-            <.input
-              type="checkbox"
-              field={@forms[user.id][:anonymous]}
-              label="Give anonymously?"
-              id={"nicety-anonymous-#{user.id}"}
-            />
-          </.form>
+          <%= if @released do %>
+            <p class="text-warm/80 flex-1 text-base font-light leading-relaxed">
+              {@forms[user.id][:body].value}
+            </p>
+          <% else %>
+            <.form
+              for={@forms[user.id]}
+              id={"form-user-#{user.id}"}
+              phx-change="save_nicety"
+              phx-value-user_to_id={user.id}
+              class="flex-1"
+            >
+              <.input
+                field={@forms[user.id][:body]}
+                type="textarea"
+                phx-debounce="blur"
+                id={"nicety-body-#{user.id}"}
+              />
+              <.input
+                type="checkbox"
+                field={@forms[user.id][:anonymous]}
+                label="Give anonymously?"
+                id={"nicety-anonymous-#{user.id}"}
+              />
+            </.form>
+          <% end %>
         </li>
       </ul>
 
@@ -192,6 +198,10 @@ defmodule NicetiesWeb.GroupLive.Groups do
   end
 
   @impl true
+  def handle_event("save_nicety", _params, %{assigns: %{released: true}} = socket) do
+    {:noreply, socket}
+  end
+
   def handle_event("save_nicety", %{"nicety" => params, "user_to_id" => user_to_id}, socket) do
     member_ids = MapSet.new(socket.assigns.users, & &1.id)
 
@@ -262,6 +272,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
       group_name: group.name,
       users: users,
       forms: forms,
+      released: group.released,
       received: received,
       current_user_id: current_scope.user.id
     }

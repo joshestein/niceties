@@ -226,6 +226,21 @@ defmodule NicetiesWeb.GroupControllerTest do
       assert hd(niceties).body == "final version"
     end
 
+    test "ignores save_nicety event after group is released", %{conn: conn} do
+      %{conn: conn, user: user, other_user: other_user, group: group} = group_with_members(conn)
+      {:ok, group} = Groups.update_group(group, %{released: true})
+
+      {:ok, lv, _html} = live(conn, ~p"/groups/#{group.id}")
+
+      lv
+      |> render_hook("save_nicety", %{
+        "nicety" => %{"body" => "sneaky edit", "anonymous" => "false"},
+        "user_to_id" => to_string(other_user.id)
+      })
+
+      assert Notes.get_given(Niceties.Accounts.Scope.for_user(user), group.id) == []
+    end
+
     test "shows validation error when body is blank", %{conn: conn} do
       %{conn: conn, other_user: other_user, group: group} = group_with_members(conn)
 

@@ -130,6 +130,27 @@ defmodule NicetiesWeb.GroupControllerTest do
       assert html_response(conn, 200) =~ "you are wonderful"
     end
 
+    test "shows given niceties as text (no form) after group is released", %{conn: conn} do
+      %{conn: conn, user: user, other_user: other_user, group: group} = group_with_members(conn)
+
+      {:ok, _} =
+        Notes.upsert_nicety(%{
+          body: "you are great",
+          anonymous: false,
+          group_id: group.id,
+          user_from_id: user.id,
+          user_to_id: other_user.id
+        })
+
+      {:ok, group} = Groups.update_group(group, %{released: true})
+
+      conn = get(conn, ~p"/groups/#{group.id}")
+      html = html_response(conn, 200)
+
+      refute html =~ "<form"
+      assert html =~ "you are great"
+    end
+
     test "hides sender name for anonymous niceties after release", %{conn: conn} do
       user = user_fixture(%{name: "Recipient Person"})
       other_user = user_fixture(%{name: "Secret Sender"})

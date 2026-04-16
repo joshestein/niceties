@@ -30,6 +30,16 @@ defmodule NicetiesWeb.UserLive.Settings do
         <.live_file_input upload={@uploads.avatar} />
         <.button type="submit" variant="primary">Upload photo</.button>
       </.form>
+      <div class="fieldset mb-2">
+        <span class="label mb-1">Photo</span>
+        <%= if @current_scope.user.avatar do %>
+          <img
+            src={~p"/users/#{@current_scope.user.id}/avatar"}
+            alt="Your current avatar"
+            class="size-16 rounded-full object-cover"
+          />
+        <% end %>
+      </div>
     </Layouts.app>
     """
   end

@@ -30,7 +30,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
             navigate={~p"/groups/#{group.id}"}
             class="group border-warm/15 text-warm/90 font-serif text-[1.6rem] flex items-baseline gap-3 border-b py-4 italic no-underline transition-all duration-200 hover:text-warm hover:pl-2"
           >
-            <span class="font-sans tracking-[0.05em] text-warm/50 text-xs not-italic transition-colors duration-200 group-hover:text-warm/90">
+            <span class="font-sans text-warm/50 text-xs not-italic transition-colors duration-200 group-hover:text-warm/90">
               →
             </span>
             <span class="group-hover:underline">{group.name}</span>
@@ -52,7 +52,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
         <span>Groups</span>
       </.link>
 
-      <h1 class="tracking-[-0.01em] text-warm font-serif text-[clamp(2.5rem,7vw,4rem)] mt-8 italic leading-none">
+      <h1 class="text-warm font-serif text-[clamp(2.5rem,7vw,4rem)] mt-8 italic leading-none">
         {@group_name}
       </h1>
 

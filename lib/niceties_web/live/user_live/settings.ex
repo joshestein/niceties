@@ -26,10 +26,6 @@ defmodule NicetiesWeb.UserLive.Settings do
         <.button variant="primary" phx-disable-with="Changing...">Change Email</.button>
       </.form>
 
-      <.form for={%{}} id="avatar_form" phx-submit="upload_avatar" phx-change="validate_avatar">
-        <.live_file_input upload={@uploads.avatar} />
-        <.button type="submit" variant="primary">Upload photo</.button>
-      </.form>
       <div class="fieldset mb-2">
         <span class="label mb-1">Photo</span>
         <%= if @current_scope.user.avatar do %>
@@ -39,6 +35,29 @@ defmodule NicetiesWeb.UserLive.Settings do
             class="size-16 rounded-full object-cover"
           />
         <% end %>
+      </div>
+
+      <div id="avatar-cropper" phx-hook="AvatarCropper">
+        <div id="avatar-canvas-wrapper" phx-update="ignore" style="display: inline-block; position: relative;">
+          <canvas
+            id="avatar-canvas"
+            width="400"
+            height="400"
+            style="display: none; cursor: grab;"
+          >
+          </canvas>
+          <div
+            id="avatar-handle-se"
+            style="display: none; position: absolute; width: 14px; height: 14px; border-right: 2.5px solid #0D99FF; border-bottom: 2.5px solid #0D99FF; cursor: se-resize;"
+          ></div>
+        </div>
+        <.form for={%{}} id="avatar_form" phx-submit="upload_avatar" phx-change="validate_avatar">
+          <.live_file_input upload={@uploads.avatar} />
+          <input type="hidden" id="crop-x" name="crop_x" value="" />
+          <input type="hidden" id="crop-y" name="crop_y" value="" />
+          <input type="hidden" id="crop-size" name="crop_size" value="" />
+          <.button type="submit" variant="primary">Upload photo</.button>
+        </.form>
       </div>
     </Layouts.app>
     """

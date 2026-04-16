@@ -242,17 +242,6 @@ defmodule NicetiesWeb.GroupLive.Groups do
     end
   end
 
-  defp initials(nil), do: "?"
-
-  defp initials(user) do
-    user.name
-    |> String.split()
-    |> Enum.take(2)
-    |> Enum.map(&String.first/1)
-    |> Enum.join()
-    |> String.upcase()
-  end
-
   defp group_assigns(current_scope, id) do
     given = Notes.get_given(current_scope, id)
     given_map = Map.new(given, fn nicety -> {nicety.user_to_id, nicety} end)

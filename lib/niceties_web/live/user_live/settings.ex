@@ -132,14 +132,16 @@ defmodule NicetiesWeb.UserLive.Settings do
     {:noreply, socket}
   end
 
-  def handle_event("upload_avatar", _params, socket) do
+  def handle_event("upload_avatar", params, socket) do
     user = socket.assigns.current_scope.user
+    crop = parse_crop(params)
 
     result =
       consume_uploaded_entries(socket, :avatar, fn %{path: path}, _entry ->
         outcome =
           with {:ok, image} <- Image.open(path),
-               {:ok, resized} <- Image.thumbnail(image, 128, fit: :cover, height: 128),
+               {:ok, cropped} <- maybe_crop(image, crop),
+               {:ok, resized} <- Image.thumbnail(cropped, 128, fit: :cover, height: 128),
                {:ok, binary} <- Image.write(resized, :memory, suffix: ".webp") do
             {:ok, binary}
           end
@@ -161,4 +163,20 @@ defmodule NicetiesWeb.UserLive.Settings do
         {:noreply, put_flash(socket, :error, "Upload failed.")}
     end
   end
+
+  defp parse_crop(%{"crop_x" => x, "crop_y" => y, "crop_size" => size}) do
+    with {x, ""} <- Integer.parse(x),
+         {y, ""} <- Integer.parse(y),
+         {size, ""} <- Integer.parse(size),
+         true <- size > 0 do
+      {x, y, size}
+    else
+      _ -> nil
+    end
+  end
+
+  defp parse_crop(_), do: nil
+
+  defp maybe_crop(image, nil), do: {:ok, image}
+  defp maybe_crop(image, {x, y, size}), do: Image.crop(image, x, y, size, size)
 end

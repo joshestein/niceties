@@ -46,7 +46,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
     <div class="pt-4 pb-16 font-light">
       <.link
         navigate={~p"/groups/"}
-        class="font-sans tracking-[0.12em] text-warm/50 inline-flex items-center gap-2 text-xs uppercase no-underline transition-colors duration-200 hover:text-warm/90"
+        class="font-sans tracking-[0.12em] text-warm/50 inline-flex items-center gap-2 text-sm uppercase no-underline transition-colors duration-200 hover:text-warm/90"
       >
         <span>←</span>
         <span>Groups</span>
@@ -60,13 +60,13 @@ defmodule NicetiesWeb.GroupLive.Groups do
       <div class="border-warm/15 mt-10 flex items-end gap-0 border-b">
         <a
           href="#given"
-          class="nicety-tab-link font-sans tracking-[0.14em] mr-6 px-1 pb-3 text-xs uppercase transition-colors duration-200"
+          class="nicety-tab-link font-sans tracking-[0.14em] mr-6 px-1 pb-3 text-sm uppercase transition-colors duration-200"
         >
           Given
         </a>
         <a
           href="#received"
-          class="nicety-tab-link font-sans tracking-[0.14em] px-1 pb-3 text-xs uppercase transition-colors duration-200"
+          class="nicety-tab-link font-sans tracking-[0.14em] px-1 pb-3 text-sm uppercase transition-colors duration-200"
         >
           Received
         </a>

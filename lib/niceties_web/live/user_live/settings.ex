@@ -7,10 +7,10 @@ defmodule NicetiesWeb.UserLive.Settings do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="text-center">
-        <.header>
-          Account Settings
-        </.header>
+      <div class="pt-4 font-light">
+        <p class="tracking-[0.2em] text-warm/65 text-sm uppercase">
+          Account settings
+        </p>
       </div>
 
       <.form for={@email_form} id="email_form" phx-submit="update_email" phx-change="validate_email">

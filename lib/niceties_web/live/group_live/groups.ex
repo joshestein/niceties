@@ -20,7 +20,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
   defp groups_index(assigns) do
     ~H"""
     <div class="pt-4 pb-16 font-light">
-      <p class="tracking-[0.2em] text-warm/65 text-xs uppercase">
+      <p class="tracking-[0.2em] text-warm/65 text-sm uppercase">
         Your communities
       </p>
 

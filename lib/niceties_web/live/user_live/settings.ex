@@ -10,7 +10,6 @@ defmodule NicetiesWeb.UserLive.Settings do
       <div class="text-center">
         <.header>
           Account Settings
-          <:subtitle>Manage your account email address</:subtitle>
         </.header>
       </div>
 

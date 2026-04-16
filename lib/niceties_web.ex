@@ -86,6 +86,7 @@ defmodule NicetiesWeb do
       import Phoenix.HTML
       # Core UI components
       import NicetiesWeb.CoreComponents
+      import NicetiesWeb.ViewHelpers
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

@@ -28,17 +28,16 @@ defmodule NicetiesWeb.UserLive.Settings do
 
       <div class="fieldset mb-2">
         <span class="label mb-1">Photo</span>
-        <%= if @current_scope.user.avatar do %>
-          <img
-            src={~p"/users/#{@current_scope.user.id}/avatar"}
-            alt="Your current avatar"
-            class="size-16 rounded-full object-cover"
-          />
-        <% end %>
-      </div>
-
-      <div id="avatar-cropper" phx-hook="AvatarCropper">
-        <div id="avatar-canvas-wrapper" phx-update="ignore" style="display: inline-block; position: relative;">
+        <div id="avatar-cropper" phx-hook="AvatarCropper" data-user-id={@current_scope.user.id}>
+          <%= if @current_scope.user.avatar || @avatar_ts do %>
+            <img
+              id="current-avatar-preview"
+              src={"/users/#{@current_scope.user.id}/avatar" <> if(@avatar_ts, do: "?v=#{@avatar_ts}", else: "")}
+              alt="Your current avatar"
+              class="size-16 rounded-full object-cover"
+            />
+          <% end %>
+          <div id="avatar-canvas-wrapper" phx-update="ignore" style="display: inline-block; position: relative;">
           <canvas
             id="avatar-canvas"
             width="400"
@@ -56,6 +55,7 @@ defmodule NicetiesWeb.UserLive.Settings do
           <input type="hidden" id="avatar-data" name="avatar_data" value="" />
           <.button type="submit" variant="primary">Upload photo</.button>
         </.form>
+        </div>
       </div>
     </Layouts.app>
     """
@@ -83,6 +83,7 @@ defmodule NicetiesWeb.UserLive.Settings do
       socket
       |> assign(:current_email, user.email)
       |> assign(:email_form, to_form(email_changeset))
+      |> assign(:avatar_ts, nil)
 
     {:ok, socket}
   end
@@ -128,8 +129,15 @@ defmodule NicetiesWeb.UserLive.Settings do
          {:ok, binary} <- Base.decode64(base64),
          <<"RIFF", _::binary-size(4), "WEBP", _::binary>> <- binary do
       case Accounts.update_user_avatar(user, %{avatar: binary}) do
-        {:ok, _user} -> {:noreply, put_flash(socket, :info, "Avatar updated.")}
-        {:error, _}  -> {:noreply, put_flash(socket, :error, "Failed to save avatar.")}
+        {:ok, _user} ->
+          ts = System.os_time(:millisecond)
+          {:noreply,
+           socket
+           |> assign(:avatar_ts, ts)
+           |> push_event("avatar_uploaded", %{ts: ts})
+           |> put_flash(:info, "Avatar updated.")}
+        {:error, _} ->
+          {:noreply, put_flash(socket, :error, "Failed to save avatar.")}
       end
     else
       _ -> {:noreply, put_flash(socket, :error, "Upload failed.")}

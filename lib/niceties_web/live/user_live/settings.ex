@@ -53,12 +53,12 @@ defmodule NicetiesWeb.UserLive.Settings do
               id="avatar-canvas"
               width="400"
               height="400"
-              style="display: none; cursor: grab;"
+              style="display: none; cursor: grab; touch-action: none;"
             >
             </canvas>
             <div
               id="avatar-handle-se"
-              style="display: none; position: absolute; width: 14px; height: 14px; border-right: 2.5px solid #0D99FF; border-bottom: 2.5px solid #0D99FF; cursor: se-resize;"
+              style="display: none; position: absolute; width: 14px; height: 14px; border-right: 2.5px solid #0D99FF; border-bottom: 2.5px solid #0D99FF; cursor: se-resize; touch-action: none;"
             >
             </div>
           </div>

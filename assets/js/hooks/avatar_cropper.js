@@ -110,7 +110,7 @@ export const AvatarCropper = {
       this.scale = Math.max(minScale, (newScaleX + newScaleY) / 2)
       this.clamp()
       this.redraw()
-    })
+    }, { passive: false })
     this.handleSE.addEventListener("pointerup", () => { this.resizing = false })
     this.handleSE.addEventListener("pointercancel", () => { this.resizing = false })
   },

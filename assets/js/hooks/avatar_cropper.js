@@ -32,18 +32,8 @@ export const AvatarCropper = {
       this.el.querySelector("#avatar-data").value = offscreen.toDataURL("image/webp")
     })
 
-    this.handleEvent("avatar_uploaded", ({ ts }) => {
-      const userId = this.el.dataset.userId
-      let preview = this.el.querySelector("#current-avatar-preview")
-      if (!preview) {
-        preview = document.createElement("img")
-        preview.id = "current-avatar-preview"
-        preview.alt = "Your current avatar"
-        preview.className = "size-16 rounded-full object-cover"
-        this.el.insertBefore(preview, this.el.firstChild)
-      }
-      preview.src = `/users/${userId}/avatar?v=${ts}`
-      preview.style.display = ""
+    this.handleEvent("avatar_uploaded", () => {
+      this.el.querySelector("#avatar-preview-circle").style.display = ""
       canvas.style.display = "none"
       this.handleSE.style.display = "none"
       this.img = null
@@ -52,8 +42,7 @@ export const AvatarCropper = {
     const input = this.el.querySelector("input[type=file]")
 
     input.addEventListener("change", (e) => {
-      const preview = this.el.querySelector("#current-avatar-preview")
-      if (preview) preview.style.display = "none"
+      this.el.querySelector("#avatar-preview-circle").style.display = "none"
       const file = e.target.files[0]
       if (!file) return
       const reader = new FileReader()

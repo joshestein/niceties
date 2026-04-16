@@ -27,15 +27,20 @@ defmodule NicetiesWeb.UserLive.Settings do
 
       <div class="fieldset mb-2">
         <span class="label mb-1">Photo</span>
-        <div id="avatar-cropper" phx-hook="AvatarCropper" data-user-id={@current_scope.user.id}>
-          <%= if @current_scope.user.avatar || @avatar_ts do %>
-            <img
-              id="current-avatar-preview"
-              src={"/users/#{@current_scope.user.id}/avatar" <> if(@avatar_ts, do: "?v=#{@avatar_ts}", else: "")}
-              alt="Your current avatar"
-              class="size-16 rounded-full object-cover"
-            />
-          <% end %>
+        <div id="avatar-cropper" phx-hook="AvatarCropper">
+          <div id="avatar-preview-circle" class="size-16 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
+            <%= if @current_scope.user.avatar || @avatar_ts do %>
+              <img
+                src={"/users/#{@current_scope.user.id}/avatar" <> if(@avatar_ts, do: "?v=#{@avatar_ts}", else: "")}
+                alt="Your current avatar"
+                class="size-16 object-cover"
+              />
+            <% else %>
+              <span class="text-warm/60 text-sm font-light tracking-widest">
+                {initials(@current_scope.user)}
+              </span>
+            <% end %>
+          </div>
           <div
             id="avatar-canvas-wrapper"
             phx-update="ignore"
@@ -149,4 +154,5 @@ defmodule NicetiesWeb.UserLive.Settings do
       _ -> {:noreply, put_flash(socket, :error, "Upload failed.")}
     end
   end
+
 end

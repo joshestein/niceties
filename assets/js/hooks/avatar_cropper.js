@@ -18,6 +18,20 @@ export const AvatarCropper = {
     this.ctx = canvas.getContext("2d")
     this.handleSE = this.el.querySelector("#avatar-handle-se")
 
+    const form = this.el.querySelector("#avatar_form")
+    form.addEventListener("submit", (e) => {
+      if (!this.img) { e.preventDefault(); return }
+      const { img, scale, offsetX, offsetY } = this
+      const cropX = (CX - CROP_RADIUS - offsetX) / scale
+      const cropY = (CY - CROP_RADIUS - offsetY) / scale
+      const cropSize = 2 * CROP_RADIUS / scale
+      const offscreen = document.createElement("canvas")
+      offscreen.width = 128
+      offscreen.height = 128
+      offscreen.getContext("2d").drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, 128, 128)
+      this.el.querySelector("#avatar-data").value = offscreen.toDataURL("image/webp")
+    })
+
     const input = this.el.querySelector("input[type=file]")
 
     input.addEventListener("change", (e) => {
@@ -119,10 +133,5 @@ export const AvatarCropper = {
     // Move handle to SE image corner
     this.handleSE.style.left = (offsetX + imgW - 7) + "px"
     this.handleSE.style.top = (offsetY + imgH - 7) + "px"
-
-    // Crop circle in natural image coordinates
-    this.el.querySelector("#crop-x").value = Math.round((CX - CROP_RADIUS - offsetX) / scale)
-    this.el.querySelector("#crop-y").value = Math.round((CY - CROP_RADIUS - offsetY) / scale)
-    this.el.querySelector("#crop-size").value = Math.round(2 * CROP_RADIUS / scale)
   }
 }

@@ -51,11 +51,9 @@ defmodule NicetiesWeb.UserLive.Settings do
             style="display: none; position: absolute; width: 14px; height: 14px; border-right: 2.5px solid #0D99FF; border-bottom: 2.5px solid #0D99FF; cursor: se-resize;"
           ></div>
         </div>
-        <.form for={%{}} id="avatar_form" phx-submit="upload_avatar" phx-change="validate_avatar">
-          <.live_file_input upload={@uploads.avatar} />
-          <input type="hidden" id="crop-x" name="crop_x" value="" />
-          <input type="hidden" id="crop-y" name="crop_y" value="" />
-          <input type="hidden" id="crop-size" name="crop_size" value="" />
+        <.form for={%{}} id="avatar_form" phx-submit="upload_avatar">
+          <input type="file" accept=".jpg,.jpeg,.png,.webp" />
+          <input type="hidden" id="avatar-data" name="avatar_data" value="" />
           <.button type="submit" variant="primary">Upload photo</.button>
         </.form>
       </div>
@@ -85,11 +83,6 @@ defmodule NicetiesWeb.UserLive.Settings do
       socket
       |> assign(:current_email, user.email)
       |> assign(:email_form, to_form(email_changeset))
-      |> allow_upload(:avatar,
-        accept: ~w(.jpg .jpeg .png .webp),
-        max_entries: 1,
-        max_file_size: 5_000_000
-      )
 
     {:ok, socket}
   end
@@ -127,56 +120,19 @@ defmodule NicetiesWeb.UserLive.Settings do
     end
   end
 
-  # phx-change needed for file uploading even though event handler does nothing
-  def handle_event("validate_avatar", _params, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_event("upload_avatar", params, socket) do
+  def handle_event("upload_avatar", %{"avatar_data" => data_url}, socket) do
     user = socket.assigns.current_scope.user
-    crop = parse_crop(params)
 
-    result =
-      consume_uploaded_entries(socket, :avatar, fn %{path: path}, _entry ->
-        outcome =
-          with {:ok, image} <- Image.open(path),
-               {:ok, cropped} <- maybe_crop(image, crop),
-               {:ok, resized} <- Image.thumbnail(cropped, 128, fit: :cover, height: 128),
-               {:ok, binary} <- Image.write(resized, :memory, suffix: ".webp") do
-            {:ok, binary}
-          end
-
-        {:ok, outcome}
-      end)
-
-    case result do
-      [{:ok, binary}] when is_binary(binary) ->
-        case Accounts.update_user_avatar(user, %{avatar: binary}) do
-          {:ok, _user} ->
-            {:noreply, put_flash(socket, :info, "Avatar updated.")}
-
-          {:error, _changeset} ->
-            {:noreply, put_flash(socket, :error, "Failed to save avatar.")}
-        end
-
-      _ ->
-        {:noreply, put_flash(socket, :error, "Upload failed.")}
-    end
-  end
-
-  defp parse_crop(%{"crop_x" => x, "crop_y" => y, "crop_size" => size}) do
-    with {x, ""} <- Integer.parse(x),
-         {y, ""} <- Integer.parse(y),
-         {size, ""} <- Integer.parse(size),
-         true <- size > 0 do
-      {x, y, size}
+    with "data:image/webp;base64," <> base64 <- data_url,
+         true <- byte_size(base64) < 100_000,
+         {:ok, binary} <- Base.decode64(base64),
+         <<"RIFF", _::binary-size(4), "WEBP", _::binary>> <- binary do
+      case Accounts.update_user_avatar(user, %{avatar: binary}) do
+        {:ok, _user} -> {:noreply, put_flash(socket, :info, "Avatar updated.")}
+        {:error, _}  -> {:noreply, put_flash(socket, :error, "Failed to save avatar.")}
+      end
     else
-      _ -> nil
+      _ -> {:noreply, put_flash(socket, :error, "Upload failed.")}
     end
   end
-
-  defp parse_crop(_), do: nil
-
-  defp maybe_crop(image, nil), do: {:ok, image}
-  defp maybe_crop(image, {x, y, size}), do: Image.crop(image, x, y, size, size)
 end

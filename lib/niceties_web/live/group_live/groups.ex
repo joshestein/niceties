@@ -153,9 +153,17 @@ defmodule NicetiesWeb.GroupLive.Groups do
     ~H"""
     <div class="flex w-64 shrink-0 items-center gap-3 pr-6">
       <div class="size-16 bg-warm/10 flex shrink-0 items-center justify-center rounded-full">
-        <span class="text-warm/60 text-sm font-light tracking-widest">
-          {initials(@user)}
-        </span>
+        <%= if @user && @user.avatar do %>
+          <img
+            src={~p"/users/#{@user.id}/avatar"}
+            alt={@user.name}
+            class="size-16 rounded-full object-cover"
+          />
+        <% else %>
+          <span class="text-warm/60 text-sm font-light tracking-widest">
+            {initials(@user)}
+          </span>
+        <% end %>
       </div>
       <div>
         <p class="font-serif text-warm text-[1.3rem] italic leading-tight">

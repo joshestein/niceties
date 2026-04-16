@@ -28,7 +28,10 @@ defmodule NicetiesWeb.UserLive.Settings do
       <div class="fieldset mb-2">
         <span class="label mb-1">Photo</span>
         <div id="avatar-cropper" phx-hook="AvatarCropper">
-          <div id="avatar-preview-circle" class="size-16 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
+          <div
+            id="avatar-preview-circle"
+            class="size-16 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full"
+          >
             <%= if @current_scope.user.avatar || @avatar_ts do %>
               <img
                 src={"/users/#{@current_scope.user.id}/avatar" <> if(@avatar_ts, do: "?v=#{@avatar_ts}", else: "")}
@@ -154,5 +157,4 @@ defmodule NicetiesWeb.UserLive.Settings do
       _ -> {:noreply, put_flash(socket, :error, "Upload failed.")}
     end
   end
-
 end

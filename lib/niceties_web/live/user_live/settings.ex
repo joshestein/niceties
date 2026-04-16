@@ -37,24 +37,29 @@ defmodule NicetiesWeb.UserLive.Settings do
               class="size-16 rounded-full object-cover"
             />
           <% end %>
-          <div id="avatar-canvas-wrapper" phx-update="ignore" style="display: inline-block; position: relative;">
-          <canvas
-            id="avatar-canvas"
-            width="400"
-            height="400"
-            style="display: none; cursor: grab;"
-          >
-          </canvas>
           <div
-            id="avatar-handle-se"
-            style="display: none; position: absolute; width: 14px; height: 14px; border-right: 2.5px solid #0D99FF; border-bottom: 2.5px solid #0D99FF; cursor: se-resize;"
-          ></div>
-        </div>
-        <.form for={%{}} id="avatar_form" phx-submit="upload_avatar">
-          <input type="file" accept=".jpg,.jpeg,.png,.webp" />
-          <input type="hidden" id="avatar-data" name="avatar_data" value="" />
-          <.button type="submit" variant="primary">Upload photo</.button>
-        </.form>
+            id="avatar-canvas-wrapper"
+            phx-update="ignore"
+            style="display: inline-block; position: relative;"
+          >
+            <canvas
+              id="avatar-canvas"
+              width="400"
+              height="400"
+              style="display: none; cursor: grab;"
+            >
+            </canvas>
+            <div
+              id="avatar-handle-se"
+              style="display: none; position: absolute; width: 14px; height: 14px; border-right: 2.5px solid #0D99FF; border-bottom: 2.5px solid #0D99FF; cursor: se-resize;"
+            >
+            </div>
+          </div>
+          <.form for={%{}} id="avatar_form" phx-submit="upload_avatar">
+            <input type="file" accept=".jpg,.jpeg,.png,.webp" />
+            <input type="hidden" id="avatar-data" name="avatar_data" value="" />
+            <.button type="submit" variant="primary">Upload photo</.button>
+          </.form>
         </div>
       </div>
     </Layouts.app>
@@ -131,11 +136,13 @@ defmodule NicetiesWeb.UserLive.Settings do
       case Accounts.update_user_avatar(user, %{avatar: binary}) do
         {:ok, _user} ->
           ts = System.os_time(:millisecond)
+
           {:noreply,
            socket
            |> assign(:avatar_ts, ts)
            |> push_event("avatar_uploaded", %{ts: ts})
            |> put_flash(:info, "Avatar updated.")}
+
         {:error, _} ->
           {:noreply, put_flash(socket, :error, "Failed to save avatar.")}
       end

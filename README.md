@@ -38,7 +38,7 @@ These instructions assume you are building and running on the same VPS.
 
 ### Prerequisites
 
-- Elixir and Erlang installed (see `.tool-versions` for versions)
+- Elixir 1.18+ and Erlang/OTP 27+
 - PostgreSQL running
 - Caddy installed and running as a reverse proxy (handles TLS automatically)
 

@@ -31,3 +31,90 @@ Niceties are short pieces of positive feedback that group members write to each 
 
 Session-based magic link auth - no passwords. Tokens are valid for 14 days with a 7-day reissue window for active
 sessions. Email confirmation is required before accessing group features.
+
+## Deployment
+
+These instructions assume you are building and running on the same VPS.
+
+### Prerequisites
+
+- Elixir and Erlang installed (see `.tool-versions` for versions)
+- PostgreSQL running
+- Caddy installed and running as a reverse proxy (handles TLS automatically)
+
+### Caddy
+
+Add to your `Caddyfile`:
+
+```caddy
+niceties.example.com {
+    reverse_proxy localhost:4000
+}
+```
+
+Caddy will handle TLS automatically via Let's Encrypt.
+
+### Environment variables
+
+Set these before running any production commands, e.g. in `/etc/niceties.env` or your systemd `EnvironmentFile`:
+
+```ini
+SECRET_KEY_BASE=     # generate with: mix phx.gen.secret
+DATABASE_URL=        # e.g. ecto://user:pass@localhost/niceties_prod
+PHX_HOST=            # your domain, e.g. niceties.example.com
+PORT=4000
+MAILGUN_API_KEY=
+MAILGUN_DOMAIN=
+```
+
+### First deploy
+
+```sh
+mix deps.get --only prod
+MIX_ENV=prod mix compile
+MIX_ENV=prod mix assets.deploy
+MIX_ENV=prod mix ecto.migrate
+MIX_ENV=prod mix phx.server
+```
+
+### Subsequent deploys
+
+```sh
+git pull
+mix deps.get --only prod
+MIX_ENV=prod mix compile
+MIX_ENV=prod mix assets.deploy
+MIX_ENV=prod mix ecto.migrate
+systemctl restart niceties
+```
+
+### systemd
+
+Create `/etc/systemd/system/niceties.service`:
+
+```ini
+[Unit]
+Description=Niceties
+After=network.target postgresql.service
+
+[Service]
+User=niceties
+WorkingDirectory=/home/niceties/app
+EnvironmentFile=/etc/niceties.env
+ExecStart=/usr/bin/env MIX_ENV=prod mix phx.server
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then:
+
+```sh
+systemctl daemon-reload
+systemctl enable niceties
+systemctl start niceties
+```
+
+---

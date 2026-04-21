@@ -80,9 +80,13 @@ defmodule Niceties.Accounts.UserNotifier do
 
     #{group_line} - a place to share and receive kind words with your group.
 
+    A nicety is a short, genuine note of appreciation for someone: a compliment, a thank-you, or something you admire about them. At the end of each cycle, everyone gets to see the niceties written for them.
+
+    Confirm your account to get started:
+
     #{url}
 
-    If you didn't create an account with us, please ignore this.
+    If you didn't expect this invitation, please ignore this.
 
     ==============================
     """)

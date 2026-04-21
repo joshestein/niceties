@@ -44,9 +44,9 @@ defmodule Niceties.Accounts.UserNotifier do
   Sends a confirmation email for users who have not yet confirmed their account,
   and a standard login email for returning users.
   """
-  def deliver_login_instructions(user, url) do
+  def deliver_login_instructions(user, url, group_name \\ nil) do
     case user do
-      %User{confirmed_at: nil} -> deliver_invitation_instructions(user, url)
+      %User{confirmed_at: nil} -> deliver_invitation_instructions(user, url, group_name)
       _ -> deliver_magic_link_instructions(user, url)
     end
   end

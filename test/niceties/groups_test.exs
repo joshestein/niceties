@@ -20,16 +20,19 @@ defmodule Niceties.GroupsTest do
       assert Groups.get_group!(group.id) == group
     end
 
-    test "create_group/1 with valid data creates a group" do
+    test "create_group/2 with valid data creates a group and admin membership" do
+      user = Niceties.AccountsFixtures.user_fixture()
       valid_attrs = %{name: "some name", releases_at: ~U[2026-03-14 12:52:00Z]}
 
-      assert {:ok, %Group{} = group} = Groups.create_group(valid_attrs)
+      assert {:ok, %Group{} = group} = Groups.create_group(valid_attrs, user.id)
       assert group.name == "some name"
       assert group.releases_at == ~U[2026-03-14 12:52:00Z]
+      assert Groups.is_admin_of_group?(user.id, group.id)
     end
 
-    test "create_group/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Groups.create_group(@invalid_attrs)
+    test "create_group/2 with invalid data returns error changeset" do
+      user = Niceties.AccountsFixtures.user_fixture()
+      assert {:error, %Ecto.Changeset{}} = Groups.create_group(@invalid_attrs, user.id)
     end
 
     test "update_group/2 with valid data updates the group" do
@@ -68,7 +71,7 @@ defmodule Niceties.GroupsTest do
 
     test "list_memberships/0 returns all memberships" do
       membership = membership_fixture()
-      assert Groups.list_memberships() == [membership]
+      assert membership in Groups.list_memberships()
     end
 
     test "get_membership!/1 returns the membership with given id" do

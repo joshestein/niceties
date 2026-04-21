@@ -8,13 +8,15 @@ defmodule Niceties.GroupsFixtures do
   Generate a group.
   """
   def group_fixture(attrs \\ %{}) do
+    user = Niceties.AccountsFixtures.user_fixture()
+
     {:ok, group} =
       attrs
       |> Enum.into(%{
         name: "some name",
         releases_at: ~U[2026-03-14 12:52:00Z]
       })
-      |> Niceties.Groups.create_group()
+      |> Niceties.Groups.create_group(user.id)
 
     group
   end

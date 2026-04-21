@@ -77,7 +77,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
         <li
           :for={user <- @users}
           id={"user-#{user.id}"}
-          class="border-warm/10 divide-warm/15 flex gap-6 divide-x border-b pb-4"
+          class="border-warm/10 flex flex-col gap-4 border-b pb-4 sm:divide-warm/15 sm:flex-row sm:gap-6 sm:divide-x"
         >
           <.user_avatar user={user} current_user_id={@current_user_id} />
 
@@ -122,7 +122,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
               <li
                 :for={nicety <- @received}
                 id={"received-#{nicety.id}"}
-                class="border-warm/10 divide-warm/15 flex gap-6 divide-x border-b pb-8"
+                class="border-warm/10 flex flex-col gap-4 border-b pb-8 sm:divide-warm/15 sm:flex-row sm:gap-6 sm:divide-x"
               >
                 <.user_avatar user={nicety.user_from} current_user_id={@current_user_id} />
                 <p class="text-warm/80 text-base font-light leading-relaxed">
@@ -151,7 +151,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
 
   defp user_avatar(assigns) do
     ~H"""
-    <div class="flex w-64 shrink-0 items-center gap-3 pr-6">
+    <div class="flex w-full shrink-0 items-center gap-3 sm:w-64 sm:pr-6">
       <div class="size-16 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
         <%= if @user && @user.avatar do %>
           <img

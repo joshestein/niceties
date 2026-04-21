@@ -8,7 +8,7 @@ defmodule NicetiesWeb.AdminController do
   alias Niceties.Groups.Membership
 
   def groups(conn, _params) do
-    groups = Groups.list_groups()
+    groups = Groups.list_admin_groups_for_user(conn.assigns.current_scope)
     render(conn, groups: groups, form: to_form(Groups.change_group(%Group{})))
   end
 

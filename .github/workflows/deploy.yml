@@ -15,6 +15,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
+            export PATH=/home/${{ secrets.VPS_USER }}/.asdf/installs/elixir/1.19.5-otp-28/bin:/home/${{ secrets.VPS_USER }}/.asdf/installs/erlang/28.3.1/bin:/usr/local/bin:/usr/bin:/bin
             cd /home/${{ secrets.VPS_USER }}/niceties
             git pull origin main
             mix deps.get --only prod

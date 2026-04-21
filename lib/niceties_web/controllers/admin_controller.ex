@@ -14,8 +14,9 @@ defmodule NicetiesWeb.AdminController do
 
   def create_group(conn, %{"group" => %{"name" => name, "releases_at" => releases_at}}) do
     group_params = %{"name" => name, "releases_at" => releases_at}
+    user_id = conn.assigns.current_scope.user.id
 
-    case Groups.create_group(group_params) do
+    case Groups.create_group(group_params, user_id) do
       {:ok, group} ->
         conn
         |> put_flash(:info, "Successfully created group")

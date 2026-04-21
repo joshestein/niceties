@@ -112,10 +112,22 @@ defmodule Niceties.Groups do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_group(attrs) do
-    %Group{}
-    |> Group.changeset(attrs)
-    |> Repo.insert()
+  def create_group(attrs, creator_user_id) do
+    Multi.new()
+    |> Multi.insert(:group, Group.changeset(%Group{}, attrs))
+    |> Multi.insert(:membership, fn %{group: group} ->
+      Membership.changeset(%Membership{}, %{
+        role: "admin",
+        group_id: group.id,
+        user_id: creator_user_id
+      })
+    end)
+    |> Repo.transact()
+    |> case do
+      {:ok, %{group: group}} -> {:ok, group}
+      {:error, :group, changeset, _} -> {:error, changeset}
+      {:error, :membership, changeset, _} -> {:error, changeset}
+    end
   end
 
   @doc """

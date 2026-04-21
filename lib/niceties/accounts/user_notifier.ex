@@ -68,14 +68,17 @@ defmodule Niceties.Accounts.UserNotifier do
     """)
   end
 
-  defp deliver_invitation_instructions(user, url) do
+  defp deliver_invitation_instructions(user, url, group_name) do
+    group_line =
+      if group_name, do: "You've been invited to join #{group_name} on Niceties", else: "You've been invited to Niceties"
+
     deliver(user.email, "You've been invited to join Niceties!", """
 
     ==============================
 
     Hi #{user.name},
 
-    You can confirm your account by visiting the URL below:
+    #{group_line} - a place to share and receive kind words with your group.
 
     #{url}
 

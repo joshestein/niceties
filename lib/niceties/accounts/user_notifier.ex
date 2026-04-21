@@ -9,7 +9,7 @@ defmodule Niceties.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Niceties", "contact@example.com"})
+      |> from({"Niceties", "niceties@aisafetysa.com"})
       |> subject(subject)
       |> text_body(body)
 

@@ -251,7 +251,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
       if group.released do
         Notes.get_received(current_scope, id)
         |> Enum.sort_by(fn nicety ->
-          (nicety.user_from && nicety.user_from.name || "")
+          ((nicety.user_from && nicety.user_from.name) || "")
           |> String.split(" ")
           |> List.first("")
         end)

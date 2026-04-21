@@ -67,27 +67,6 @@ MAILGUN_API_KEY=
 MAILGUN_DOMAIN=
 ```
 
-### First deploy
-
-```sh
-mix deps.get --only prod
-MIX_ENV=prod mix compile
-MIX_ENV=prod mix assets.deploy
-MIX_ENV=prod mix ecto.migrate
-MIX_ENV=prod mix phx.server
-```
-
-### Subsequent deploys
-
-```sh
-git pull
-mix deps.get --only prod
-MIX_ENV=prod mix compile
-MIX_ENV=prod mix assets.deploy
-MIX_ENV=prod mix ecto.migrate
-systemctl restart niceties
-```
-
 ### systemd
 
 Create `/etc/systemd/system/niceties.service`:
@@ -114,7 +93,38 @@ Then:
 ```sh
 systemctl daemon-reload
 systemctl enable niceties
+```
+
+### First deploy
+
+Create a postgres user with `CREATEDB` privilege:
+
+```sh
+sudo -u postgres psql -c "CREATE USER myuser WITH PASSWORD 'mypassword';"
+sudo -u postgres psql -c "ALTER USER myuser CREATEDB;"
+```
+
+Then build and start:
+
+```sh
+mix local.hex --force
+mix deps.get --only prod
+MIX_ENV=prod mix compile
+MIX_ENV=prod mix assets.deploy
+MIX_ENV=prod mix ecto.create
+MIX_ENV=prod mix ecto.migrate
 systemctl start niceties
+```
+
+### Subsequent deploys
+
+```sh
+git pull
+mix deps.get --only prod
+MIX_ENV=prod mix compile
+MIX_ENV=prod mix assets.deploy
+MIX_ENV=prod mix ecto.migrate
+systemctl restart niceties
 ```
 
 ---

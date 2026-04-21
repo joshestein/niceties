@@ -250,13 +250,21 @@ defmodule NicetiesWeb.GroupLive.Groups do
     received =
       if group.released do
         Notes.get_received(current_scope, id)
+        |> Enum.sort_by(fn nicety ->
+          (nicety.user_from && nicety.user_from.name || "")
+          |> String.split(" ")
+          |> List.first("")
+        end)
       else
         group.releases_at
       end
 
     members = Groups.get_all_memberships(group)
 
-    users = Enum.map(members, fn member -> member.user end)
+    users =
+      members
+      |> Enum.map(fn member -> member.user end)
+      |> Enum.sort_by(fn user -> user.name |> String.split(" ") |> List.first("") end)
 
     forms =
       Map.new(users, fn user ->

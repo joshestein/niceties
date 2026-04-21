@@ -59,17 +59,19 @@ defmodule NicetiesWeb.AdminController do
         "id" => id,
         "membership" => %{"name" => name, "email" => email, "role" => role}
       }) do
+    group = Groups.get_group!(id)
+
     case Groups.create_member(%{name: name, email: email, role: role, group_id: id}) do
       {:ok, %{resolved_user: user, membership: _membership}} ->
         Accounts.deliver_login_instructions(
           user,
-          &url(~p"/users/log-in/#{&1}")
+          &url(~p"/users/log-in/#{&1}"),
+          group.name
         )
 
         conn |> redirect(to: ~p"/admin/groups/#{id}")
 
       {:error, _step, changeset, _changes} ->
-        group = Groups.get_group!(id)
         members = Groups.get_all_memberships(group)
 
         conn

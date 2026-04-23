@@ -152,12 +152,12 @@ defmodule NicetiesWeb.GroupLive.Groups do
   defp user_avatar(assigns) do
     ~H"""
     <div class="flex w-full shrink-0 items-center gap-3 sm:w-64 sm:pr-6">
-      <div class="size-16 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
+      <div class="size-20 sm:size-28 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
         <%= if @user && @user.avatar do %>
           <img
             src={~p"/users/#{@user.id}/avatar"}
             alt={@user.name}
-            class="size-16 rounded-full object-cover"
+            class="size-20 sm:size-28 rounded-full object-cover"
           />
         <% else %>
           <span class="text-warm/60 text-sm font-light tracking-widest">

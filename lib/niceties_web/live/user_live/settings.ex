@@ -30,13 +30,13 @@ defmodule NicetiesWeb.UserLive.Settings do
         <div id="avatar-cropper" phx-hook="AvatarCropper">
           <div
             id="avatar-preview-circle"
-            class="size-16 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full"
+            class="size-20 sm:size-28 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full"
           >
             <%= if @current_scope.user.avatar || @avatar_ts do %>
               <img
                 src={"/users/#{@current_scope.user.id}/avatar" <> if(@avatar_ts, do: "?v=#{@avatar_ts}", else: "")}
                 alt="Your current avatar"
-                class="size-16 object-cover"
+                class="size-20 sm:size-28 object-cover"
               />
             <% else %>
               <span class="text-warm/60 text-sm font-light tracking-widest">

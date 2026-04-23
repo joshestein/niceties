@@ -138,7 +138,7 @@ defmodule NicetiesWeb.UserLive.Settings do
     user = socket.assigns.current_scope.user
 
     with "data:image/webp;base64," <> base64 <- data_url,
-         true <- byte_size(base64) < 100_000,
+         true <- byte_size(base64) < 500_000,
          {:ok, binary} <- Base.decode64(base64),
          <<"RIFF", _::binary-size(4), "WEBP", _::binary>> <- binary do
       case Accounts.update_user_avatar(user, %{avatar: binary}) do

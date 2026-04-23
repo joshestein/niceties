@@ -136,6 +136,11 @@ body:has(#received:target) a.nicety-tab-link[href="#received"] {
   transition: none;
 }
 
+.checkbox:checked,
+.checkbox[aria-checked="true"] {
+  box-shadow: none;
+}
+
 .checkbox::before {
   transition: none;
 }

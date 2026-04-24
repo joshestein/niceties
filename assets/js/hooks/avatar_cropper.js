@@ -32,10 +32,13 @@ export const AvatarCropper = {
       this.el.querySelector("#avatar-data").value = offscreen.toDataURL("image/webp")
     })
 
+    const uploadBtn = this.el.querySelector("#avatar-upload-btn")
+
     this.handleEvent("avatar_uploaded", () => {
       this.el.querySelector("#avatar-preview-circle").style.display = ""
       canvas.style.display = "none"
       this.handleSE.style.display = "none"
+      uploadBtn.style.display = "none"
       this.img = null
     })
 
@@ -56,6 +59,7 @@ export const AvatarCropper = {
           this.offsetY = (CANVAS_SIZE - img.height * this.scale) / 2
           canvas.style.display = "block"
           this.handleSE.style.display = "block"
+          uploadBtn.style.display = ""
           this.redraw()
         }
         img.src = ev.target.result

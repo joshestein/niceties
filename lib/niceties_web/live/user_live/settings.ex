@@ -66,7 +66,7 @@ defmodule NicetiesWeb.UserLive.Settings do
             <input id="avatar-file-input" type="file" accept=".jpg,.jpeg,.png,.webp" class="sr-only" />
             <input type="hidden" id="avatar-data" name="avatar_data" value="" />
             <label for="avatar-file-input" class="btn btn-primary btn-soft">Choose photo</label>
-            <.button type="submit" variant="primary">Upload photo</.button>
+            <.button id="avatar-upload-btn" type="submit" variant="primary" style="display:none">Upload photo</.button>
           </.form>
         </div>
       </div>

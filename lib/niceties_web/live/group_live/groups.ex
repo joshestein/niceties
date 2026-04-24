@@ -105,6 +105,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
                 label="Give anonymously?"
                 id={"nicety-anonymous-#{user.id}"}
               />
+              <span id={"saved-#{user.id}"} class="nicety-saved-indicator font-sans text-warm/40 text-xs mt-1 block">Saved</span>
             </.form>
           <% end %>
         </li>
@@ -232,7 +233,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
               to_form(Notes.change_nicety(nicety))
             )
 
-          {:noreply, assign(socket, :forms, forms)}
+          {:noreply, socket |> assign(:forms, forms) |> push_event("nicety_saved", %{user_id: user_to_id})}
 
         {:error, changeset} ->
           forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), to_form(changeset))

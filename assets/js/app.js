@@ -41,6 +41,14 @@ window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 
+window.addEventListener("phx:nicety_saved", ({detail: {user_id}}) => {
+  const el = document.getElementById(`saved-${user_id}`)
+  if (!el) return
+  el.classList.remove("nicety-saved-flash")
+  void el.offsetWidth
+  el.classList.add("nicety-saved-flash")
+})
+
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session

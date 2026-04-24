@@ -131,6 +131,22 @@ body:has(#received:target) a.nicety-tab-link[href="#received"] {
   border-bottom-color: var(--color-warm);
 }
 
+/* Nicety saved indicator */
+.nicety-saved-indicator {
+  opacity: 0;
+}
+
+@keyframes nicety-saved-flash {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.nicety-saved-flash {
+  animation: nicety-saved-flash 2s ease forwards;
+}
+
 /* Checkbox tweaks */
 .checkbox {
   transition: none;

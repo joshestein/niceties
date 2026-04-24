@@ -96,7 +96,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
               <.input
                 field={@forms[user.id][:body]}
                 type="textarea"
-                phx-debounce="blur"
+                phx-debounce="1500"
                 id={"nicety-body-#{user.id}"}
               />
               <.input

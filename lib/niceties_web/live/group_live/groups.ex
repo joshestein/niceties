@@ -105,7 +105,12 @@ defmodule NicetiesWeb.GroupLive.Groups do
                 label="Give anonymously?"
                 id={"nicety-anonymous-#{user.id}"}
               />
-              <span id={"saved-#{user.id}"} class="nicety-saved-indicator font-sans text-warm/40 text-xs mt-1 block">Saved</span>
+              <span
+                id={"saved-#{user.id}"}
+                class="nicety-saved-indicator font-sans text-warm/40 mt-1 block text-xs"
+              >
+                Saved
+              </span>
             </.form>
           <% end %>
         </li>
@@ -153,12 +158,12 @@ defmodule NicetiesWeb.GroupLive.Groups do
   defp user_avatar(assigns) do
     ~H"""
     <div class="flex w-full shrink-0 items-center gap-3 sm:w-64 sm:pr-6">
-      <div class="size-20 sm:size-28 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
+      <div class="size-20 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full sm:size-28">
         <%= if @user && @user.avatar do %>
           <img
             src={~p"/users/#{@user.id}/avatar"}
             alt={@user.name}
-            class="size-20 sm:size-28 rounded-full object-cover"
+            class="size-20 rounded-full object-cover sm:size-28"
           />
         <% else %>
           <span class="text-warm/60 text-sm font-light tracking-widest">
@@ -233,7 +238,8 @@ defmodule NicetiesWeb.GroupLive.Groups do
               to_form(Notes.change_nicety(nicety))
             )
 
-          {:noreply, socket |> assign(:forms, forms) |> push_event("nicety_saved", %{user_id: user_to_id})}
+          {:noreply,
+           socket |> assign(:forms, forms) |> push_event("nicety_saved", %{user_id: user_to_id})}
 
         {:error, changeset} ->
           forms = Map.put(socket.assigns.forms, String.to_integer(user_to_id), to_form(changeset))

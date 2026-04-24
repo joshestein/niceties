@@ -30,13 +30,13 @@ defmodule NicetiesWeb.UserLive.Settings do
         <div id="avatar-cropper" phx-hook="AvatarCropper">
           <div
             id="avatar-preview-circle"
-            class="size-20 sm:size-28 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full"
+            class="size-20 bg-warm/10 flex shrink-0 items-center justify-center overflow-hidden rounded-full sm:size-28"
           >
             <%= if @current_scope.user.avatar || @avatar_ts do %>
               <img
                 src={"/users/#{@current_scope.user.id}/avatar" <> if(@avatar_ts, do: "?v=#{@avatar_ts}", else: "")}
                 alt="Your current avatar"
-                class="size-20 sm:size-28 object-cover"
+                class="size-20 object-cover sm:size-28"
               />
             <% else %>
               <span class="text-warm/60 text-sm font-light tracking-widest">
@@ -66,7 +66,9 @@ defmodule NicetiesWeb.UserLive.Settings do
             <input id="avatar-file-input" type="file" accept=".jpg,.jpeg,.png,.webp" class="sr-only" />
             <input type="hidden" id="avatar-data" name="avatar_data" value="" />
             <label for="avatar-file-input" class="btn btn-primary btn-soft">Choose photo</label>
-            <.button id="avatar-upload-btn" type="submit" variant="primary" style="display:none">Upload photo</.button>
+            <.button id="avatar-upload-btn" type="submit" variant="primary" style="display:none">
+              Upload photo
+            </.button>
           </.form>
         </div>
       </div>

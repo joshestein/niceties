@@ -97,6 +97,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
                 field={@forms[user.id][:body]}
                 type="textarea"
                 phx-debounce="1500"
+                phx-hook="PreserveSize"
                 id={"nicety-body-#{user.id}"}
               />
               <.input

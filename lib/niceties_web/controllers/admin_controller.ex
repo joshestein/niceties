@@ -42,6 +42,20 @@ defmodule NicetiesWeb.AdminController do
     )
   end
 
+  def update_group(conn, %{"id" => id, "group" => group_params}) do
+    group = Groups.get_group!(id)
+
+    case Groups.update_group(group, group_params) do
+      {:ok, _group} ->
+        conn |> put_flash(:info, "Group updated") |> redirect(to: ~p"/admin/groups/#{id}")
+
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, "Failed to update group")
+        |> redirect(to: ~p"/admin/groups/#{id}")
+    end
+  end
+
   def release(conn, %{"id" => id, "return_to" => return_to}) do
     group = Groups.get_group!(id)
 

@@ -1,6 +1,8 @@
 defmodule NicetiesWeb.AdminHTML do
   use NicetiesWeb, :html
 
+  alias Niceties.Groups
+
   def groups(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
@@ -42,14 +44,37 @@ defmodule NicetiesWeb.AdminHTML do
 
       <div class="mt-4 flex flex-col justify-between gap-1">
         <h1 class="text-xl font-semibold">Group: {@group.name}</h1>
-        <div class="flex items-center gap-4">
-          <.release_status group={@group} />
-          <.release_form
-            :if={!@group.released}
-            action={~p"/admin/groups/#{@group.id}/release"}
-            return_to={~p"/admin/groups/#{@group.id}"}
-          />
-        </div>
+        <%= if @group.released do %>
+          <span class="text-success text-sm">
+            Released<%= if @group.releases_at do %>
+              {Calendar.strftime(@group.releases_at, "%b %d, %Y")}
+            <% end %>
+          </span>
+        <% else %>
+          <div class="mt-2 flex items-end gap-2">
+            <.form
+              for={to_form(Groups.change_group(@group))}
+              action={~p"/admin/groups/#{@group.id}"}
+              method="put"
+              class="flex items-end gap-2"
+            >
+              <.input
+                type="datetime-local"
+                label="Release date"
+                field={to_form(Groups.change_group(@group))[:releases_at]}
+              />
+              <div class="fieldset mb-2">
+                <span class="label invisible mb-1">x</span>
+                <.button class="btn btn-soft btn-primary">Update</.button>
+              </div>
+            </.form>
+            <.form for={%{}} action={~p"/admin/groups/#{@group.id}/release"} class="fieldset mb-2">
+              <span class="label invisible mb-1">x</span>
+              <input type="hidden" name="return_to" value={~p"/admin/groups/#{@group.id}"} />
+              <.button class="btn btn-primary">Release now</.button>
+            </.form>
+          </div>
+        <% end %>
       </div>
 
       <.form for={@form} action={~p"/admin/groups/#{@group.id}/members"}>

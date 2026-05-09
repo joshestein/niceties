@@ -66,6 +66,7 @@ defmodule NicetiesWeb.Router do
   scope "/admin", NicetiesWeb do
     pipe_through [:browser, :require_authenticated_user, :require_admin_user]
 
+    get "/", AdminController, :index
     get "/groups", AdminController, :groups
     post "/groups", AdminController, :create_group
     get "/groups/:id", AdminController, :group

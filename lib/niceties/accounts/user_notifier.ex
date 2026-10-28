@@ -1,6 +1,8 @@
 defmodule Niceties.Accounts.UserNotifier do
   import Swoosh.Email
 
+  require Logger
+
   alias Niceties.Mailer
   alias Niceties.Accounts.User
 
@@ -15,6 +17,10 @@ defmodule Niceties.Accounts.UserNotifier do
 
     with {:ok, _metadata} <- Mailer.deliver(email) do
       {:ok, email}
+    else
+      {:error, reason} = error ->
+        Logger.error("Failed to send #{inspect(subject)} to #{recipient}: #{inspect(reason)}")
+        error
     end
   end
 

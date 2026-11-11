@@ -173,7 +173,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
         <% end %>
       </div>
       <div>
-        <p class="font-serif text-warm text-[1.3rem] italic leading-tight">
+        <p class="font-serif text-warm text-[1.3rem] font-medium italic leading-tight">
           {(@user && @user.name) || "Anonymous"}
         </p>
         <span

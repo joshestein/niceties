@@ -30,7 +30,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
             navigate={~p"/groups/#{group.id}"}
             class="group border-warm/15 text-warm/90 font-serif text-[1.6rem] flex items-baseline gap-3 border-b py-4 italic no-underline transition-all duration-200 hover:text-warm hover:pl-2"
           >
-            <span class="font-sans text-warm/50 text-xs not-italic transition-colors duration-200 group-hover:text-warm/90">
+            <span class="font-sans text-warm/60 text-xs not-italic transition-colors duration-200 group-hover:text-warm/90">
               →
             </span>
             <span class="group-hover:underline">{group.name}</span>
@@ -46,7 +46,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
     <div class="pt-4 pb-16 font-light">
       <.link
         navigate={~p"/groups/"}
-        class="font-sans tracking-[0.12em] text-warm/50 inline-flex items-center gap-2 text-sm uppercase no-underline transition-colors duration-200 hover:text-warm/90"
+        class="font-sans tracking-[0.12em] text-warm/60 inline-flex items-center gap-2 text-sm uppercase no-underline transition-colors duration-200 hover:text-warm/90"
       >
         <span>←</span>
         <span>Groups</span>
@@ -108,7 +108,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
               />
               <span
                 id={"saved-#{user.id}"}
-                class="nicety-saved-indicator font-sans text-warm/40 mt-1 block text-xs"
+                class="nicety-saved-indicator font-sans text-warm/60 mt-1 block text-xs"
               >
                 Saved
               </span>
@@ -121,7 +121,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
       <div id="received" class="mt-8">
         <%= if is_list(@received) do %>
           <%= if @received == [] do %>
-            <p class="text-warm/40 font-serif text-[1.1rem] italic">
+            <p class="text-warm/60 font-serif text-[1.1rem] italic">
               Nothing here yet.
             </p>
           <% else %>
@@ -140,7 +140,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
           <% end %>
         <% else %>
           <div class="border-warm/10 border-b py-8">
-            <p class="text-warm/40 font-serif text-[1.15rem] italic leading-relaxed">
+            <p class="text-warm/60 font-serif text-[1.15rem] italic leading-relaxed">
               {if is_nil(@received),
                 do: "Niceties will be released soon.",
                 else:
@@ -167,7 +167,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
             class="size-20 rounded-full object-cover sm:size-28"
           />
         <% else %>
-          <span class="text-warm/60 text-sm font-light tracking-widest">
+          <span class="text-warm/70 text-sm tracking-widest">
             {initials(@user)}
           </span>
         <% end %>
@@ -178,7 +178,7 @@ defmodule NicetiesWeb.GroupLive.Groups do
         </p>
         <span
           :if={@user && @user.id == @current_user_id}
-          class="text-[0.65rem] text-warm/35 uppercase tracking-widest"
+          class="text-[0.65rem] text-warm/60 uppercase tracking-widest"
         >
           you
         </span>

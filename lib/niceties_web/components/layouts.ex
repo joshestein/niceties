@@ -45,7 +45,7 @@ defmodule NicetiesWeb.Layouts do
         </.link>
         <%= if @current_scope do %>
           <nav class="text-[0.68rem] tracking-[0.08em] flex items-center gap-3 uppercase sm:tracking-[0.14em] sm:gap-5">
-            <span class="text-warm/40 hidden sm:inline">
+            <span class="text-warm/60 hidden sm:inline">
               {@current_scope.user.name || @current_scope.user.email}
             </span>
             <.link

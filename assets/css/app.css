@@ -29,9 +29,9 @@
   --color-base-200: oklch(20.5% 0.011 255);
   --color-base-300: oklch(16% 0.01 255);
   --color-base-content: oklch(97.807% 0.029 256.847);
-  --color-primary: oklch(58% 0.233 277.117);
+  --color-primary: oklch(52% 0.233 277.117);
   --color-primary-content: oklch(96% 0.018 272.314);
-  --color-secondary: oklch(58% 0.233 277.117);
+  --color-secondary: oklch(52% 0.233 277.117);
   --color-secondary-content: oklch(96% 0.018 272.314);
   --color-accent: oklch(60% 0.25 292.717);
   --color-accent-content: oklch(96% 0.016 293.756);
@@ -39,11 +39,11 @@
   --color-neutral-content: oklch(98% 0.003 247.858);
   --color-info: oklch(58% 0.158 241.966);
   --color-info-content: oklch(97% 0.013 236.62);
-  --color-success: oklch(60% 0.118 184.704);
+  --color-success: oklch(66% 0.118 184.704);
   --color-success-content: oklch(98% 0.014 180.72);
   --color-warning: oklch(66% 0.179 58.318);
   --color-warning-content: oklch(98% 0.022 95.277);
-  --color-error: oklch(58% 0.253 17.585);
+  --color-error: oklch(66% 0.2 17.585);
   --color-error-content: oklch(96% 0.015 12.422);
   --radius-selector: 0.25rem;
   --radius-field: 0.25rem;
@@ -110,7 +110,7 @@ body:has(#received:target) #received {
 
 /* Tab link active state */
 .nicety-tab-link {
-  color: color-mix(in oklch, var(--color-warm) 40%, transparent);
+  color: color-mix(in oklch, var(--color-warm) 60%, transparent);
   border-bottom: 1.5px solid transparent;
   margin-bottom: -1.5px;
 }
@@ -159,4 +159,13 @@ body:has(#received:target) a.nicety-tab-link[href="#received"] {
 
 .checkbox::before {
   transition: none;
+}
+
+/* Field borders: daisyUI default (base-content 20%) is 1.87:1, below the 3:1 WCAG minimum.
+   warm 45% is 3.38:1. Error and focus states keep their daisyUI colors. */
+.input:not(.input-error, :focus, :focus-within),
+.textarea:not(.textarea-error, :focus),
+.select:not(.select-error, :focus, :focus-within),
+.checkbox:not(.checkbox-error) {
+  border-color: color-mix(in oklab, var(--color-warm) 45%, transparent);
 }

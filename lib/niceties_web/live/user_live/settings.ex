@@ -39,7 +39,7 @@ defmodule NicetiesWeb.UserLive.Settings do
                 class="size-20 object-cover sm:size-28"
               />
             <% else %>
-              <span class="text-warm/60 text-sm font-light tracking-widest">
+              <span class="text-warm/70 text-sm tracking-widest">
                 {initials(@current_scope.user)}
               </span>
             <% end %>

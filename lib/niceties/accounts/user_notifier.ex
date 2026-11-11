@@ -29,9 +29,6 @@ defmodule Niceties.Accounts.UserNotifier do
   """
   def deliver_update_email_instructions(user, url) do
     deliver(user.email, "Update email instructions", """
-
-    ==============================
-
     Hi #{user.name},
 
     You can change your email by visiting the URL below:
@@ -39,8 +36,6 @@ defmodule Niceties.Accounts.UserNotifier do
     #{url}
 
     If you didn't request this change, please ignore this.
-
-    ==============================
     """)
   end
 
@@ -59,9 +54,6 @@ defmodule Niceties.Accounts.UserNotifier do
 
   defp deliver_magic_link_instructions(user, url) do
     deliver(user.email, "Log in instructions", """
-
-    ==============================
-
     Hi #{user.name},
 
     You can log into your account by visiting the URL below:
@@ -69,8 +61,6 @@ defmodule Niceties.Accounts.UserNotifier do
     #{url}
 
     If you didn't request this email, please ignore this.
-
-    ==============================
     """)
   end
 
@@ -81,9 +71,6 @@ defmodule Niceties.Accounts.UserNotifier do
         else: "You've been invited to Niceties"
 
     deliver(user.email, "You've been invited to join Niceties!", """
-
-    ==============================
-
     Hi #{user.name},
 
     #{group_line} - a place to share and receive kind words with your group.
@@ -95,16 +82,11 @@ defmodule Niceties.Accounts.UserNotifier do
     #{url}
 
     If you didn't expect this invitation, please ignore this.
-
-    ==============================
     """)
   end
 
   def deliver_release_notification(user, url) do
     deliver(user.email, "Your group's niceties have been released!", """
-
-    ==============================
-
     Hi #{user.name},
 
     We wanted to let you know that your niceties have been released. You can view them at:
@@ -112,8 +94,6 @@ defmodule Niceties.Accounts.UserNotifier do
     #{url}
 
     Enjoy 😊
-
-    ==============================
     """)
   end
 end

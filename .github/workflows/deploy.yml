@@ -47,22 +47,42 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
+      - name: Configure SSH
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          REMOTE_KNOWN_HOSTS: ${{ secrets.REMOTE_KNOWN_HOSTS }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          install -d -m 700 ~/.ssh
+          umask 077
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$REMOTE_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host vps
+            HostName $VPS_HOST
+            User $VPS_USER
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            BatchMode yes
+          EOF
+
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            export LANG=en_US.UTF-8
-            export LC_ALL=en_US.UTF-8
-            export PATH=/home/${{ secrets.VPS_USER }}/.asdf/installs/elixir/1.19.5-otp-28/bin:/home/${{ secrets.VPS_USER }}/.asdf/installs/erlang/28.3.1/bin:/usr/local/bin:/usr/bin:/bin
-            set -a; source /etc/niceties/env; set +a
-            cd /home/${{ secrets.VPS_USER }}/niceties
-            git pull origin main
-            mix deps.get --only prod
-            MIX_ENV=prod mix compile
-            MIX_ENV=prod mix assets.deploy
-            MIX_ENV=prod mix ecto.migrate
-            sudo systemctl restart niceties.service
+        run: |
+          ssh vps 'bash -s' <<'EOF'
+          set -eo pipefail
+          export LANG=en_US.UTF-8
+          export LC_ALL=en_US.UTF-8
+          export PATH="$HOME/.asdf/installs/elixir/1.19.5-otp-28/bin:$HOME/.asdf/installs/erlang/28.3.1/bin:/usr/local/bin:/usr/bin:/bin"
+          set -a; source /etc/niceties/env; set +a
+          cd ~/niceties
+          git pull origin main
+          mix deps.get --only prod
+          MIX_ENV=prod mix compile
+          MIX_ENV=prod mix assets.deploy
+          MIX_ENV=prod mix ecto.migrate
+          sudo systemctl restart niceties.service
+          EOF

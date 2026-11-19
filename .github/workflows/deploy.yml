@@ -84,6 +84,17 @@ jobs:
           mix deps.get --only prod
           MIX_ENV=prod mix compile
           MIX_ENV=prod mix assets.deploy
+
+          # Back up before migrating; keep the newest 10 dumps.
+          # DATABASE_URL uses the ecto:// scheme, which pg_dump rejects.
+          umask 077
+          mkdir -p ~/backups/niceties
+          /usr/lib/postgresql/17/bin/pg_dump --format=custom \
+            --file ~/backups/niceties/$(date -u +%Y%m%dT%H%M%SZ).dump \
+            "postgresql://${DATABASE_URL#*://}"
+          ls -1t ~/backups/niceties/*.dump | tail -n +11 | xargs -r rm --
+          umask 022
+
           MIX_ENV=prod mix ecto.migrate
           sudo systemctl restart niceties.service
           EOF
